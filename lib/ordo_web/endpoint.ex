@@ -25,6 +25,10 @@ defmodule OrdoWeb.Endpoint do
     from: :ordo,
     gzip: not code_reloading?,
     only: OrdoWeb.static_paths(),
+    # Digesting renames top-level files (favicon.ico -> favicon-<hash>.ico), whose
+    # first path segment no longer matches `only`. `only_matching` serves those
+    # fingerprinted variants by first-segment prefix so `~p"/favicon.svg"` resolves.
+    only_matching: ~w(favicon apple-touch-icon),
     raise_on_missing_only: code_reloading?
 
   # Code reloading can be explicitly enabled under the

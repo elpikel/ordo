@@ -20,6 +20,12 @@ defmodule OrdoWeb.Router do
     get "/", PageController, :home
   end
 
+  # Analytics proxy to avoid ad blockers (no pipeline: POST /api/event must skip CSRF)
+  scope "/", OrdoWeb do
+    get "/js/stats.js", AnalyticsController, :script
+    post "/api/event", AnalyticsController, :event
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", OrdoWeb do
   #   pipe_through :api

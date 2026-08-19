@@ -27,7 +27,8 @@
     <link rel="icon" href={~p"/favicon.ico"} sizes="48x48" />
     <link rel="apple-touch-icon" href={~p"/apple-touch-icon.png"} />
     <link phx-track-static rel="stylesheet" href={~p"/assets/css/app.css"} />
-    <script defer data-domain="hireordo.com" data-api="/api/event" src="/js/stats.js"></script>
+    <script defer data-domain="hireordo.com" data-api="/api/event" src="/js/stats.js">
+    </script>
     <style>
       html { scroll-behavior: smooth; }
 
@@ -94,7 +95,10 @@
           </p>
           <h1 class="font-display font-bold text-4xl sm:text-5xl leading-[1.08] tracking-tight">
             Support email that<br />
-            answers <span class="relative inline-block">itself<span class="absolute left-0 right-0 bottom-1 h-3 bg-label -z-10"></span></span>.
+            answers <span class="relative inline-block"><span
+                class="absolute inset-x-0 bottom-1 h-3 bg-label"
+                aria-hidden="true"
+              ></span><span class="relative">itself</span></span>.
           </h1>
           <p class="mt-6 text-lg text-ink-soft max-w-md leading-relaxed">
             Ordo reads every “where is my order?”, looks the order up in BaseLinker,

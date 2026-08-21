@@ -150,7 +150,7 @@ defmodule OrdoWeb.InboxLive do
 
           <p class="font-mono text-xs tracking-[0.2em] text-ink-mute uppercase mb-2">Tickety</p>
           <p :if={@tickets == []} class="text-sm text-ink-mute">
-            Pusto. Kliknij „+ Anna" u góry, aby wrzucić e-mail do skrzynki.
+            Pusto. Kliknij „✎ Nowy e-mail" u góry, aby wrzucić e-mail do skrzynki.
           </p>
           <button :for={t <- @tickets} phx-click="select" phx-value-id={t.id}
                   class={["w-full text-left border bg-paper-card px-4 py-3 transition-colors",

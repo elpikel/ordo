@@ -108,6 +108,52 @@
   --font-mono: "IBM Plex Mono", monospace;
 }
 
+/* Brand primitives shared by the landing page and the demo panel */
+::selection {
+  background: #ffc53d;
+  color: #16233b;
+}
+
+/* Perforated divider — waybill edge */
+.perf {
+  background-image: radial-gradient(circle, #cbd5e1 1.5px, transparent 1.6px);
+  background-size: 14px 3px;
+  background-repeat: repeat-x;
+  background-position: center;
+  height: 3px;
+}
+
+/* "ROZWIĄZANO" stamp pop */
+.stamp {
+  animation: thump 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.4) both;
+}
+@keyframes thump {
+  from {
+    opacity: 0;
+    transform: rotate(-6deg) scale(1.6);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-6deg) scale(1);
+  }
+}
+
+.cursor-blink {
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp,
+  .cursor-blink {
+    animation: none;
+  }
+}
+
 /* Add variants based on LiveView classes */
 @custom-variant phx-click-loading (.phx-click-loading&, .phx-click-loading &);
 @custom-variant phx-submit-loading (.phx-submit-loading&, .phx-submit-loading &);

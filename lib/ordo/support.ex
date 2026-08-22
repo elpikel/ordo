@@ -1,7 +1,8 @@
 defmodule Ordo.Support do
   @moduledoc """
   The demo support pipeline: an inbound email becomes a Ticket, gets classified,
-  matched to a Focus order, drafted, and (on human approval) answered.
+  matched to a Focus order, drafted (grounded in the tenant's Policy), and — on
+  human approval — answered.
 
   Processing runs in a background Task and broadcasts on each stage so the panel
   animates the pipeline live. Happy-path only — see docs/failure-modes.md.
@@ -9,26 +10,87 @@ defmodule Ordo.Support do
 
   import Ecto.Query
 
-  alias Ordo.{AI, BaseLinker, Repo}
-  alias Ordo.Support.{Message, Ticket}
+  alias Ordo.{AI, BaseLinker, Demo, Repo}
+  alias Ordo.Support.{Message, PolicyFact, Tenant, Ticket}
 
   @topic "inbox"
 
+  # --- Tenant / seeding ---------------------------------------------------
+
+  @doc "Get the demo tenant, creating it and seeding its Policy on first call."
+  def ensure_demo_tenant! do
+    case Repo.get_by(Tenant, slug: Demo.slug()) do
+      nil ->
+        {:ok, tenant} = %Tenant{} |> Tenant.changeset(Demo.tenant_attrs()) |> Repo.insert()
+        seed_policy!(tenant)
+        with_policy(tenant)
+
+      tenant ->
+        if policy_count(tenant) == 0, do: seed_policy!(tenant)
+        with_policy(tenant)
+    end
+  end
+
+  defp seed_policy!(tenant) do
+    Repo.delete_all(from p in PolicyFact, where: p.tenant_id == ^tenant.id)
+
+    Enum.each(Demo.policy_facts(), fn attrs ->
+      %PolicyFact{}
+      |> PolicyFact.changeset(Map.put(attrs, :tenant_id, tenant.id))
+      |> Repo.insert!()
+    end)
+  end
+
+  defp policy_count(tenant), do: Repo.aggregate(from(p in PolicyFact, where: p.tenant_id == ^tenant.id), :count)
+  defp with_policy(tenant), do: Repo.preload(tenant, :policy_facts, force: true)
+
+  def policy_facts(tenant_id) do
+    Repo.all(from p in PolicyFact, where: p.tenant_id == ^tenant_id, order_by: [asc: p.position])
+  end
+
   # --- Queries ------------------------------------------------------------
 
-  def list_tickets do
-    Repo.all(from t in Ticket, order_by: [desc: t.inserted_at], preload: [:messages])
+  def list_tickets(tenant_id) do
+    Repo.all(
+      from t in Ticket,
+        where: t.tenant_id == ^tenant_id,
+        order_by: [desc: t.inserted_at],
+        preload: [:messages]
+    )
   end
 
   def get_ticket!(id), do: Repo.get!(Ticket, id) |> Repo.preload(:messages)
 
+  # --- Inbox management ---------------------------------------------------
+
+  @doc "Empty the tenant's inbox (Wyczyść skrzynkę)."
+  def clear_inbox!(tenant_id) do
+    Repo.delete_all(from t in Ticket, where: t.tenant_id == ^tenant_id)
+    broadcast(:inbox_cleared)
+  end
+
+  @doc "Reset and live-ingest the demo mailbox (Importuj skrzynkę). Streams in."
+  def import_demo_mailbox!(tenant) do
+    clear_inbox!(tenant.id)
+
+    Task.start(fn ->
+      Enum.each(Demo.emails(), fn attrs ->
+        receive_email(tenant.id, attrs)
+        Process.sleep(200)
+      end)
+    end)
+
+    :ok
+  end
+
   # --- Intake -------------------------------------------------------------
 
   @doc "Feed the artificial inbox. Returns the created Ticket and kicks off processing."
-  def receive_email(attrs) do
+  def receive_email(tenant_id, attrs) do
     {:ok, ticket} =
       %Ticket{}
       |> Ticket.changeset(%{
+        tenant_id: tenant_id,
         customer_name: attrs[:customer_name],
         customer_email: attrs[:customer_email],
         subject: attrs[:subject],
@@ -65,24 +127,38 @@ defmodule Ordo.Support do
     broadcast({:ticket_updated, ticket})
 
     # 2. Resolve Focus order from BaseLinker
-    Process.sleep(700)
+    Process.sleep(600)
     order = BaseLinker.resolve(class.order_ref, ticket.customer_email)
     ticket = update!(ticket, %{order: order})
     broadcast({:ticket_updated, ticket})
 
-    # 3. Compose draft (OTHER gets no draft — draft policy)
-    Process.sleep(700)
+    # 3. Compose draft, grounded in the full Policy. Even out-of-scope mail gets a
+    # draft — the composer escalates ("przekazuję do zespołu") when it can't answer,
+    # and a human still approves it in Copilot.
+    Process.sleep(600)
 
     draft =
-      if class.category == "OTHER" do
-        nil
-      else
-        AI.compose(%{category: class.category, language: class.language, message: body, order: order})
-      end
+      AI.compose(%{
+        category: class.category,
+        language: class.language,
+        message: body,
+        order: order,
+        policy: policy_lines(ticket.tenant_id),
+        signature: tenant_signature(ticket.tenant_id)
+      })
 
-    status = if draft, do: "draft_ready", else: "needs_human"
-    ticket = update!(ticket, %{draft: draft, status: status})
+    ticket = update!(ticket, %{draft: draft, status: "draft_ready"})
     broadcast({:ticket_updated, ticket})
+  end
+
+  defp tenant_signature(tenant_id) do
+    Repo.one(from t in Tenant, where: t.id == ^tenant_id, select: t.signature) || "Zespół sklepu"
+  end
+
+  # The full Policy as one-line facts — small enough to always pass; the LLM
+  # picks what's relevant.
+  defp policy_lines(tenant_id) do
+    tenant_id |> policy_facts() |> Enum.map(&PolicyFact.to_line/1)
   end
 
   # --- Approval -----------------------------------------------------------

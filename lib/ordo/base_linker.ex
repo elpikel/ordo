@@ -8,44 +8,16 @@ defmodule Ordo.BaseLinker do
   `:map` (jsonb) column.
   """
 
-  @orders [
-    %{
-      "number" => "ZAM-88317",
-      "date" => "2026-08-12",
-      "status" => "Wysłane",
-      "semantic_status" => "dispatched",
-      "customer_name" => "Anna Kowalska",
-      "customer_email" => "anna.kowalska@gmail.com",
-      "courier" => "InPost",
-      "tracking" => "620441882",
-      "courier_history" => [
-        %{"date" => "2026-08-12 09:14", "status" => "Nadano przesyłkę"},
-        %{"date" => "2026-08-13 06:02", "status" => "Przyjęto w sortowni"},
-        %{"date" => "2026-08-13 11:20", "status" => "Wydano do doręczenia"}
-      ],
-      "items" => [%{"name" => "Buty trekkingowe Alpine 42", "qty" => 1}]
-    },
-    %{
-      "number" => "ZAM-90042",
-      "date" => "2026-08-18",
-      "status" => "W realizacji",
-      "semantic_status" => "processing",
-      "customer_name" => "Marek Zieliński",
-      "customer_email" => "m.zielinski@wp.pl",
-      "courier" => nil,
-      "tracking" => nil,
-      "courier_history" => [],
-      "items" => [%{"name" => "Kurtka puchowa Nord L", "qty" => 1}]
-    }
-  ]
+  defp orders, do: Ordo.Demo.orders()
 
   @doc "Resolve a Focus order by order number first, then by customer email."
   def find_order(order_ref: ref) when is_binary(ref) do
-    Enum.find(@orders, &(&1["number"] == normalize_ref(ref)))
+    Enum.find(orders(), &(&1["number"] == normalize_ref(ref)))
   end
 
   def find_order(email: email) when is_binary(email) do
-    Enum.find(@orders, &(String.downcase(&1["customer_email"]) == String.downcase(email)))
+    Enum.filter(orders(), &(String.downcase(&1["customer_email"]) == String.downcase(email)))
+    |> List.last()
   end
 
   def find_order(_), do: nil

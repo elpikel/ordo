@@ -11,11 +11,11 @@ defmodule OrdoWeb.InboxLive do
       subject: "Gdzie moja paczka?",
       body: "Dzień dobry, zamówiłam tydzień temu i wciąż nic nie dotarło. Gdzie jest moja przesyłka? Pozdrawiam, Anna Kowalska"
     },
-    "marek" => %{
-      customer_name: "Marek Zieliński",
-      customer_email: "m.zielinski@wp.pl",
-      subject: "Chcę zwrócić kurtkę (ZAM-90042)",
-      body: "Witam, kurtka z zamówienia ZAM-90042 jest za duża. Chciałbym ją zwrócić — jak to zrobić?"
+    "tomasz" => %{
+      customer_name: "Tomasz Kaczmarek",
+      customer_email: "t.kaczmarek@gmail.com",
+      subject: "Chcę zwrócić masło orzechowe",
+      body: "Witam, zamówiłem masło orzechowe (ZAM-50106) ale jednak chciałbym je zwrócić. Jak to zrobić?"
     }
   }
 
@@ -23,12 +23,14 @@ defmodule OrdoWeb.InboxLive do
   def mount(_params, _session, socket) do
     if connected?(socket), do: Support.subscribe()
 
-    tickets = Support.list_tickets()
+    tenant = Support.ensure_demo_tenant!()
+    tickets = Support.list_tickets(tenant.id)
 
     {:ok,
      assign(socket,
+       tenant: tenant,
        tickets: tickets,
-       selected_id: List.first(tickets) && List.first(tickets).id,
+       selected_id: nil,
        composing: false,
        ai: Ordo.AI.available?(),
        page_title: "Ordo — Skrzynka"
@@ -36,13 +38,30 @@ defmodule OrdoWeb.InboxLive do
   end
 
   @impl true
-  def handle_event("simulate", %{"who" => who}, socket) do
-    {:ok, ticket} = Support.receive_email(@presets[who])
-    {:noreply, assign(socket, tickets: Support.list_tickets(), selected_id: ticket.id)}
+  def handle_params(params, _uri, socket) do
+    selected_id =
+      case params["id"] && Integer.parse(params["id"]) do
+        {id, _} -> id
+        _ -> nil
+      end
+
+    {:noreply, assign(socket, selected_id: selected_id)}
   end
 
-  def handle_event("select", %{"id" => id}, socket) do
-    {:noreply, assign(socket, selected_id: String.to_integer(id))}
+  @impl true
+  def handle_event("simulate", %{"who" => who}, socket) do
+    {:ok, ticket} = Support.receive_email(socket.assigns.tenant.id, @presets[who])
+    {:noreply, socket |> assign(tickets: tickets(socket)) |> push_patch(to: ~p"/inbox/#{ticket.id}")}
+  end
+
+  def handle_event("import_mailbox", _params, socket) do
+    Support.import_demo_mailbox!(socket.assigns.tenant)
+    {:noreply, socket |> assign(tickets: []) |> push_patch(to: ~p"/inbox")}
+  end
+
+  def handle_event("clear_inbox", _params, socket) do
+    Support.clear_inbox!(socket.assigns.tenant.id)
+    {:noreply, socket |> assign(tickets: []) |> push_patch(to: ~p"/inbox")}
   end
 
   def handle_event("toggle_compose", _params, socket) do
@@ -61,10 +80,10 @@ defmodule OrdoWeb.InboxLive do
       body: params["body"] || ""
     }
 
-    {:ok, ticket} = Support.receive_email(attrs)
+    {:ok, ticket} = Support.receive_email(socket.assigns.tenant.id, attrs)
 
     {:noreply,
-     assign(socket, tickets: Support.list_tickets(), selected_id: ticket.id, composing: false)}
+     socket |> assign(tickets: tickets(socket), composing: false) |> push_patch(to: ~p"/inbox/#{ticket.id}")}
   end
 
   def handle_event("approve", %{"draft" => %{"body" => body}}, socket) do
@@ -72,13 +91,19 @@ defmodule OrdoWeb.InboxLive do
       {:ok, _} = Support.approve_and_send(ticket, body)
     end
 
-    {:noreply, assign(socket, tickets: Support.list_tickets())}
+    {:noreply, assign(socket, tickets: tickets(socket))}
   end
 
   @impl true
   def handle_info({event, _ticket}, socket) when event in [:ticket_created, :ticket_updated] do
-    {:noreply, assign(socket, tickets: Support.list_tickets())}
+    {:noreply, assign(socket, tickets: tickets(socket))}
   end
+
+  def handle_info(:inbox_cleared, socket) do
+    {:noreply, assign(socket, tickets: tickets(socket))}
+  end
+
+  defp tickets(socket), do: Support.list_tickets(socket.assigns.tenant.id)
 
   defp selected(socket) do
     Enum.find(socket.assigns.tickets, &(&1.id == socket.assigns.selected_id))
@@ -93,15 +118,27 @@ defmodule OrdoWeb.InboxLive do
       <header class="max-w-6xl mx-auto px-5 sm:px-8 py-5 flex flex-wrap items-center justify-between gap-3">
         <div class="font-mono font-medium tracking-[0.35em] text-lg select-none">
           ORDO<span class="text-label-deep">.</span>
-          <span class="ml-3 font-body font-normal text-xs text-ink-mute tracking-normal">skrzynka · demo</span>
+          <span class="ml-3 font-body font-normal text-xs text-ink-mute tracking-normal">skrzynka · {@tenant.name}</span>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex flex-wrap items-center gap-2">
           <span class={["font-mono text-[11px] px-2 py-1 border", @ai && "text-okay border-okay" || "text-ink-mute border-slate-400"]}>
             {if @ai, do: "AI: OpenAI", else: "AI: fallback"}
           </span>
+          <button phx-click="import_mailbox"
+                  class="font-mono text-sm bg-ink text-paper px-3 py-2 hover:bg-ink-soft transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label">
+            ↓ Importuj skrzynkę
+          </button>
+          <button phx-click="clear_inbox"
+                  class="font-mono text-sm border border-ink px-3 py-2 hover:bg-ink hover:text-paper transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label">
+            Wyczyść
+          </button>
+          <button phx-click={JS.toggle(to: "#rules-drawer")}
+                  class="font-mono text-sm border border-ink px-3 py-2 hover:bg-ink hover:text-paper transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label">
+            Zasady sklepu
+          </button>
           <div class="relative">
             <button phx-click={JS.toggle(to: "#new-menu")}
-                    class="font-mono text-sm bg-ink text-paper px-3 py-2 hover:bg-ink-soft transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label">
+                    class="font-mono text-sm border border-ink px-3 py-2 hover:bg-ink hover:text-paper transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label">
               ✎ Nowy e-mail ▾
             </button>
             <div id="new-menu" phx-click-away={JS.hide(to: "#new-menu")}
@@ -110,9 +147,9 @@ defmodule OrdoWeb.InboxLive do
                       class="block w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 border-b border-slate-200">
                 Anna — „gdzie moja paczka?"
               </button>
-              <button phx-click={JS.hide(to: "#new-menu") |> JS.push("simulate", value: %{who: "marek"})}
+              <button phx-click={JS.hide(to: "#new-menu") |> JS.push("simulate", value: %{who: "tomasz"})}
                       class="block w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 border-b border-slate-200">
-                Marek — zwrot kurtki
+                Tomasz — zwrot masła
               </button>
               <button phx-click={JS.hide(to: "#new-menu") |> JS.push("open_compose")}
                       class="block w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 font-medium">
@@ -123,6 +160,27 @@ defmodule OrdoWeb.InboxLive do
         </div>
       </header>
       <div class="perf max-w-6xl mx-auto"></div>
+
+      <!-- Zasady sklepu — slide-over drawer (client-side toggle) -->
+      <div id="rules-drawer" class="hidden fixed inset-0 z-30">
+        <div class="absolute inset-0 bg-ink/20" phx-click={JS.hide(to: "#rules-drawer")}></div>
+        <div class="absolute inset-y-0 right-0 w-full max-w-sm bg-paper-card border-l border-slate-300 shadow-2xl p-6 overflow-y-auto">
+          <div class="flex items-center justify-between mb-5">
+            <p class="font-mono text-xs tracking-[0.2em] text-ink-mute uppercase">Zasady sklepu · {@tenant.name}</p>
+            <button phx-click={JS.hide(to: "#rules-drawer")} class="text-ink-mute hover:text-ink text-lg leading-none">✕</button>
+          </div>
+          <p class="text-xs text-ink-mute mb-4">Na tych faktach Ordo opiera odpowiedzi. Nie zmyśla poza nimi.</p>
+          <ul class="space-y-3 text-sm">
+            <li :for={f <- @tenant.policy_facts} class="border-b border-slate-100 pb-3">
+              <div class="flex justify-between gap-4">
+                <span class="text-ink-mute">{f.label}</span>
+                <span class="text-ink text-right font-medium">{f.value}{if f.unit, do: " " <> f.unit, else: ""}</span>
+              </div>
+              <span :if={f.category} class="text-[11px] text-label-deep">{category_label(f.category)}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
 
       <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-8 pb-16 grid lg:grid-cols-3 gap-6">
         <!-- Ticket list -->
@@ -149,10 +207,11 @@ defmodule OrdoWeb.InboxLive do
           </form>
 
           <p class="font-mono text-xs tracking-[0.2em] text-ink-mute uppercase mb-2">Tickety</p>
+          <div class="space-y-2 overflow-y-auto pr-1 max-h-[70vh]">
           <p :if={@tickets == []} class="text-sm text-ink-mute">
             Pusto. Kliknij „✎ Nowy e-mail" u góry, aby wrzucić e-mail do skrzynki.
           </p>
-          <button :for={t <- @tickets} phx-click="select" phx-value-id={t.id}
+          <button :for={t <- @tickets} phx-click={JS.patch(~p"/inbox/#{t.id}")}
                   class={["w-full text-left border bg-paper-card px-4 py-3 transition-colors",
                           @selected_id == t.id && "border-ink" || "border-slate-300 hover:border-slate-400"]}>
             <div class="flex items-center justify-between">
@@ -164,6 +223,7 @@ defmodule OrdoWeb.InboxLive do
               {category_label(t.category)}
             </span>
           </button>
+          </div>
         </div>
 
         <!-- Detail -->

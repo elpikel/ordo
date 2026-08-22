@@ -93,15 +93,18 @@ defmodule Ordo.AI do
 
   defp compose_system(language) do
     """
-    You are Ordo, a support agent for a Polish e-commerce store. Write a concise,
-    warm reply in language "#{language}". Use ONLY the order data provided — never
-    invent facts, dates, or tracking numbers. If a tracking number is present,
-    include it. Sign off as "Zespół sklepu". Plain text, no subject line.
+    You are Ordo, a support agent for a Polish e-commerce store selling healthy
+    food (muesli, granola, oatmeal). Write a concise, warm reply in language
+    "#{language}". Use ONLY the order data and shop rules provided — never invent
+    facts, dates, or tracking numbers. If a tracking number is present, include it.
+    Sign off with the provided signature. Plain text, no subject line.
     """
   end
 
-  defp compose_user(%{message: message, order: order}) do
+  defp compose_user(%{message: message, order: order} = ctx) do
     order_json = if order, do: Jason.encode!(order, pretty: true), else: "brak danych o zamówieniu"
+    policy = Map.get(ctx, :policy, [])
+    policy_block = if policy == [], do: "brak", else: Enum.map_join(policy, "\n", &("- " <> &1))
 
     """
     Wiadomość klienta:
@@ -109,31 +112,44 @@ defmodule Ordo.AI do
 
     Dane zamówienia z BaseLinkera:
     #{order_json}
+
+    Zasady sklepu (Policy):
+    #{policy_block}
+
+    Podpis: #{signature(ctx)}
     """
   end
 
-  defp compose_fallback(%{message: _message, order: nil}, _category) do
-    "Dzień dobry,\n\nDziękujemy za wiadomość. Przekazuję sprawę do zespołu — " <>
-      "odezwiemy się z odpowiedzią najszybciej jak to możliwe.\n\nPozdrawiamy,\nZespół sklepu"
+  defp compose_fallback(%{order: nil} = ctx, _category) do
+    "Dzień dobry,\n\nDziękujemy za wiadomość. Aby pomóc, poproszę o numer zamówienia — " <>
+      "wtedy sprawdzę szczegóły. W razie potrzeby przekażę sprawę do zespołu.\n\n" <>
+      "Pozdrawiamy,\n#{signature(ctx)}"
   end
 
-  defp compose_fallback(%{order: order}, "PACKAGE_STATUS") do
+  defp compose_fallback(%{order: order} = ctx, "PACKAGE_STATUS") do
     name = first_name(order["customer_name"])
     last = List.last(order["courier_history"] || [])
-    last_line = if last, do: " Ostatni status: #{last["status"]} (#{last["date"]}).", else: ""
+    last_line = if last, do: " Ostatni status: #{last["status"]}.", else: ""
 
-    "Dzień dobry#{name},\n\nPaczka z zamówienia #{order["number"]} została nadana " <>
-      "#{order["date"]} kurierem #{order["courier"]}.#{last_line} " <>
-      "Numer do śledzenia: #{order["tracking"]}.\n\nPozdrawiamy,\nZespół sklepu"
+    track =
+      if order["tracking"],
+        do: " Numer do śledzenia: #{order["tracking"]} (#{order["courier"]}).",
+        else: " Paczka jest jeszcze pakowana."
+
+    "Dzień dobry#{name},\n\nZamówienie #{order["number"]} z dnia #{order["date"]} ma status " <>
+      "„#{order["status"]}\".#{last_line}#{track}\n\nPozdrawiamy,\n#{signature(ctx)}"
   end
 
-  defp compose_fallback(%{order: order}, _category) do
+  defp compose_fallback(%{order: order} = ctx, _category) do
     name = first_name(order["customer_name"])
+    rules = ctx |> Map.get(:policy, []) |> Enum.take(2) |> Enum.join(" ")
+    rules_line = if rules == "", do: "", else: " " <> rules <> "."
 
-    "Dzień dobry#{name},\n\nOtrzymaliśmy Twoją wiadomość dotyczącą zamówienia " <>
-      "#{order["number"]}. Zajmujemy się nią i wrócimy z odpowiedzią wkrótce.\n\n" <>
-      "Pozdrawiamy,\nZespół sklepu"
+    "Dzień dobry#{name},\n\nDotyczy zamówienia #{order["number"]}.#{rules_line} " <>
+      "W razie dodatkowych pytań jesteśmy do dyspozycji.\n\nPozdrawiamy,\n#{signature(ctx)}"
   end
+
+  defp signature(ctx), do: Map.get(ctx, :signature) || "Zespół sklepu"
 
   defp first_name(nil), do: ""
   defp first_name(full), do: " " <> (full |> String.split() |> List.first())

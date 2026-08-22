@@ -4,6 +4,10 @@ Ordo reads a merchant's support inbox, pulls order context from BaseLinker, draf
 
 ## Language
 
+**Tenant**:
+A shop Ordo serves, and the isolation boundary for its data. Owns its mailbox identity (support email, signature), courier list, Policy, order set, and tickets. The schema is tenant-scoped (`tenant_id` everywhere) from the start; the demo seeds exactly one (One Day More), with no switcher or isolation UI yet. "Shop" is fine as the informal name for the business a Tenant represents.
+_Avoid_: Account, organization, client, workspace.
+
 **Ticket**:
 One conversation thread with a customer, keyed by the normalized root email (Message-ID/References) plus the customer address. Reopenable: it returns to the start of its lifecycle when a new customer message arrives after a reply was sent. Lifecycle: `New → Draft ready → Awaiting send → Answered` (and back to `New` on reopen). "Answered" is not terminal.
 _Avoid_: Mail, Message (those are a single email), Wątek, Zgłoszenie, Case.
@@ -49,7 +53,7 @@ A shop's accepted, versioned set of support facts (return window, return-shippin
 _Avoid_: Rules, knowledge base, FAQ.
 
 **Policy fact**:
-A single accepted statement within a Policy (e.g. "return window 14 days"). Cited by id + version in a draft's sources. Ranks below live BL data and is never generalized to fill a gap.
+A single accepted, **structured** rule within a Policy — a key, a typed value, and a category tag (e.g. `return_window_days = 14`, tagged RETURN). Typed rather than prose so code can reason about it (return/dispatch guards), the shop can edit it field-by-field, and a draft can cite it by id + version. Ranks below live BL data and is never generalized to fill a gap.
 _Avoid_: Rule, setting.
 
 **Take-over**:

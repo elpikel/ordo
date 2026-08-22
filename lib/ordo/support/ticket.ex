@@ -3,9 +3,11 @@ defmodule Ordo.Support.Ticket do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias Ordo.Support.Message
+  alias Ordo.Support.{Message, Tenant}
 
   schema "tickets" do
+    belongs_to :tenant, Tenant
+
     field :customer_name, :string
     field :customer_email, :string
     field :subject, :string
@@ -28,6 +30,7 @@ defmodule Ordo.Support.Ticket do
   def changeset(ticket, attrs) do
     ticket
     |> cast(attrs, [
+      :tenant_id,
       :customer_name,
       :customer_email,
       :subject,

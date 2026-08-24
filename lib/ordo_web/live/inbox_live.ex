@@ -39,18 +39,21 @@ defmodule OrdoWeb.InboxLive do
 
   @impl true
   def handle_params(params, _uri, socket) do
-    selected_id =
-      case params["id"] && Integer.parse(params["id"]) do
-        {id, _} -> id
-        # No ticket in the URL: default to the first ticket on the list.
-        _ -> default_selection(socket.assigns.tickets)
-      end
+    case params["id"] && Integer.parse(params["id"]) do
+      {id, _} ->
+        {:noreply, assign(socket, selected_id: id)}
 
-    {:noreply, assign(socket, selected_id: selected_id)}
+      # No ticket in the URL: redirect to the first ticket so the URL reflects it.
+      _ ->
+        case socket.assigns.tickets do
+          [first | _] ->
+            {:noreply, push_patch(socket, to: ~p"/#{socket.assigns.tenant.slug}/inbox/#{first.id}")}
+
+          [] ->
+            {:noreply, assign(socket, selected_id: nil)}
+        end
+    end
   end
-
-  defp default_selection([first | _]), do: first.id
-  defp default_selection(_), do: nil
 
   @impl true
   def handle_event("simulate", %{"who" => who}, socket) do

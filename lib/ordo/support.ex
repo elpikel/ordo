@@ -17,6 +17,18 @@ defmodule Ordo.Support do
 
   # --- Tenant / seeding ---------------------------------------------------
 
+  @doc """
+  Resolve a tenant from a URL param — its slug or numeric id. The demo tenant is
+  seeded on demand; any other must already exist (raises → 404).
+  """
+  def fetch_tenant!(param) do
+    cond do
+      param == Demo.slug() -> ensure_demo_tenant!()
+      Regex.match?(~r/^\d+$/, param) -> Repo.get!(Tenant, param) |> with_policy()
+      true -> Repo.get_by!(Tenant, slug: param) |> with_policy()
+    end
+  end
+
   @doc "Get the demo tenant, creating it and seeding its Policy on first call."
   def ensure_demo_tenant! do
     case Repo.get_by(Tenant, slug: Demo.slug()) do
@@ -26,6 +38,7 @@ defmodule Ordo.Support do
         with_policy(tenant)
 
       tenant ->
+        {:ok, tenant} = tenant |> Tenant.changeset(Demo.tenant_attrs()) |> Repo.update()
         if policy_count(tenant) == 0, do: seed_policy!(tenant)
         with_policy(tenant)
     end
@@ -111,6 +124,8 @@ defmodule Ordo.Support do
   end
 
   defp process(ticket, body) do
+    tenant = Repo.get!(Tenant, ticket.tenant_id)
+
     # 1. Classify
     Process.sleep(500)
     class = AI.classify(ticket.subject, body)
@@ -128,7 +143,7 @@ defmodule Ordo.Support do
 
     # 2. Resolve Focus order from BaseLinker
     Process.sleep(600)
-    order = BaseLinker.resolve(class.order_ref, ticket.customer_email)
+    order = BaseLinker.resolve(tenant, class.order_ref, ticket.customer_email)
     ticket = update!(ticket, %{order: order})
     broadcast({:ticket_updated, ticket})
 
@@ -144,15 +159,11 @@ defmodule Ordo.Support do
         message: body,
         order: order,
         policy: policy_lines(ticket.tenant_id),
-        signature: tenant_signature(ticket.tenant_id)
+        signature: tenant.signature || "Zespół sklepu"
       })
 
     ticket = update!(ticket, %{draft: draft, status: "draft_ready"})
     broadcast({:ticket_updated, ticket})
-  end
-
-  defp tenant_signature(tenant_id) do
-    Repo.one(from t in Tenant, where: t.id == ^tenant_id, select: t.signature) || "Zespół sklepu"
   end
 
   # The full Policy as one-line facts — small enough to always pass; the LLM

@@ -18,8 +18,8 @@ defmodule OrdoWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
-    live "/inbox", InboxLive
-    live "/inbox/:id", InboxLive
+    live "/:tenant/inbox", InboxLive
+    live "/:tenant/inbox/:id", InboxLive
   end
 
   # Analytics proxy to avoid ad blockers (no pipeline: POST /api/event must skip CSRF)

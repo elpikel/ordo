@@ -9,6 +9,7 @@ defmodule Ordo.Application do
   def start(_type, _args) do
     children = [
       OrdoWeb.Telemetry,
+      Ordo.Vault,
       Ordo.Repo,
       {DNSCluster, query: Application.get_env(:ordo, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Ordo.PubSub},

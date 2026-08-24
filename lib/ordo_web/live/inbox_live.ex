@@ -20,10 +20,10 @@ defmodule OrdoWeb.InboxLive do
   }
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(%{"tenant" => param}, _session, socket) do
     if connected?(socket), do: Support.subscribe()
 
-    tenant = Support.ensure_demo_tenant!()
+    tenant = Support.fetch_tenant!(param)
     tickets = Support.list_tickets(tenant.id)
 
     {:ok,
@@ -33,7 +33,7 @@ defmodule OrdoWeb.InboxLive do
        selected_id: nil,
        composing: false,
        ai: Ordo.AI.available?(),
-       page_title: "Ordo — Skrzynka"
+       page_title: "Ordo — #{tenant.name}"
      )}
   end
 
@@ -51,17 +51,17 @@ defmodule OrdoWeb.InboxLive do
   @impl true
   def handle_event("simulate", %{"who" => who}, socket) do
     {:ok, ticket} = Support.receive_email(socket.assigns.tenant.id, @presets[who])
-    {:noreply, socket |> assign(tickets: tickets(socket)) |> push_patch(to: ~p"/inbox/#{ticket.id}")}
+    {:noreply, socket |> assign(tickets: tickets(socket)) |> push_patch(to: ~p"/#{socket.assigns.tenant.slug}/inbox/#{ticket.id}")}
   end
 
   def handle_event("import_mailbox", _params, socket) do
     Support.import_demo_mailbox!(socket.assigns.tenant)
-    {:noreply, socket |> assign(tickets: []) |> push_patch(to: ~p"/inbox")}
+    {:noreply, socket |> assign(tickets: []) |> push_patch(to: ~p"/#{socket.assigns.tenant.slug}/inbox")}
   end
 
   def handle_event("clear_inbox", _params, socket) do
     Support.clear_inbox!(socket.assigns.tenant.id)
-    {:noreply, socket |> assign(tickets: []) |> push_patch(to: ~p"/inbox")}
+    {:noreply, socket |> assign(tickets: []) |> push_patch(to: ~p"/#{socket.assigns.tenant.slug}/inbox")}
   end
 
   def handle_event("toggle_compose", _params, socket) do
@@ -83,7 +83,7 @@ defmodule OrdoWeb.InboxLive do
     {:ok, ticket} = Support.receive_email(socket.assigns.tenant.id, attrs)
 
     {:noreply,
-     socket |> assign(tickets: tickets(socket), composing: false) |> push_patch(to: ~p"/inbox/#{ticket.id}")}
+     socket |> assign(tickets: tickets(socket), composing: false) |> push_patch(to: ~p"/#{socket.assigns.tenant.slug}/inbox/#{ticket.id}")}
   end
 
   def handle_event("approve", %{"draft" => %{"body" => body}}, socket) do
@@ -211,7 +211,7 @@ defmodule OrdoWeb.InboxLive do
           <p :if={@tickets == []} class="text-sm text-ink-mute">
             Pusto. Kliknij „✎ Nowy e-mail" u góry, aby wrzucić e-mail do skrzynki.
           </p>
-          <button :for={t <- @tickets} phx-click={JS.patch(~p"/inbox/#{t.id}")}
+          <button :for={t <- @tickets} phx-click={JS.patch(~p"/#{@tenant.slug}/inbox/#{t.id}")}
                   class={["w-full text-left border bg-paper-card px-4 py-3 transition-colors",
                           @selected_id == t.id && "border-ink" || "border-slate-300 hover:border-slate-400"]}>
             <div class="flex items-center justify-between">

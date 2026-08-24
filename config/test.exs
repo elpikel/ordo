@@ -29,6 +29,14 @@ config :swoosh, :api_client, false
 # Print only warnings and errors during test
 config :logger, level: :warning
 
+# Cloak encryption key (test only).
+config :ordo, Ordo.Vault,
+  ciphers: [
+    default:
+      {Cloak.Ciphers.AES.GCM, tag: "AES.GCM.V1",
+       key: Base.decode64!("6D3vv+u53e2MuhigHFQbviRFg2Q7bYq55dAwBCclsdQ=")}
+  ]
+
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
 

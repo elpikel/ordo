@@ -1,33 +1,21 @@
 defmodule Ordo.BaseLinker do
   @moduledoc """
-  Demo BaseLinker adapter: returns seeded orders instead of calling the real API.
+  BaseLinker order lookup, per-tenant. The demo tenant uses the seeded `Fake`
+  adapter; every other tenant uses the real `HTTP` client with its own token.
 
-  This is the seam — the real trial-API client slots in behind the same
-  `find_order/1` / `get_order/1` shape later, without touching the pipeline.
-  Orders are string-keyed maps so they round-trip cleanly through the tickets
-  `:map` (jsonb) column.
+  Reads only for now (see ADR-0001: writes are deferred to approval). Adapters
+  translate BaseLinker responses into a stable Ordo order map so the pipeline,
+  composer, and panel never change shape.
   """
 
-  defp orders, do: Ordo.Demo.orders()
+  @doc "Resolve the Focus order for a Ticket. Returns an order map or nil."
+  @callback resolve(tenant :: struct(), order_ref :: String.t() | nil, email :: String.t() | nil) ::
+              map() | nil
 
-  @doc "Resolve a Focus order by order number first, then by customer email."
-  def find_order(order_ref: ref) when is_binary(ref) do
-    Enum.find(orders(), &(&1["number"] == normalize_ref(ref)))
+  def resolve(tenant, order_ref, email) do
+    adapter(tenant).resolve(tenant, order_ref, email)
   end
 
-  def find_order(email: email) when is_binary(email) do
-    Enum.filter(orders(), &(String.downcase(&1["customer_email"]) == String.downcase(email)))
-    |> List.last()
-  end
-
-  def find_order(_), do: nil
-
-  @doc "Resolve by ref, falling back to email — mirrors CONTEXT.md precedence."
-  def resolve(order_ref, email) do
-    find_order(order_ref: order_ref || "") || find_order(email: email || "")
-  end
-
-  def get_order(ref), do: find_order(order_ref: ref)
-
-  defp normalize_ref(ref), do: ref |> String.trim() |> String.upcase()
+  defp adapter(%{demo: true}), do: Ordo.BaseLinker.Fake
+  defp adapter(_), do: Ordo.BaseLinker.HTTP
 end

@@ -32,6 +32,18 @@ if config_env() == :prod do
 
   maybe_ipv6 = if System.get_env("ECTO_IPV6") in ~w(true 1), do: [:inet6], else: []
 
+  cloak_key =
+    System.get_env("CLOAK_KEY") ||
+      raise """
+      environment variable CLOAK_KEY is missing.
+      Generate one with: mix run -e 'IO.puts(32 |> :crypto.strong_rand_bytes() |> Base.encode64())'
+      """
+
+  config :ordo, Ordo.Vault,
+    ciphers: [
+      default: {Cloak.Ciphers.AES.GCM, tag: "AES.GCM.V1", key: Base.decode64!(cloak_key)}
+    ]
+
   config :ordo, Ordo.Repo,
     # ssl: true,
     url: database_url,

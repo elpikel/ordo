@@ -6,7 +6,7 @@ defmodule Ordo.Demo do
   (seed/reset/import) lives in `Ordo.Support`.
   """
 
-  def slug, do: "onedaymore"
+  def slug, do: "demo"
 
   def tenant_attrs do
     %{
@@ -14,7 +14,8 @@ defmodule Ordo.Demo do
       name: "OneDayMore",
       support_email: "sklep@onedaymore.pl",
       signature: "Zespół OneDayMore",
-      couriers: ["InPost", "DHL", "Orlen Paczka"]
+      couriers: ["InPost", "DHL", "Orlen Paczka"],
+      demo: true
     }
   end
 

@@ -73,6 +73,14 @@ config :ordo, dev_routes: true
 # Do not include metadata nor timestamps in development logs
 config :logger, :default_formatter, format: "[$level] $message\n"
 
+# Cloak encryption key (dev only — NOT a production secret; prod sets CLOAK_KEY).
+config :ordo, Ordo.Vault,
+  ciphers: [
+    default:
+      {Cloak.Ciphers.AES.GCM, tag: "AES.GCM.V1",
+       key: Base.decode64!("6D3vv+u53e2MuhigHFQbviRFg2Q7bYq55dAwBCclsdQ=")}
+  ]
+
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20

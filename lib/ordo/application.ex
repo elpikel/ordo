@@ -13,6 +13,7 @@ defmodule Ordo.Application do
       Ordo.Repo,
       {DNSCluster, query: Application.get_env(:ordo, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Ordo.PubSub},
+      {Oban, Application.fetch_env!(:ordo, Oban)},
       # Start a worker by calling: Ordo.Worker.start_link(arg)
       # {Ordo.Worker, arg},
       # Start to serve requests, typically the last entry

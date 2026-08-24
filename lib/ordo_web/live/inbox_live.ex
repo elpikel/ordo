@@ -42,11 +42,15 @@ defmodule OrdoWeb.InboxLive do
     selected_id =
       case params["id"] && Integer.parse(params["id"]) do
         {id, _} -> id
-        _ -> nil
+        # No ticket in the URL: default to the first ticket on the list.
+        _ -> default_selection(socket.assigns.tickets)
       end
 
     {:noreply, assign(socket, selected_id: selected_id)}
   end
+
+  defp default_selection([first | _]), do: first.id
+  defp default_selection(_), do: nil
 
   @impl true
   def handle_event("simulate", %{"who" => who}, socket) do
@@ -121,6 +125,10 @@ defmodule OrdoWeb.InboxLive do
           <span class="ml-3 font-body font-normal text-xs text-ink-mute tracking-normal">skrzynka · {@tenant.name}</span>
         </div>
         <div class="flex flex-wrap items-center gap-2">
+          <.link navigate={~p"/#{@tenant.slug}/settings"} title="Ustawienia"
+                 class="font-mono text-sm border border-ink px-3 py-2 hover:bg-ink hover:text-paper transition-colors">
+            ⚙
+          </.link>
           <span class={["font-mono text-[11px] px-2 py-1 border", @ai && "text-okay border-okay" || "text-ink-mute border-slate-400"]}>
             {if @ai, do: "AI: OpenAI", else: "AI: fallback"}
           </span>

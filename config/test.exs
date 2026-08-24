@@ -29,6 +29,12 @@ config :swoosh, :api_client, false
 # Print only warnings and errors during test
 config :logger, level: :warning
 
+# Oban runs jobs inline / disabled in tests.
+config :ordo, Oban, testing: :manual
+
+# Use the fake mail fetcher in tests (no live IMAP).
+config :ordo, :mailbox_fetcher, Ordo.Mailboxes.Fetcher.Fake
+
 # Cloak encryption key (test only).
 config :ordo, Ordo.Vault,
   ciphers: [

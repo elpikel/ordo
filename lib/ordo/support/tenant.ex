@@ -3,7 +3,7 @@ defmodule Ordo.Support.Tenant do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias Ordo.Support.{PolicyFact, Ticket}
+  alias Ordo.Support.{Mailbox, PolicyFact, Ticket}
 
   schema "tenants" do
     field :slug, :string
@@ -16,6 +16,7 @@ defmodule Ordo.Support.Tenant do
 
     has_many :policy_facts, PolicyFact, preload_order: [asc: :position]
     has_many :tickets, Ticket
+    has_many :mailboxes, Mailbox
 
     timestamps(type: :utc_datetime_usec)
   end

@@ -46,6 +46,10 @@ The demo MVP assumes **happy paths everywhere**. This is the list of places the 
 - Bounced replies counted as resolved.
 
 ## Multi-tenancy, security, RODO
+- **No authentication.** Every route is public — the inbox (`/:tenant/inbox`) and
+  especially the settings page (`/:tenant/settings`), which lets anyone set a shop's
+  BaseLinker token and IMAP passwords. **Auth is a hard prerequisite before any real
+  shop connects.** Encryption at rest protects a DB leak, not an open URL.
 - Cross-tenant data or secret leakage.
 - Ordo operators' access to customer PII (needs DPA + access log).
 - LLM subprocessor retention/training on customer data.

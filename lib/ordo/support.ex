@@ -11,7 +11,7 @@ defmodule Ordo.Support do
   import Ecto.Query
 
   alias Ordo.{AI, BaseLinker, Demo, Repo}
-  alias Ordo.Support.{Message, PolicyFact, Tenant, Ticket}
+  alias Ordo.Support.{Mailbox, Message, PolicyFact, Tenant, Ticket}
 
   @topic "inbox"
 
@@ -27,6 +27,10 @@ defmodule Ordo.Support do
       Regex.match?(~r/^\d+$/, param) -> Repo.get!(Tenant, param) |> with_policy()
       true -> Repo.get_by!(Tenant, slug: param) |> with_policy()
     end
+  end
+
+  def update_tenant(%Tenant{} = tenant, attrs) do
+    tenant |> Tenant.changeset(attrs) |> Repo.update()
   end
 
   @doc "Get the demo tenant, creating it and seeding its Policy on first call."
@@ -200,6 +204,162 @@ defmodule Ordo.Support do
   defp update!(ticket, attrs) do
     ticket |> Ticket.changeset(attrs) |> Repo.update!()
   end
+
+  # --- Ingest (real mail from a Mailbox) ----------------------------------
+
+  @doc """
+  Turn one raw RFC822 email (from a mailbox poll) into a Ticket. INBOX-only, so
+  no loop guard (ADR-0008): drop machine mail, dedup by Message-ID, then thread
+  by References or create a new Ticket. Returns {:ok, ticket} or {:skip, reason}.
+  """
+  def ingest_email(%Mailbox{} = mailbox, raw) do
+    case parse_email(raw) do
+      nil ->
+        {:skip, :unparseable}
+
+      email ->
+        cond do
+          machine_mail?(email) -> {:skip, :machine}
+          from_self?(mailbox, email) -> {:skip, :self}
+          email.message_id && message_exists?(email.message_id) -> {:skip, :duplicate}
+          true -> do_ingest(mailbox.tenant_id, email)
+        end
+    end
+  end
+
+  defp do_ingest(tenant_id, email) do
+    case find_thread(email) do
+      nil -> create_ticket_from_email(tenant_id, email)
+      ticket -> append_to_thread(ticket, email)
+    end
+  end
+
+  defp create_ticket_from_email(tenant_id, email) do
+    {:ok, ticket} =
+      %Ticket{}
+      |> Ticket.changeset(%{
+        tenant_id: tenant_id,
+        customer_name: email.from_name,
+        customer_email: email.from_email,
+        subject: email.subject,
+        status: "new"
+      })
+      |> Repo.insert()
+
+    insert_customer_message(ticket.id, email)
+    ticket = get_ticket!(ticket.id)
+    broadcast({:ticket_created, ticket})
+    Task.start(fn -> process(ticket, email.body) end)
+    {:ok, ticket}
+  end
+
+  defp append_to_thread(ticket, email) do
+    insert_customer_message(ticket.id, email)
+    ticket = ticket |> update!(%{status: "new"}) |> get_reloaded()
+    broadcast({:ticket_updated, ticket})
+    Task.start(fn -> process(ticket, email.body) end)
+    {:ok, ticket}
+  end
+
+  defp get_reloaded(ticket), do: get_ticket!(ticket.id)
+
+  defp insert_customer_message(ticket_id, email) do
+    %Message{}
+    |> Message.changeset(%{
+      ticket_id: ticket_id,
+      role: "customer",
+      body: email.body,
+      message_id: email.message_id,
+      in_reply_to: email.in_reply_to
+    })
+    |> Repo.insert()
+  end
+
+  defp find_thread(email) do
+    ids = [email.in_reply_to | email.references] |> Enum.reject(&is_nil/1) |> Enum.uniq()
+
+    if ids == [] do
+      nil
+    else
+      case Repo.one(from m in Message, where: m.message_id in ^ids, order_by: [desc: m.inserted_at], limit: 1) do
+        nil -> nil
+        msg -> Repo.get(Ticket, msg.ticket_id)
+      end
+    end
+  end
+
+  defp message_exists?(message_id), do: Repo.exists?(from m in Message, where: m.message_id == ^message_id)
+
+  # --- Intake filter (ADR-0008) ------------------------------------------
+
+  defp machine_mail?(email) do
+    email.auto_submitted not in [nil, "no"] or
+      email.return_path == "<>" or
+      not is_nil(email.list_id) or
+      not is_nil(email.list_unsub)
+  end
+
+  defp from_self?(mailbox, email) do
+    is_binary(email.from_email) and is_binary(mailbox.email) and
+      String.downcase(email.from_email) == String.downcase(mailbox.email)
+  end
+
+  # --- Parsing ------------------------------------------------------------
+
+  defp parse_email(raw) do
+    msg = Mail.parse(raw)
+    {name, addr} = parse_from(Mail.get_from(msg))
+
+    %{
+      from_name: name,
+      from_email: addr,
+      subject: Mail.get_subject(msg) || "(bez tematu)",
+      body: text_body(msg),
+      message_id: header_id(msg, "message-id"),
+      in_reply_to: header_id(msg, "in-reply-to"),
+      references: parse_references(Mail.Message.get_header(msg, "references")),
+      auto_submitted: Mail.Message.get_header(msg, "auto-submitted"),
+      return_path: Mail.Message.get_header(msg, "return-path"),
+      list_id: Mail.Message.get_header(msg, "list-id"),
+      list_unsub: Mail.Message.get_header(msg, "list-unsubscribe")
+    }
+  rescue
+    _ -> nil
+  end
+
+  defp text_body(msg) do
+    case Mail.get_text(msg) do
+      %Mail.Message{body: body} when is_binary(body) -> String.trim(body)
+      _ -> msg.body |> to_string() |> String.trim()
+    end
+  end
+
+  defp parse_from({name, addr}), do: {presence(name), addr}
+  defp parse_from(from) when is_binary(from) do
+    case Regex.run(~r/^\s*(.*?)\s*<([^>]+)>\s*$/, from) do
+      [_, name, addr] -> {presence(name), addr}
+      _ -> {nil, String.trim(from)}
+    end
+  end
+
+  defp parse_from([first | _]), do: parse_from(first)
+  defp parse_from(_), do: {nil, nil}
+
+  defp header_id(msg, key), do: msg |> Mail.Message.get_header(key) |> strip_brackets()
+
+  defp strip_brackets(v) when is_binary(v),
+    do: v |> String.trim() |> String.trim_leading("<") |> String.trim_trailing(">")
+
+  defp strip_brackets(_), do: nil
+
+  defp parse_references(refs) when is_binary(refs),
+    do: Regex.scan(~r/<([^>]+)>/, refs) |> Enum.map(fn [_, id] -> id end)
+
+  defp parse_references(_), do: []
+
+  defp presence(nil), do: nil
+  defp presence(v) when is_binary(v), do: (String.trim(v) == "" && nil) || String.trim(v)
+  defp presence(_), do: nil
 
   # --- PubSub -------------------------------------------------------------
 

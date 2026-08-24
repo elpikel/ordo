@@ -18,6 +18,23 @@ defmodule Ordo.Release do
     {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :down, to: version))
   end
 
+  @doc """
+  Create (or refresh) the seeded demo tenant + its Policy. Idempotent.
+  Run on prod with: `bin/ordo eval "Ordo.Release.setup_demo()"`.
+  """
+  def setup_demo do
+    load_app()
+
+    {:ok, tenant, _} =
+      Ecto.Migrator.with_repo(Ordo.Repo, fn _repo ->
+        Ordo.Support.ensure_demo_tenant!()
+      end)
+
+    IO.puts("Demo tenant ready: slug=#{tenant.slug} name=#{tenant.name} (#{length(tenant.policy_facts)} rules).")
+    IO.puts("Open it at /#{tenant.slug}/inbox")
+    :ok
+  end
+
   defp repos do
     Application.fetch_env!(@app, :ecto_repos)
   end

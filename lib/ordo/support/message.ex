@@ -8,6 +8,8 @@ defmodule Ordo.Support.Message do
   schema "messages" do
     field :role, :string
     field :body, :string
+    field :message_id, :string
+    field :in_reply_to, :string
 
     belongs_to :ticket, Ticket
 
@@ -17,8 +19,9 @@ defmodule Ordo.Support.Message do
   @doc false
   def changeset(message, attrs) do
     message
-    |> cast(attrs, [:role, :body, :ticket_id])
+    |> cast(attrs, [:role, :body, :ticket_id, :message_id, :in_reply_to])
     |> validate_required([:role])
     |> validate_inclusion(:role, ["customer", "ordo"])
+    |> unique_constraint(:message_id)
   end
 end

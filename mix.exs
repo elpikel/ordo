@@ -60,6 +60,8 @@ defmodule Ordo.MixProject do
        depth: 1},
       {:swoosh, "~> 1.16"},
       {:cloak_ecto, "~> 1.3"},
+      {:oban, "~> 2.18"},
+      {:mail, "~> 0.4"},
       {:req, "~> 0.5"},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},

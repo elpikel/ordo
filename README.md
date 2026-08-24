@@ -16,6 +16,14 @@ data — click
 **Importuj skrzynkę** to ingest ~24 test emails and watch them classify, resolve to
 orders, and draft replies live.
 
+The demo tenant is seeded automatically on first visit, but you can create/refresh
+it explicitly (idempotent):
+
+```bash
+mix ordo.setup_demo                          # dev
+bin/ordo eval "Ordo.Release.setup_demo()"    # prod (release — no Mix)
+```
+
 Classification and drafting use OpenAI when `OPENAI_API_KEY` is set; otherwise they
 fall back to an offline heuristic (the badge shows `AI: fallback`).
 
@@ -36,6 +44,8 @@ Connect a real shop to a live BaseLinker account with:
 ```bash
 mix ordo.connect_tenant <slug> <bl_token> [name] [support_email]
 # e.g.
+mix ordo.connect_tenant acme "BL-TOKEN-xxx" "Acme Foods" bok@acme.pl
+
 mix ordo.connect_tenant acme "BL-TOKEN-xxx" "Acme Foods" bok@acme.pl
 ```
 

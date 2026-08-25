@@ -1,9 +1,12 @@
 defmodule Ordo.Support.Ticket do
   @moduledoc "A conversation thread with a customer (see CONTEXT.md: Ticket)."
   use Ecto.Schema
+
   import Ecto.Changeset
 
-  alias Ordo.Support.{Mailbox, Message, Tenant}
+  alias Ordo.Support.Mailbox
+  alias Ordo.Support.Message
+  alias Ordo.Support.Tenant
 
   schema "tickets" do
     belongs_to :tenant, Tenant

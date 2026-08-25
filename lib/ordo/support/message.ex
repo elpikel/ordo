@@ -1,6 +1,7 @@
 defmodule Ordo.Support.Message do
   @moduledoc "One email in a Ticket thread — from the customer or from Ordo."
   use Ecto.Schema
+
   import Ecto.Changeset
 
   alias Ordo.Support.Ticket

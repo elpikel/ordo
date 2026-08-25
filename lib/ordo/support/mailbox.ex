@@ -5,6 +5,7 @@ defmodule Ordo.Support.Mailbox do
   the polling cursor. A tenant has_many mailboxes (usually one).
   """
   use Ecto.Schema
+
   import Ecto.Changeset
 
   alias Ordo.Support.Tenant

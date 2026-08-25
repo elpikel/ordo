@@ -1,9 +1,12 @@
 defmodule Ordo.Support.Tenant do
   @moduledoc "A shop Ordo serves and the isolation boundary for its data (see CONTEXT.md: Tenant)."
   use Ecto.Schema
+
   import Ecto.Changeset
 
-  alias Ordo.Support.{Mailbox, PolicyFact, Ticket}
+  alias Ordo.Support.Mailbox
+  alias Ordo.Support.PolicyFact
+  alias Ordo.Support.Ticket
 
   schema "tenants" do
     field :slug, :string

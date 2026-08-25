@@ -12,7 +12,7 @@ defmodule OrdoWeb.AnalyticsController do
   # events (CSS-class based). `hash` is included so in-page anchor navigation on the
   # single-page landing is tracked.
   @script_url "https://#{@plausible_host}/js/script.hash.outbound-links.tagged-events.js"
-  @cache_ttl :timer.hours(1)
+  @cache_ttl to_timeout(hour: 1)
 
   def script(conn, _params) do
     case get_cached_script() do
@@ -31,7 +31,7 @@ defmodule OrdoWeb.AnalyticsController do
     {:ok, body, conn} = Plug.Conn.read_body(conn)
 
     headers = [
-      {"user-agent", get_req_header(conn, "user-agent") |> List.first() || ""},
+      {"user-agent", conn |> get_req_header("user-agent") |> List.first() || ""},
       {"x-forwarded-for", get_client_ip(conn)},
       {"content-type", "application/json"}
     ]

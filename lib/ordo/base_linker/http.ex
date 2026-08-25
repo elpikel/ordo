@@ -18,13 +18,12 @@ defmodule Ordo.BaseLinker.HTTP do
 
   @endpoint "https://api.baselinker.com/connector.php"
   @window_days 90
-  @status_ttl :timer.hours(6)
+  @status_ttl to_timeout(hour: 6)
 
   @impl true
   def resolve(%{bl_token: token}, order_ref, email) when is_binary(token) do
-    with order when is_map(order) <- find_order(token, order_ref, email) do
-      enrich(token, order)
-    else
+    case find_order(token, order_ref, email) do
+      order when is_map(order) -> enrich(token, order)
       _ -> nil
     end
   rescue
@@ -34,8 +33,6 @@ defmodule Ordo.BaseLinker.HTTP do
   end
 
   def resolve(_tenant, _order_ref, _email), do: nil
-
-  # --- Lookup -------------------------------------------------------------
 
   defp find_order(token, order_ref, email) do
     cond do
@@ -66,8 +63,6 @@ defmodule Ordo.BaseLinker.HTTP do
       _ -> []
     end
   end
-
-  # --- Enrichment ---------------------------------------------------------
 
   defp enrich(token, order) do
     id = order["order_id"]
@@ -127,8 +122,6 @@ defmodule Ordo.BaseLinker.HTTP do
 
   defp items(_), do: []
 
-  # --- Status list (cached per token) -------------------------------------
-
   defp status_name(_token, nil), do: nil
 
   defp status_name(token, status_id) do
@@ -161,8 +154,6 @@ defmodule Ordo.BaseLinker.HTTP do
     :persistent_term.put(key, {map, System.monotonic_time(:millisecond)})
     map
   end
-
-  # --- Transport ----------------------------------------------------------
 
   defp call(token, method, parameters) do
     opts = Application.get_env(:ordo, :baselinker_req_options, [])
@@ -198,10 +189,8 @@ defmodule Ordo.BaseLinker.HTTP do
 
   defp decode(_), do: {:error, :decode}
 
-  # --- Helpers ------------------------------------------------------------
-
   defp integer_ref?(ref), do: is_binary(ref) and Regex.match?(~r/^\d+$/, String.trim(ref))
-  defp window_from, do: DateTime.utc_now() |> DateTime.add(-@window_days * 24 * 3600, :second) |> DateTime.to_unix()
+  defp window_from, do: DateTime.utc_now() |> DateTime.shift(day: -@window_days) |> DateTime.to_unix()
 
   defp format_date(unix) when is_integer(unix) and unix > 0 do
     unix |> DateTime.from_unix!() |> DateTime.to_date() |> Date.to_string()

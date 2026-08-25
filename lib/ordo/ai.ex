@@ -12,8 +12,6 @@ defmodule Ordo.AI do
   @endpoint "https://api.openai.com/v1/chat/completions"
   @categories ~w(PACKAGE_STATUS RETURN RETURN_STATUS INVOICE ORDER_CHANGE CANCELLATION COMPLAINT OTHER)
 
-  # --- Classify -----------------------------------------------------------
-
   @doc "Return %{category, language, order_ref, sentiment} for an email."
   def classify(subject, body) do
     with true <- available?(),
@@ -74,8 +72,6 @@ defmodule Ordo.AI do
       _ -> nil
     end
   end
-
-  # --- Compose ------------------------------------------------------------
 
   @doc "Compose a reply in the ticket's language, grounded only in the order."
   def compose(%{category: category, language: language} = ctx) do
@@ -154,12 +150,8 @@ defmodule Ordo.AI do
   defp first_name(nil), do: ""
   defp first_name(full), do: " " <> (full |> String.split() |> List.first())
 
-  # --- OpenAI plumbing ----------------------------------------------------
-
   defp chat(messages, opts \\ []) do
-    body =
-      %{model: model(), messages: messages, temperature: 0.3}
-      |> maybe_json_mode(opts[:json])
+    body = maybe_json_mode(%{model: model(), messages: messages, temperature: 0.3}, opts[:json])
 
     case Req.post(@endpoint,
            json: body,

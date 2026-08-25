@@ -17,9 +17,7 @@ defmodule Mix.Tasks.Ordo.SetupDemo do
   def run(_args) do
     tenant = Ordo.Support.ensure_demo_tenant!()
 
-    Mix.shell().info(
-      "Demo tenant ready: slug=#{tenant.slug} name=#{tenant.name} (#{length(tenant.policy_facts)} rules)."
-    )
+    Mix.shell().info("Demo tenant ready: slug=#{tenant.slug} name=#{tenant.name} (#{length(tenant.policy_facts)} rules).")
 
     Mix.shell().info("Open it at /#{tenant.slug}/inbox")
   end

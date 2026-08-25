@@ -10,12 +10,17 @@ defmodule Ordo.Support do
 
   import Ecto.Query
 
-  alias Ordo.{AI, BaseLinker, Demo, Repo}
-  alias Ordo.Support.{Mailbox, Message, PolicyFact, Tenant, Ticket}
+  alias Ordo.AI
+  alias Ordo.BaseLinker
+  alias Ordo.Demo
+  alias Ordo.Repo
+  alias Ordo.Support.Mailbox
+  alias Ordo.Support.Message
+  alias Ordo.Support.PolicyFact
+  alias Ordo.Support.Tenant
+  alias Ordo.Support.Ticket
 
   @topic "inbox"
-
-  # --- Tenant / seeding ---------------------------------------------------
 
   @doc """
   Resolve a tenant from a URL param — its slug or numeric id. The demo tenant is
@@ -24,8 +29,8 @@ defmodule Ordo.Support do
   def fetch_tenant!(param) do
     cond do
       param == Demo.slug() -> ensure_demo_tenant!()
-      Regex.match?(~r/^\d+$/, param) -> Repo.get!(Tenant, param) |> with_policy()
-      true -> Repo.get_by!(Tenant, slug: param) |> with_policy()
+      Regex.match?(~r/^\d+$/, param) -> Tenant |> Repo.get!(param) |> with_policy()
+      true -> Tenant |> Repo.get_by!(slug: param) |> with_policy()
     end
   end
 
@@ -65,8 +70,6 @@ defmodule Ordo.Support do
     Repo.all(from p in PolicyFact, where: p.tenant_id == ^tenant_id, order_by: [asc: p.position])
   end
 
-  # --- Queries ------------------------------------------------------------
-
   @doc "Tickets for a tenant, filtered to one mailbox (nil = all), paginated via :limit/:offset."
   def list_tickets(tenant_id, mailbox_id \\ nil, opts \\ []) do
     Ticket
@@ -91,7 +94,7 @@ defmodule Ordo.Support do
   defp maybe_offset(q, nil), do: q
   defp maybe_offset(q, n), do: offset(q, ^n)
 
-  def get_ticket!(id), do: Repo.get!(Ticket, id) |> Repo.preload(:messages)
+  def get_ticket!(id), do: Ticket |> Repo.get!(id) |> Repo.preload(:messages)
 
   @doc "Load a ticket by id with messages, or nil if it doesn't exist."
   def get_ticket(id) do
@@ -100,8 +103,6 @@ defmodule Ordo.Support do
       ticket -> Repo.preload(ticket, :messages)
     end
   end
-
-  # --- Inbox management ---------------------------------------------------
 
   @doc "Empty the tenant's inbox (Wyczyść skrzynkę)."
   def clear_inbox!(tenant_id) do
@@ -122,8 +123,6 @@ defmodule Ordo.Support do
 
     :ok
   end
-
-  # --- Intake -------------------------------------------------------------
 
   @doc "Feed the artificial inbox. Returns the created Ticket and kicks off processing."
   def receive_email(tenant_id, attrs) do
@@ -199,8 +198,6 @@ defmodule Ordo.Support do
     tenant_id |> policy_facts() |> Enum.map(&PolicyFact.to_line/1)
   end
 
-  # --- Approval -----------------------------------------------------------
-
   @doc "Human approves (possibly edited) draft: file the reply and resolve."
   def approve_and_send(%Ticket{} = ticket, body) do
     now = DateTime.utc_now()
@@ -234,8 +231,6 @@ defmodule Ordo.Support do
   defp update!(ticket, attrs) do
     ticket |> Ticket.changeset(attrs) |> Repo.update!()
   end
-
-  # --- Ingest (real mail from a Mailbox) ----------------------------------
 
   @doc """
   Turn one raw RFC822 email (from a mailbox poll) into a Ticket. INBOX-only, so
@@ -321,8 +316,6 @@ defmodule Ordo.Support do
 
   defp message_exists?(message_id), do: Repo.exists?(from m in Message, where: m.message_id == ^message_id)
 
-  # --- Intake filter (ADR-0008) ------------------------------------------
-
   defp machine_mail?(email) do
     email.auto_submitted not in [nil, "no"] or
       email.return_path == "<>" or
@@ -334,8 +327,6 @@ defmodule Ordo.Support do
     is_binary(email.from_email) and is_binary(mailbox.email) and
       String.downcase(email.from_email) == String.downcase(mailbox.email)
   end
-
-  # --- Parsing ------------------------------------------------------------
 
   defp parse_email(raw) do
     msg = Mail.parse(raw)
@@ -366,6 +357,7 @@ defmodule Ordo.Support do
   end
 
   defp parse_from({name, addr}), do: {presence(name), addr}
+
   defp parse_from(from) when is_binary(from) do
     case Regex.run(~r/^\s*(.*?)\s*<([^>]+)>\s*$/, from) do
       [_, name, addr] -> {presence(name), addr}
@@ -384,15 +376,13 @@ defmodule Ordo.Support do
   defp strip_brackets(_), do: nil
 
   defp parse_references(refs) when is_binary(refs),
-    do: Regex.scan(~r/<([^>]+)>/, refs) |> Enum.map(fn [_, id] -> id end)
+    do: ~r/<([^>]+)>/ |> Regex.scan(refs) |> Enum.map(fn [_, id] -> id end)
 
   defp parse_references(_), do: []
 
   defp presence(nil), do: nil
   defp presence(v) when is_binary(v), do: (String.trim(v) == "" && nil) || String.trim(v)
   defp presence(_), do: nil
-
-  # --- PubSub -------------------------------------------------------------
 
   def subscribe, do: Phoenix.PubSub.subscribe(Ordo.PubSub, @topic)
   defp broadcast(msg), do: Phoenix.PubSub.broadcast(Ordo.PubSub, @topic, msg)

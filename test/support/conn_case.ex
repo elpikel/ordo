@@ -19,15 +19,16 @@ defmodule OrdoWeb.ConnCase do
 
   using do
     quote do
-      # The default endpoint for testing
-      @endpoint OrdoWeb.Endpoint
-
       use OrdoWeb, :verified_routes
+
+      import OrdoWeb.ConnCase
+      import Phoenix.ConnTest
 
       # Import conveniences for testing with connections
       import Plug.Conn
-      import Phoenix.ConnTest
-      import OrdoWeb.ConnCase
+
+      # The default endpoint for testing
+      @endpoint OrdoWeb.Endpoint
     end
   end
 

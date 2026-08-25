@@ -1,6 +1,7 @@
 defmodule Ordo.Support.PolicyFact do
   @moduledoc "A single structured, accepted shop rule (see CONTEXT.md: Policy fact)."
   use Ecto.Schema
+
   import Ecto.Changeset
 
   alias Ordo.Support.Tenant
@@ -27,7 +28,7 @@ defmodule Ordo.Support.PolicyFact do
 
   @doc "One-line rendering of a fact, e.g. \"Okno zwrotu: 14 dni\"."
   def to_line(%__MODULE__{} = f) do
-    [f.label, ": ", f.value, unit_suffix(f.unit)] |> IO.iodata_to_binary()
+    IO.iodata_to_binary([f.label, ": ", f.value, unit_suffix(f.unit)])
   end
 
   defp unit_suffix(nil), do: ""

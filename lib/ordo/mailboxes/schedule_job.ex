@@ -10,9 +10,7 @@ defmodule Ordo.Mailboxes.ScheduleJob do
 
   @impl Oban.Worker
   def perform(_job) do
-    Mailboxes.list_active()
-    |> Enum.each(fn m -> Oban.insert(PollMailbox.new(%{mailbox_id: m.id})) end)
-
+    Enum.each(Mailboxes.list_active(), fn m -> Oban.insert(PollMailbox.new(%{mailbox_id: m.id})) end)
     :ok
   end
 end

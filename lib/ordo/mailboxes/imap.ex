@@ -30,8 +30,6 @@ defmodule Ordo.Mailboxes.Fetcher.IMAP do
     e -> {:error, Exception.message(e)}
   end
 
-  # --- Protocol -----------------------------------------------------------
-
   defp connect(mailbox) do
     host = String.to_charlist(mailbox.imap_host || "")
     opts = [:binary, active: false, verify: :verify_none]
@@ -82,8 +80,6 @@ defmodule Ordo.Mailboxes.Fetcher.IMAP do
     :ssl.close(sock)
   end
 
-  # --- Cursor -------------------------------------------------------------
-
   defp start_uid(mailbox, %{uidvalidity: uv, uidnext: uidnext}) do
     if mailbox.uidvalidity == uv and is_integer(mailbox.last_uid) and mailbox.last_uid > 0 do
       mailbox.last_uid + 1
@@ -91,8 +87,6 @@ defmodule Ordo.Mailboxes.Fetcher.IMAP do
       max(1, (uidnext || 1) - @refetch_window)
     end
   end
-
-  # --- FETCH parsing ------------------------------------------------------
 
   defp parse_fetch(raw, acc) do
     case Regex.run(~r/UID (\d+) BODY\[\] \{(\d+)\}\r\n/, raw, return: :index) do
@@ -109,8 +103,6 @@ defmodule Ordo.Mailboxes.Fetcher.IMAP do
         Enum.reverse(acc)
     end
   end
-
-  # --- Transport helpers --------------------------------------------------
 
   defp send_cmd(sock, cmd), do: :ssl.send(sock, "A " <> cmd <> "\r\n")
 

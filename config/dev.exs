@@ -1,5 +1,8 @@
 import Config
 
+# Do not include metadata nor timestamps in development logs
+config :logger, :default_formatter, format: "[$level] $message\n"
+
 # Configure your database
 config :ordo, Ordo.Repo,
   username: "postgres",
@@ -9,6 +12,13 @@ config :ordo, Ordo.Repo,
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
+
+# Cloak encryption key (dev only — NOT a production secret; prod sets CLOAK_KEY).
+config :ordo, Ordo.Vault,
+  ciphers: [
+    default:
+      {Cloak.Ciphers.AES.GCM, tag: "AES.GCM.V1", key: Base.decode64!("6D3vv+u53e2MuhigHFQbviRFg2Q7bYq55dAwBCclsdQ=")}
+  ]
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -70,23 +80,12 @@ config :ordo, OrdoWeb.Endpoint,
 # Enable dev routes for dashboard and mailbox
 config :ordo, dev_routes: true
 
-# Do not include metadata nor timestamps in development logs
-config :logger, :default_formatter, format: "[$level] $message\n"
-
-# Cloak encryption key (dev only — NOT a production secret; prod sets CLOAK_KEY).
-config :ordo, Ordo.Vault,
-  ciphers: [
-    default:
-      {Cloak.Ciphers.AES.GCM, tag: "AES.GCM.V1",
-       key: Base.decode64!("6D3vv+u53e2MuhigHFQbviRFg2Q7bYq55dAwBCclsdQ=")}
-  ]
+# Initialize plugs at runtime for faster development compilation
+config :phoenix, :plug_init_mode, :runtime
 
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
-
-# Initialize plugs at runtime for faster development compilation
-config :phoenix, :plug_init_mode, :runtime
 
 config :phoenix_live_view,
   # Include debug annotations and locations in rendered markup.

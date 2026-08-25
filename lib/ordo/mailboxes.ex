@@ -17,10 +17,10 @@ defmodule Ordo.Mailboxes do
 
   def update(%Mailbox{} = mailbox, attrs), do: mailbox |> Mailbox.changeset(attrs) |> Repo.update()
 
-  def delete!(id), do: Repo.get!(Mailbox, id) |> Repo.delete!()
+  def delete!(id), do: Mailbox |> Repo.get!(id) |> Repo.delete!()
 
   def set_active(id, active) do
-    get!(id) |> Mailbox.changeset(%{active: active}) |> Repo.update()
+    id |> get!() |> Mailbox.changeset(%{active: active}) |> Repo.update()
   end
 
   @doc "Persist the polling cursor / last error after a poll."

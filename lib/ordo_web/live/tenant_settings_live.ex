@@ -288,7 +288,7 @@ defmodule OrdoWeb.TenantSettingsLive do
                   name="mailbox[email]"
                   value={@mb.email}
                   type="email"
-                  placeholder="sklep@onedaymore.pl"
+                  placeholder="sklep@hireordo.com"
                   class={input_class()}
                 />
               </div>

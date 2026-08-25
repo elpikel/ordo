@@ -5,7 +5,7 @@ Ordo reads a merchant's support inbox, pulls order context from BaseLinker, draf
 ## Language
 
 **Tenant**:
-A shop Ordo serves, and the isolation boundary for its data. Owns its mailbox identity (support email, signature), courier list, Policy, order set, and tickets. The schema is tenant-scoped (`tenant_id` everywhere) from the start; the demo seeds exactly one (One Day More), with no switcher or isolation UI yet. "Shop" is fine as the informal name for the business a Tenant represents.
+A shop Ordo serves, and the isolation boundary for its data. Owns its mailbox identity (support email, signature), courier list, Policy, order set, and tickets. The schema is tenant-scoped (`tenant_id` everywhere) from the start; the demo seeds exactly one (Ordo Demo), with no switcher or isolation UI yet. "Shop" is fine as the informal name for the business a Tenant represents.
 _Avoid_: Account, organization, client, workspace.
 
 **User**:

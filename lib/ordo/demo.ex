@@ -1,7 +1,7 @@
 defmodule Ordo.Demo do
   @moduledoc """
-  Fixture data for the One Day More demo tenant: shop identity, structured Policy
-  facts (real rules from onedaymore.pl), seeded BaseLinker orders, and a ~24-email
+  Fixture data for the Ordo demo tenant: shop identity, structured Policy
+  facts, seeded BaseLinker orders, and a ~24-email
   test mailbox including 4 deliberate edge cases. Pure data — orchestration
   (seed/reset/import) lives in `Ordo.Support`.
   """
@@ -17,16 +17,16 @@ defmodule Ordo.Demo do
   def tenant_attrs do
     %{
       slug: slug(),
-      name: "OneDayMore",
-      support_email: "sklep@onedaymore.pl",
-      signature: "Zespół OneDayMore",
+      name: "Ordo Demo",
+      support_email: "sklep@hireordo.com",
+      signature: "Zespół Ordo",
       couriers: ["InPost", "DHL", "Orlen Paczka"],
       demo: true
     }
   end
 
-  @general "sklep@onedaymore.pl"
-  @complaints "reklamacje@onedaymore.pl"
+  @general "sklep@hireordo.com"
+  @complaints "reklamacje@hireordo.com"
 
   @doc "Demo mailboxes seeded on the demo tenant (never polled — see Mailboxes.list_active)."
   def mailboxes, do: [@general, @complaints]
@@ -82,7 +82,7 @@ defmodule Ordo.Demo do
         value: "Orlen 8,99 zł, InPost/DHL 14,99 zł",
         category: "PACKAGE_STATUS"
       },
-      %{key: "contact_email", label: "Kontakt", value: "sklep@onedaymore.pl", category: nil}
+      %{key: "contact_email", label: "Kontakt", value: "sklep@hireordo.com", category: nil}
     ]
     |> Enum.with_index()
     |> Enum.map(fn {f, i} -> Map.put(f, :position, i) end)

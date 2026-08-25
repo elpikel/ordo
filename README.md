@@ -9,10 +9,11 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 ## Support demo
 
-The support panel is tenant-scoped at `/:tenant/inbox`, where `:tenant` is a slug or
-numeric id. The seeded demo tenant (**OneDayMore**, slug `demo`) lives at
-[`/demo/inbox`](http://localhost:4000/demo/inbox) and uses fake, seeded BaseLinker
-data — click
+The support panel is tenant-scoped; the tenant comes from the signed-in session, so
+routes carry no slug (ADR-0010). The seeded demo tenant (**Ordo Demo**, slug `demo`)
+is reachable via one-click login at [`/demo`](http://localhost:4000/demo), which logs
+in the demo account and drops you into [`/inbox`](http://localhost:4000/inbox). It uses
+fake, seeded BaseLinker data — click
 **Importuj skrzynkę** to ingest ~24 test emails and watch them classify, resolve to
 orders, and draft replies live.
 

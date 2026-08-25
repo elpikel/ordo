@@ -10,6 +10,7 @@ defmodule Ordo.Support do
 
   import Ecto.Query
 
+  alias Ordo.Accounts.User
   alias Ordo.AI
   alias Ordo.BaseLinker
   alias Ordo.Demo
@@ -54,7 +55,30 @@ defmodule Ordo.Support do
       end
 
     seed_demo_mailboxes!(tenant)
+    seed_demo_user!(tenant)
     with_policy(tenant)
+  end
+
+  @doc "The activated demo user (seeded on demand), used by the public /demo login."
+  def demo_user, do: Repo.get_by(User, email: Demo.user_email())
+
+  defp seed_demo_user!(tenant) do
+    now = DateTime.truncate(DateTime.utc_now(), :second)
+
+    case Repo.get_by(User, email: Demo.user_email()) do
+      nil ->
+        %User{}
+        |> User.invitation_changeset(%{email: Demo.user_email(), tenant_id: tenant.id})
+        |> Ecto.Changeset.put_change(:confirmed_at, now)
+        |> User.password_changeset(%{password: Demo.password()})
+        |> Repo.insert!()
+
+      %User{hashed_password: nil} = user ->
+        user |> User.password_changeset(%{password: Demo.password()}) |> Repo.update!()
+
+      user ->
+        user
+    end
   end
 
   defp seed_demo_mailboxes!(tenant) do
@@ -76,7 +100,9 @@ defmodule Ordo.Support do
   end
 
   defp policy_count(tenant), do: Repo.aggregate(from(p in PolicyFact, where: p.tenant_id == ^tenant.id), :count)
-  defp with_policy(tenant), do: Repo.preload(tenant, :policy_facts, force: true)
+
+  @doc "Preload a tenant's policy facts (used to ground drafts and render the rules sheet)."
+  def with_policy(tenant), do: Repo.preload(tenant, :policy_facts, force: true)
 
   def policy_facts(tenant_id) do
     Repo.all(from p in PolicyFact, where: p.tenant_id == ^tenant_id, order_by: [asc: p.position])

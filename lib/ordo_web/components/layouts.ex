@@ -73,6 +73,53 @@ defmodule OrdoWeb.Layouts do
   end
 
   @doc """
+  Renders the signed-in user's account menu (email, account settings, log out).
+
+  Reused in the app page headers (inbox, settings) so the account controls live
+  inside each page's own header instead of a floating overlay.
+
+  ## Examples
+
+      <.account_menu current_scope={@current_scope} />
+  """
+  attr :current_scope, :map, required: true, doc: "the current scope with the signed-in user"
+  attr :id, :string, default: "account-menu", doc: "id of the dropdown, unique per page"
+
+  def account_menu(assigns) do
+    ~H"""
+    <div class="relative">
+      <button
+        phx-click={JS.toggle(to: "##{@id}")}
+        class="flex items-center gap-1.5 text-sm text-ink-soft hover:text-ink px-2 py-1.5 rounded hover:bg-paper"
+      >
+        <span class="font-mono text-[13px] max-w-[180px] truncate">
+          {@current_scope.user.email}
+        </span>
+        <svg class="w-3 h-3 text-ink-mute" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      <div
+        id={@id}
+        phx-click-away={JS.hide(to: "##{@id}")}
+        class="hidden absolute top-full right-0 mt-1 w-52 bg-paper-card border border-slate-200 shadow-lg rounded-sm py-1 z-40"
+      >
+        <.link navigate={~p"/users/settings"} class="block px-4 py-2 text-sm hover:bg-paper">
+          Ustawienia konta
+        </.link>
+        <.link
+          href={~p"/users/log-out"}
+          method="delete"
+          class="block px-4 py-2 text-sm text-red-700 hover:bg-paper"
+        >
+          Wyloguj
+        </.link>
+      </div>
+    </div>
+    """
+  end
+
+  @doc """
   Shows the flash group with standard titles and content.
 
   ## Examples

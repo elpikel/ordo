@@ -8,6 +8,14 @@ Ordo reads a merchant's support inbox, pulls order context from BaseLinker, draf
 A shop Ordo serves, and the isolation boundary for its data. Owns its mailbox identity (support email, signature), courier list, Policy, order set, and tickets. The schema is tenant-scoped (`tenant_id` everywhere) from the start; the demo seeds exactly one (One Day More), with no switcher or isolation UI yet. "Shop" is fine as the informal name for the business a Tenant represents.
 _Avoid_: Account, organization, client, workspace.
 
+**User**:
+A person who logs into Ordo, belonging to exactly one Tenant (a Tenant has_many Users). Has a unique email and a password. The first User — the owner — is created and emailed an invitation when a Tenant is created. Every request is authorized against the User's Tenant, so a User only ever sees their own Tenant's data.
+_Avoid_: Account, member, agent.
+
+**Invitation**:
+A one-time, expiring token emailed to a pending User (email set, no password yet) so they can set a password — which confirms the account and logs them in. Reuses the same secure token machinery as password reset. Accounts exist only via Invitation; there is no public registration.
+_Avoid_: Signup, registration.
+
 **Ticket**:
 One conversation thread with a customer, keyed by the normalized root email (Message-ID/References) plus the customer address. Reopenable: it returns to the start of its lifecycle when a new customer message arrives after a reply was sent. Lifecycle: `New → Draft ready → Awaiting send → Answered` (and back to `New` on reopen). "Answered" is not terminal.
 _Avoid_: Mail, Message (those are a single email), Wątek, Zgłoszenie, Case.

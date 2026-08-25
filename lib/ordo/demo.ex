@@ -8,6 +8,12 @@ defmodule Ordo.Demo do
 
   def slug, do: "demo"
 
+  @doc "Email of the seeded, activated demo user (public one-click demo login)."
+  def user_email, do: "demo@hireordo.com"
+
+  @doc "Password of the seeded demo user — also logs in manually at /users/log-in. Not a secret."
+  def password, do: "demopassword123"
+
   def tenant_attrs do
     %{
       slug: slug(),

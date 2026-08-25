@@ -8,10 +8,10 @@ defmodule OrdoWeb.InboxLive do
   @per_page 20
 
   @impl true
-  def mount(%{"tenant" => param}, _session, socket) do
+  def mount(_params, _session, socket) do
     if connected?(socket), do: Support.subscribe()
 
-    tenant = Support.fetch_tenant!(param)
+    tenant = Support.with_policy(socket.assigns.current_scope.tenant)
 
     {:ok,
      socket
@@ -49,7 +49,7 @@ defmodule OrdoWeb.InboxLive do
     case parse_int(params["id"]) do
       nil ->
         case first_page do
-          [first | _] -> {:noreply, push_patch(socket, to: ticket_href(socket.assigns.tenant.slug, mailbox_id, first.id))}
+          [first | _] -> {:noreply, push_patch(socket, to: ticket_href(mailbox_id, first.id))}
           [] -> {:noreply, assign(socket, selected_id: nil, ticket: nil)}
         end
 
@@ -67,8 +67,8 @@ defmodule OrdoWeb.InboxLive do
          _ -> nil
        end)
 
-  defp ticket_href(slug, nil, id), do: ~p"/#{slug}/inbox/#{id}"
-  defp ticket_href(slug, mbx, id), do: ~p"/#{slug}/inbox/#{id}?#{[mbx: mbx]}"
+  defp ticket_href(nil, id), do: ~p"/inbox/#{id}"
+  defp ticket_href(mbx, id), do: ~p"/inbox/#{id}?#{[mbx: mbx]}"
 
   @impl true
   def handle_event("load_more", _params, %{assigns: %{end_reached: true}} = socket), do: {:noreply, socket}
@@ -163,7 +163,7 @@ defmodule OrdoWeb.InboxLive do
               SKRZYNKI
             </p>
             <button
-              phx-click={JS.patch(~p"/#{@tenant.slug}/inbox") |> JS.hide(to: "#mbx-menu")}
+              phx-click={JS.patch(~p"/inbox") |> JS.hide(to: "#mbx-menu")}
               class="w-full text-left px-4 py-2 hover:bg-paper flex items-center justify-between"
             >
               <span class="font-mono text-sm">Wszystkie skrzynki</span>
@@ -171,9 +171,7 @@ defmodule OrdoWeb.InboxLive do
             </button>
             <button
               :for={m <- @mailboxes}
-              phx-click={
-                JS.patch(~p"/#{@tenant.slug}/inbox?#{[mbx: m.id]}") |> JS.hide(to: "#mbx-menu")
-              }
+              phx-click={JS.patch(~p"/inbox?#{[mbx: m.id]}") |> JS.hide(to: "#mbx-menu")}
               class="w-full text-left px-4 py-2 hover:bg-paper flex items-center justify-between"
             >
               <span class="font-mono text-sm">{m.email}</span>
@@ -194,7 +192,7 @@ defmodule OrdoWeb.InboxLive do
             Zasady sklepu
           </button>
           <.link
-            navigate={~p"/#{@tenant.slug}/settings"}
+            navigate={~p"/settings"}
             title="Ustawienia"
             class="p-2 text-ink-mute hover:text-ink hover:bg-paper rounded block"
           >
@@ -217,6 +215,8 @@ defmodule OrdoWeb.InboxLive do
               />
             </svg>
           </.link>
+          <span class="w-px h-5 bg-slate-200 mx-1"></span>
+          <Layouts.account_menu current_scope={@current_scope} id="inbox-account-menu" />
         </div>
       </header>
 
@@ -239,7 +239,7 @@ defmodule OrdoWeb.InboxLive do
               <.link
                 :for={{dom_id, t} <- @streams.tickets}
                 id={dom_id}
-                patch={ticket_href(@tenant.slug, @mailbox_id, t.id)}
+                patch={ticket_href(@mailbox_id, t.id)}
                 class={[
                   "block w-full text-left px-4 py-3 border-l-[3px]",
                   ticket_row_class(t, @selected_id)

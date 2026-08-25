@@ -78,12 +78,20 @@
       <div class="font-mono font-medium tracking-[0.35em] text-lg select-none">
         ORDO<span class="text-label-deep">.</span>
       </div>
-      <a
-        href="#early-access"
-        class="font-mono text-sm border border-ink px-4 py-2 hover:bg-ink hover:text-paper transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
-      >
-        Get early access
-      </a>
+      <nav class="flex items-center gap-5">
+        <a
+          href={~p"/demo"}
+          class="font-mono text-sm text-ink-soft hover:text-ink transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
+        >
+          Live demo →
+        </a>
+        <a
+          href="#early-access"
+          class="font-mono text-sm border border-ink px-4 py-2 hover:bg-ink hover:text-paper transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
+        >
+          Get early access
+        </a>
+      </nav>
     </header>
     
 <!-- ── Hero ────────────────────────────────────────────────────────── -->
@@ -111,6 +119,12 @@
               class="bg-ink text-paper font-mono text-sm px-6 py-3 hover:bg-ink-soft transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
             >
               Hire Ordo
+            </a>
+            <a
+              href={~p"/demo"}
+              class="font-mono text-sm px-6 py-3 border border-ink hover:bg-ink hover:text-paper transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
+            >
+              See live demo
             </a>
             <span class="font-mono text-xs text-ink-mute">3 pilot slots · free during pilot</span>
           </div>

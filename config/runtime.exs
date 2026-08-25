@@ -53,6 +53,10 @@ if config_env() == :prod do
 
   host = System.get_env("PHX_HOST") || "example.com"
 
+  config :ordo, Ordo.Mailer,
+    adapter: Swoosh.Adapters.Brevo,
+    api_key: System.get_env("BREVO_API_KEY") || raise("environment variable BREVO_API_KEY is missing")
+
   config :ordo, Ordo.Repo,
     # ssl: true,
     url: database_url,

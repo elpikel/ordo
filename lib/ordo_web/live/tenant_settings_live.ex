@@ -1,5 +1,5 @@
 defmodule OrdoWeb.TenantSettingsLive do
-  @moduledoc "Per-tenant setup: BaseLinker token + mailboxes (+ demo controls). NOTE: no auth yet."
+  @moduledoc "Per-tenant setup: BaseLinker token + mailboxes (+ demo controls). Tenant comes from current_scope."
   use OrdoWeb, :live_view
 
   alias Ordo.Mailboxes
@@ -23,8 +23,8 @@ defmodule OrdoWeb.TenantSettingsLive do
   }
 
   @impl true
-  def mount(%{"tenant" => param}, _session, socket) do
-    tenant = Support.fetch_tenant!(param)
+  def mount(_params, _session, socket) do
+    tenant = socket.assigns.current_scope.tenant
 
     {:ok,
      assign(socket,
@@ -144,7 +144,7 @@ defmodule OrdoWeb.TenantSettingsLive do
         <span class="text-slate-300">|</span>
         <span class="text-sm text-ink-soft">{@tenant.name} · ustawienia</span>
         <.link
-          navigate={~p"/#{@tenant.slug}/inbox"}
+          navigate={~p"/inbox"}
           class="ml-auto flex items-center gap-1.5 text-sm text-ink-soft hover:text-ink px-3 py-1.5 rounded hover:bg-paper"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -152,6 +152,8 @@ defmodule OrdoWeb.TenantSettingsLive do
           </svg>
           Wróć do skrzynki
         </.link>
+        <span class="w-px h-5 bg-slate-200 mx-1"></span>
+        <Layouts.account_menu current_scope={@current_scope} id="settings-account-menu" />
       </header>
 
       <main class="max-w-2xl mx-auto px-5 py-10 space-y-12">

@@ -5,7 +5,10 @@ defmodule Ordo.Mailboxes do
   alias Ordo.Repo
   alias Ordo.Support.Mailbox
 
-  def list_active, do: Repo.all(from m in Mailbox, where: m.active == true)
+  # Demo tenants are never polled (their mailboxes have no real credentials).
+  def list_active do
+    Repo.all(from m in Mailbox, join: t in assoc(m, :tenant), where: m.active == true and t.demo == false)
+  end
 
   def list_for_tenant(tenant_id) do
     Repo.all(from m in Mailbox, where: m.tenant_id == ^tenant_id, order_by: [asc: m.id])

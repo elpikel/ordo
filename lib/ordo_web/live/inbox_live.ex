@@ -128,7 +128,7 @@ defmodule OrdoWeb.InboxLive do
   def render(assigns) do
     current = assigns.mailbox_id && Enum.find(assigns.mailboxes, &(&1.id == assigns.mailbox_id))
 
-    assigns = assign(assigns, :current_mailbox_email, (current && current.email) || assigns.tenant.support_email)
+    assigns = assign(assigns, :current_label, (current && current.email) || "Wszystkie skrzynki")
 
     ~H"""
     <div class="bg-paper text-ink font-body antialiased h-screen overflow-hidden flex flex-col">
@@ -144,7 +144,7 @@ defmodule OrdoWeb.InboxLive do
             phx-click={JS.toggle(to: "#mbx-menu")}
             class="flex items-center gap-2 text-sm text-ink-soft hover:text-ink px-2 py-1.5 rounded hover:bg-paper"
           >
-            <span class="font-mono">{@current_mailbox_email}</span>
+            <span class="font-mono">{@current_label}</span>
             <svg class="w-3 h-3 text-ink-mute" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -166,7 +166,7 @@ defmodule OrdoWeb.InboxLive do
               phx-click={JS.patch(~p"/#{@tenant.slug}/inbox") |> JS.hide(to: "#mbx-menu")}
               class="w-full text-left px-4 py-2 hover:bg-paper flex items-center justify-between"
             >
-              <span class="font-mono text-sm">{@tenant.support_email}</span>
+              <span class="font-mono text-sm">Wszystkie skrzynki</span>
               <span class="font-mono text-[10px] text-label-deep">{@stats.drafts} draft</span>
             </button>
             <button

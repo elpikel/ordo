@@ -19,6 +19,19 @@ defmodule Ordo.Demo do
     }
   end
 
+  @general "sklep@onedaymore.pl"
+  @complaints "reklamacje@onedaymore.pl"
+
+  @doc "Demo mailboxes seeded on the demo tenant (never polled — see Mailboxes.list_active)."
+  def mailboxes, do: [@general, @complaints]
+
+  @complaint_re ~r/reklamac|uszkodz|spleśn|ważności|skandal/iu
+
+  @doc "Which demo mailbox a fixture email 'arrived at' — complaints route to reklamacje@."
+  def mailbox_for(%{subject: subject, body: body}) do
+    if Regex.match?(@complaint_re, "#{subject} #{body}"), do: @complaints, else: @general
+  end
+
   @doc "Structured, accepted Policy facts (see CONTEXT.md: Policy fact)."
   def policy_facts do
     [

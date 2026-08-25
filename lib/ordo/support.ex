@@ -40,17 +40,29 @@ defmodule Ordo.Support do
 
   @doc "Get the demo tenant, creating it and seeding its Policy on first call."
   def ensure_demo_tenant! do
-    case Repo.get_by(Tenant, slug: Demo.slug()) do
-      nil ->
-        {:ok, tenant} = %Tenant{} |> Tenant.changeset(Demo.tenant_attrs()) |> Repo.insert()
-        seed_policy!(tenant)
-        with_policy(tenant)
+    tenant =
+      case Repo.get_by(Tenant, slug: Demo.slug()) do
+        nil ->
+          {:ok, t} = %Tenant{} |> Tenant.changeset(Demo.tenant_attrs()) |> Repo.insert()
+          seed_policy!(t)
+          t
 
-      tenant ->
-        {:ok, tenant} = tenant |> Tenant.changeset(Demo.tenant_attrs()) |> Repo.update()
-        if policy_count(tenant) == 0, do: seed_policy!(tenant)
-        with_policy(tenant)
-    end
+        t ->
+          {:ok, t} = t |> Tenant.changeset(Demo.tenant_attrs()) |> Repo.update()
+          if policy_count(t) == 0, do: seed_policy!(t)
+          t
+      end
+
+    seed_demo_mailboxes!(tenant)
+    with_policy(tenant)
+  end
+
+  defp seed_demo_mailboxes!(tenant) do
+    Enum.each(Demo.mailboxes(), fn email ->
+      if is_nil(Repo.get_by(Mailbox, tenant_id: tenant.id, email: email)) do
+        %Mailbox{} |> Mailbox.changeset(%{tenant_id: tenant.id, email: email, active: true}) |> Repo.insert!()
+      end
+    end)
   end
 
   defp seed_policy!(tenant) do
@@ -113,10 +125,12 @@ defmodule Ordo.Support do
   @doc "Reset and live-ingest the demo mailbox (Importuj skrzynkę). Streams in."
   def import_demo_mailbox!(tenant) do
     clear_inbox!(tenant.id)
+    by_email = Map.new(Repo.all(from m in Mailbox, where: m.tenant_id == ^tenant.id), &{&1.email, &1.id})
 
     Task.start(fn ->
       Enum.each(Demo.emails(), fn attrs ->
-        receive_email(tenant.id, attrs)
+        mailbox_id = Map.get(by_email, Demo.mailbox_for(attrs))
+        receive_email(tenant.id, Map.put(attrs, :mailbox_id, mailbox_id))
         Process.sleep(200)
       end)
     end)
@@ -130,6 +144,7 @@ defmodule Ordo.Support do
       %Ticket{}
       |> Ticket.changeset(%{
         tenant_id: tenant_id,
+        mailbox_id: attrs[:mailbox_id],
         customer_name: attrs[:customer_name],
         customer_email: attrs[:customer_email],
         subject: attrs[:subject],

@@ -35,3 +35,4 @@ ordo-*.tar
 npm-debug.log
 /assets/node_modules/
 
+.claude/settings.json

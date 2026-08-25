@@ -67,16 +67,39 @@ defmodule Ordo.Support do
 
   # --- Queries ------------------------------------------------------------
 
-  def list_tickets(tenant_id) do
-    Repo.all(
-      from t in Ticket,
-        where: t.tenant_id == ^tenant_id,
-        order_by: [desc: t.inserted_at],
-        preload: [:messages]
-    )
+  @doc "Tickets for a tenant, filtered to one mailbox (nil = all), paginated via :limit/:offset."
+  def list_tickets(tenant_id, mailbox_id \\ nil, opts \\ []) do
+    Ticket
+    |> where([t], t.tenant_id == ^tenant_id)
+    |> maybe_mailbox(mailbox_id)
+    |> order_by([t], desc: t.inserted_at)
+    |> maybe_limit(opts[:limit])
+    |> maybe_offset(opts[:offset])
+    |> Repo.all()
   end
 
+  @doc "Counts for the list header: total tickets and drafts awaiting approval."
+  def ticket_stats(tenant_id, mailbox_id \\ nil) do
+    base = Ticket |> where([t], t.tenant_id == ^tenant_id) |> maybe_mailbox(mailbox_id)
+    %{total: Repo.aggregate(base, :count), drafts: Repo.aggregate(where(base, [t], t.status == "draft_ready"), :count)}
+  end
+
+  defp maybe_mailbox(q, nil), do: q
+  defp maybe_mailbox(q, mailbox_id), do: where(q, [t], t.mailbox_id == ^mailbox_id)
+  defp maybe_limit(q, nil), do: q
+  defp maybe_limit(q, n), do: limit(q, ^n)
+  defp maybe_offset(q, nil), do: q
+  defp maybe_offset(q, n), do: offset(q, ^n)
+
   def get_ticket!(id), do: Repo.get!(Ticket, id) |> Repo.preload(:messages)
+
+  @doc "Load a ticket by id with messages, or nil if it doesn't exist."
+  def get_ticket(id) do
+    case Repo.get(Ticket, id) do
+      nil -> nil
+      ticket -> Repo.preload(ticket, :messages)
+    end
+  end
 
   # --- Inbox management ---------------------------------------------------
 
@@ -201,6 +224,13 @@ defmodule Ordo.Support do
     {:ok, ticket}
   end
 
+  @doc "Human takes the ticket over — clears Ordo's draft so they write their own."
+  def take_over(%Ticket{} = ticket) do
+    ticket = ticket |> update!(%{draft: ""}) |> then(&get_ticket!(&1.id))
+    broadcast({:ticket_updated, ticket})
+    {:ok, ticket}
+  end
+
   defp update!(ticket, attrs) do
     ticket |> Ticket.changeset(attrs) |> Repo.update!()
   end
@@ -222,23 +252,24 @@ defmodule Ordo.Support do
           machine_mail?(email) -> {:skip, :machine}
           from_self?(mailbox, email) -> {:skip, :self}
           email.message_id && message_exists?(email.message_id) -> {:skip, :duplicate}
-          true -> do_ingest(mailbox.tenant_id, email)
+          true -> do_ingest(mailbox, email)
         end
     end
   end
 
-  defp do_ingest(tenant_id, email) do
+  defp do_ingest(mailbox, email) do
     case find_thread(email) do
-      nil -> create_ticket_from_email(tenant_id, email)
+      nil -> create_ticket_from_email(mailbox, email)
       ticket -> append_to_thread(ticket, email)
     end
   end
 
-  defp create_ticket_from_email(tenant_id, email) do
+  defp create_ticket_from_email(mailbox, email) do
     {:ok, ticket} =
       %Ticket{}
       |> Ticket.changeset(%{
-        tenant_id: tenant_id,
+        tenant_id: mailbox.tenant_id,
+        mailbox_id: mailbox.id,
         customer_name: email.from_name,
         customer_email: email.from_email,
         subject: email.subject,

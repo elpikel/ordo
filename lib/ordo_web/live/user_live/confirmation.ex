@@ -10,7 +10,7 @@ defmodule OrdoWeb.UserLive.Confirmation do
     <Layouts.app flash={@flash} current_scope={@current_scope}>
       <div class="mx-auto max-w-sm">
         <div class="text-center">
-          <.header>Welcome {@user.email}</.header>
+          <.header>{gettext("Welcome %{email}", email: @user.email)}</.header>
         </div>
 
         <.form
@@ -26,13 +26,14 @@ defmodule OrdoWeb.UserLive.Confirmation do
           <.button
             name={@form[:remember_me].name}
             value="true"
-            phx-disable-with="Confirming..."
-            class="btn btn-primary w-full"
+            phx-disable-with={gettext("Confirming...")}
+            variant="primary"
+            class="w-full"
           >
-            Confirm and stay logged in
+            {gettext("Confirm and stay logged in")}
           </.button>
-          <.button phx-disable-with="Confirming..." class="btn btn-primary btn-soft w-full mt-2">
-            Confirm and log in only this time
+          <.button phx-disable-with={gettext("Confirming...")} class="w-full mt-2">
+            {gettext("Confirm and log in only this time")}
           </.button>
         </.form>
 
@@ -47,26 +48,30 @@ defmodule OrdoWeb.UserLive.Confirmation do
         >
           <input type="hidden" name={@form[:token].name} value={@form[:token].value} />
           <%= if @current_scope do %>
-            <.button phx-disable-with="Logging in..." class="btn btn-primary w-full">
-              Log in
+            <.button phx-disable-with={gettext("Logging in...")} variant="primary" class="w-full">
+              {gettext("Log in")}
             </.button>
           <% else %>
             <.button
               name={@form[:remember_me].name}
               value="true"
-              phx-disable-with="Logging in..."
-              class="btn btn-primary w-full"
+              phx-disable-with={gettext("Logging in...")}
+              variant="primary"
+              class="w-full"
             >
-              Keep me logged in on this device
+              {gettext("Keep me logged in on this device")}
             </.button>
-            <.button phx-disable-with="Logging in..." class="btn btn-primary btn-soft w-full mt-2">
-              Log me in only this time
+            <.button phx-disable-with={gettext("Logging in...")} class="w-full mt-2">
+              {gettext("Log me in only this time")}
             </.button>
           <% end %>
         </.form>
 
-        <p :if={!@user.confirmed_at} class="alert alert-outline mt-8">
-          Tip: If you prefer passwords, you can enable them in the user settings.
+        <p
+          :if={!@user.confirmed_at}
+          class="mt-8 border border-slate-200 bg-paper-card px-4 py-3 text-sm text-ink-soft"
+        >
+          {gettext("Tip: If you prefer passwords, you can enable them in the user settings.")}
         </p>
       </div>
     </Layouts.app>
@@ -82,7 +87,7 @@ defmodule OrdoWeb.UserLive.Confirmation do
     else
       {:ok,
        socket
-       |> put_flash(:error, "Magic link is invalid or it has expired.")
+       |> put_flash(:error, gettext("Magic link is invalid or it has expired."))
        |> push_navigate(to: ~p"/users/log-in")}
     end
   end

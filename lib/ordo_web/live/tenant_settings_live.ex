@@ -33,7 +33,7 @@ defmodule OrdoWeb.TenantSettingsLive do
        editing_token: false,
        mb: @blank_mb,
        notice: nil,
-       page_title: "Ordo — #{tenant.name} · ustawienia"
+       page_title: "Ordo — #{tenant.name} · " <> gettext("settings")
      )}
   end
 
@@ -41,11 +41,11 @@ defmodule OrdoWeb.TenantSettingsLive do
   def handle_event("save_baselinker", %{"token" => token}, socket) do
     case String.trim(token) do
       "" ->
-        {:noreply, notice(socket, "Podaj token.")}
+        {:noreply, notice(socket, gettext("Enter a token."))}
 
       token ->
         {:ok, tenant} = Support.update_tenant(socket.assigns.tenant, %{bl_token: token})
-        {:noreply, socket |> assign(tenant: tenant, editing_token: false) |> notice("Token BaseLinker zapisany.")}
+        {:noreply, socket |> assign(tenant: tenant, editing_token: false) |> notice(gettext("BaseLinker token saved."))}
     end
   end
 
@@ -63,8 +63,8 @@ defmodule OrdoWeb.TenantSettingsLive do
       end
 
     case result do
-      {:ok, _} -> {:noreply, socket |> reload() |> assign(mb: @blank_mb) |> notice("Zapisano skrzynkę.")}
-      {:error, cs} -> {:noreply, notice(socket, "Błąd: #{errors(cs)}")}
+      {:ok, _} -> {:noreply, socket |> reload() |> assign(mb: @blank_mb) |> notice(gettext("Mailbox saved."))}
+      {:error, cs} -> {:noreply, notice(socket, gettext("Error: %{errors}", errors: errors(cs)))}
     end
   end
 
@@ -88,22 +88,22 @@ defmodule OrdoWeb.TenantSettingsLive do
 
   def handle_event("delete_mailbox", %{"id" => id}, socket) do
     Mailboxes.delete!(id)
-    {:noreply, socket |> reload() |> assign(mb: @blank_mb) |> notice("Skrzynka usunięta.")}
+    {:noreply, socket |> reload() |> assign(mb: @blank_mb) |> notice(gettext("Mailbox deleted."))}
   end
 
   def handle_event("import_mailbox", _params, socket) do
     Support.import_demo_mailbox!(socket.assigns.tenant)
-    {:noreply, notice(socket, "Importuję skrzynkę — otwórz skrzynkę, aby zobaczyć.")}
+    {:noreply, notice(socket, gettext("Importing mailbox — open the mailbox to see it."))}
   end
 
   def handle_event("clear_inbox", _params, socket) do
     Support.clear_inbox!(socket.assigns.tenant.id)
-    {:noreply, notice(socket, "Wyczyszczono tickety.")}
+    {:noreply, notice(socket, gettext("Tickets cleared."))}
   end
 
   def handle_event("simulate", %{"who" => who}, socket) do
     Support.receive_email(socket.assigns.tenant.id, @presets[who])
-    {:noreply, notice(socket, "Wygenerowano e-mail — otwórz skrzynkę.")}
+    {:noreply, notice(socket, gettext("Email generated — open the mailbox."))}
   end
 
   defp reload(socket), do: assign(socket, mailboxes: Mailboxes.list_for_tenant(socket.assigns.tenant.id))
@@ -123,9 +123,9 @@ defmodule OrdoWeb.TenantSettingsLive do
 
   defp mailbox_status(m) do
     cond do
-      m.last_error -> {"BŁĄD LOGOWANIA", "border-red-300 text-red-700"}
-      m.active -> {"AKTYWNA", "border-okay text-okay"}
-      true -> {"WYŁĄCZONA", "border-slate-300 text-ink-mute"}
+      m.last_error -> {gettext("LOGIN ERROR"), "border-red-300 text-red-700"}
+      m.active -> {gettext("ACTIVE"), "border-okay text-okay"}
+      true -> {gettext("DISABLED"), "border-slate-300 text-ink-mute"}
     end
   end
 
@@ -142,7 +142,7 @@ defmodule OrdoWeb.TenantSettingsLive do
           ORDO<span class="text-label-deep">.</span>
         </span>
         <span class="text-slate-300">|</span>
-        <span class="text-sm text-ink-soft">{@tenant.name} · ustawienia</span>
+        <span class="text-sm text-ink-soft">{@tenant.name} · {gettext("settings")}</span>
         <.link
           navigate={~p"/inbox"}
           class="ml-auto flex items-center gap-1.5 text-sm text-ink-soft hover:text-ink px-3 py-1.5 rounded hover:bg-paper"
@@ -150,9 +150,10 @@ defmodule OrdoWeb.TenantSettingsLive do
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
-          Wróć do skrzynki
+          {gettext("Back to mailbox")}
         </.link>
         <span class="w-px h-5 bg-slate-200 mx-1"></span>
+        <Layouts.locale_switcher locale={@locale} />
         <Layouts.account_menu current_scope={@current_scope} id="settings-account-menu" />
       </header>
 
@@ -168,7 +169,9 @@ defmodule OrdoWeb.TenantSettingsLive do
         <section>
           <h2 class="font-mono text-[11px] tracking-[0.2em] text-ink-mute mb-1">BASELINKER</h2>
           <p class="text-sm text-ink-soft mb-4">
-            Token API łączy Ordo z zamówieniami, przesyłkami i dokumentami sklepu. Wygenerujesz go w panelu BaseLinkera: Moje konto → API.
+            {gettext(
+              "The API token connects Ordo with your store's orders, shipments and documents. You can generate it in the BaseLinker panel: My account → API."
+            )}
           </p>
 
           <div
@@ -177,23 +180,23 @@ defmodule OrdoWeb.TenantSettingsLive do
           >
             <div class="flex items-center gap-2 mb-3">
               <span class="font-mono text-[10px] px-2 py-0.5 border border-slate-300 text-ink-mute">
-                BRAK TOKENU
+                {gettext("NO TOKEN")}
               </span>
-              <span class="text-[12px] text-ink-mute">połączenie z BaseLinkerem nieaktywne</span>
+              <span class="text-[12px] text-ink-mute">{gettext("BaseLinker connection inactive")}</span>
             </div>
             <form phx-submit="save_baselinker" class="flex gap-2">
               <input
                 type="password"
                 name="token"
                 autocomplete="off"
-                placeholder="wklej token API…"
+                placeholder={gettext("paste API token…")}
                 class={input_class()}
               />
               <button
                 type="submit"
                 class="bg-ink text-white font-mono text-sm px-4 py-2 hover:bg-ink-soft focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
               >
-                Zapisz token
+                {gettext("Save token")}
               </button>
               <button
                 :if={@editing_token}
@@ -201,11 +204,11 @@ defmodule OrdoWeb.TenantSettingsLive do
                 phx-click="cancel_token"
                 class="text-sm text-ink-mute hover:text-ink px-2"
               >
-                Anuluj
+                {gettext("Cancel")}
               </button>
             </form>
             <p class="text-[12px] text-ink-mute mt-2">
-              Token jest szyfrowany w bazie i nigdy nie jest wyświetlany ponownie.
+              {gettext("The token is encrypted in the database and is never shown again.")}
             </p>
           </div>
 
@@ -216,28 +219,28 @@ defmodule OrdoWeb.TenantSettingsLive do
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-3">
                 <span class="font-mono text-[10px] px-2 py-0.5 border border-okay text-okay">
-                  POŁĄCZONO
+                  {gettext("CONNECTED")}
                 </span>
-                <span class="font-mono text-sm text-ink-mute">token {mask(@tenant.bl_token)}</span>
+                <span class="font-mono text-sm text-ink-mute">{gettext("token")} {mask(@tenant.bl_token)}</span>
               </div>
               <button
                 phx-click="change_token"
                 class="text-sm text-ink-soft hover:text-ink border border-slate-300 px-3 py-1 hover:bg-paper"
               >
-                Zmień token
+                {gettext("Change token")}
               </button>
             </div>
             <p class="text-[12px] text-ink-mute mt-2">
-              Nowy token zapisywany jest tylko przy podaniu nowej wartości.
+              {gettext("A new token is saved only when a new value is provided.")}
             </p>
           </div>
         </section>
         
     <!-- Mailboxes -->
         <section>
-          <h2 class="font-mono text-[11px] tracking-[0.2em] text-ink-mute mb-1">SKRZYNKI E-MAIL</h2>
+          <h2 class="font-mono text-[11px] tracking-[0.2em] text-ink-mute mb-1">{gettext("EMAIL MAILBOXES")}</h2>
           <p class="text-sm text-ink-soft mb-4">
-            Adresy, które Ordo monitoruje. Poczta pobierana jest z folderu INBOX co minutę.
+            {gettext("Addresses that Ordo monitors. Mail is fetched from the INBOX folder every minute.")}
           </p>
 
           <div
@@ -257,15 +260,15 @@ defmodule OrdoWeb.TenantSettingsLive do
                   phx-value-id={m.id}
                   class="text-sm text-ink-soft hover:text-ink border border-slate-300 px-3 py-1 hover:bg-paper"
                 >
-                  Edytuj
+                  {gettext("Edit")}
                 </button>
                 <button
                   phx-click="delete_mailbox"
                   phx-value-id={m.id}
-                  data-confirm={"Usunąć skrzynkę #{m.email}?"}
+                  data-confirm={gettext("Delete mailbox %{email}?", email: m.email)}
                   class="text-sm text-red-700 border border-red-300 px-3 py-1 hover:bg-red-50"
                 >
-                  Usuń
+                  {gettext("Delete")}
                 </button>
               </div>
             </div>
@@ -274,16 +277,16 @@ defmodule OrdoWeb.TenantSettingsLive do
             :if={@mailboxes == []}
             class="bg-paper-card border border-dashed border-slate-300 rounded-sm px-4 py-8 text-center"
           >
-            <p class="text-sm text-ink-mute">Brak skrzynek. Dodaj pierwszą poniżej.</p>
+            <p class="text-sm text-ink-mute">{gettext("No mailboxes. Add the first one below.")}</p>
           </div>
 
           <div class="mt-4 bg-paper-card border border-slate-200 rounded-sm px-4 py-4">
             <p class="text-sm font-semibold mb-3">
-              {if @mb.id, do: "Edytuj skrzynkę: #{@mb.email}", else: "Dodaj skrzynkę"}
+              {if @mb.id, do: gettext("Edit mailbox: %{email}", email: @mb.email), else: gettext("Add mailbox")}
             </p>
             <form phx-submit="submit_mailbox" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div class="sm:col-span-2">
-                <label class="block text-[12px] text-ink-mute mb-1">Adres e-mail</label>
+                <label class="block text-[12px] text-ink-mute mb-1">{gettext("Email address")}</label>
                 <input
                   name="mailbox[email]"
                   value={@mb.email}
@@ -293,7 +296,7 @@ defmodule OrdoWeb.TenantSettingsLive do
                 />
               </div>
               <div>
-                <label class="block text-[12px] text-ink-mute mb-1">Serwer IMAP</label>
+                <label class="block text-[12px] text-ink-mute mb-1">{gettext("IMAP server")}</label>
                 <input
                   name="mailbox[imap_host]"
                   value={@mb.imap_host}
@@ -302,20 +305,20 @@ defmodule OrdoWeb.TenantSettingsLive do
                 />
               </div>
               <div>
-                <label class="block text-[12px] text-ink-mute mb-1">Port</label>
+                <label class="block text-[12px] text-ink-mute mb-1">{gettext("Port")}</label>
                 <input name="mailbox[imap_port]" value={@mb.imap_port} class={input_class()} />
               </div>
               <div>
-                <label class="block text-[12px] text-ink-mute mb-1">Użytkownik</label>
+                <label class="block text-[12px] text-ink-mute mb-1">{gettext("Username")}</label>
                 <input
                   name="mailbox[username]"
                   value={@mb.username}
-                  placeholder="pełny adres e-mail"
+                  placeholder={gettext("full email address")}
                   class={input_class()}
                 />
               </div>
               <div>
-                <label class="block text-[12px] text-ink-mute mb-1">Hasło</label>
+                <label class="block text-[12px] text-ink-mute mb-1">{gettext("Password")}</label>
                 <input
                   name="mailbox[password]"
                   type="password"
@@ -329,7 +332,7 @@ defmodule OrdoWeb.TenantSettingsLive do
                   type="submit"
                   class="bg-ink text-white font-mono text-sm px-4 py-2 hover:bg-ink-soft focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
                 >
-                  {if @mb.id, do: "Zapisz zmiany", else: "Dodaj skrzynkę"}
+                  {if @mb.id, do: gettext("Save changes"), else: gettext("Add mailbox")}
                 </button>
                 <button
                   :if={@mb.id}
@@ -337,42 +340,42 @@ defmodule OrdoWeb.TenantSettingsLive do
                   phx-click="cancel_edit"
                   class="text-sm text-ink-mute hover:text-ink px-2"
                 >
-                  Anuluj edycję
+                  {gettext("Cancel editing")}
                 </button>
               </div>
             </form>
             <p class="text-[12px] text-ink-mute mt-2">
-              Hasło jest szyfrowane w bazie. Przy edycji zapisywane jest tylko przy podaniu nowej wartości.
+              {gettext("The password is encrypted in the database. When editing, it is saved only when a new value is provided.")}
             </p>
           </div>
         </section>
         
     <!-- Demo controls (demo tenant only) -->
         <section :if={@tenant.demo}>
-          <h2 class="font-mono text-[11px] tracking-[0.2em] text-ink-mute mb-1">DANE DEMO</h2>
+          <h2 class="font-mono text-[11px] tracking-[0.2em] text-ink-mute mb-1">{gettext("DEMO DATA")}</h2>
           <p class="text-sm text-ink-soft mb-4">
-            Zarządzanie zawartością środowiska demonstracyjnego.
+            {gettext("Manage the contents of the demo environment.")}
           </p>
           <div class="bg-paper-card border border-slate-200 rounded-sm divide-y divide-slate-100">
             <div class="px-4 py-3 flex items-center justify-between gap-4">
               <div>
-                <p class="text-sm font-medium">Importuj skrzynkę</p>
+                <p class="text-sm font-medium">{gettext("Import mailbox")}</p>
                 <p class="text-[12px] text-ink-mute mt-0.5">
-                  Wczytaj przykładowy zestaw ticketów do skrzynki.
+                  {gettext("Load a sample set of tickets into the mailbox.")}
                 </p>
               </div>
               <button
                 phx-click="import_mailbox"
                 class="shrink-0 border border-slate-300 px-3 py-1.5 text-sm hover:bg-paper"
               >
-                Importuj
+                {gettext("Import")}
               </button>
             </div>
             <div class="px-4 py-3 flex items-center justify-between gap-4">
               <div>
-                <p class="text-sm font-medium">Scenariusze</p>
+                <p class="text-sm font-medium">{gettext("Scenarios")}</p>
                 <p class="text-[12px] text-ink-mute mt-0.5">
-                  Wrzuć pojedynczy e-mail jak od klienta.
+                  {gettext("Drop in a single email as if from a customer.")}
                 </p>
               </div>
               <div class="flex gap-2 shrink-0">
@@ -394,17 +397,17 @@ defmodule OrdoWeb.TenantSettingsLive do
             </div>
             <div class="px-4 py-3 flex items-center justify-between gap-4">
               <div>
-                <p class="text-sm font-medium text-red-700">Wyczyść wszystkie tickety</p>
+                <p class="text-sm font-medium text-red-700">{gettext("Clear all tickets")}</p>
                 <p class="text-[12px] text-ink-mute mt-0.5">
-                  Usuwa tickety demo. Tej operacji nie można cofnąć.
+                  {gettext("Deletes demo tickets. This operation cannot be undone.")}
                 </p>
               </div>
               <button
                 phx-click="clear_inbox"
-                data-confirm="Wyczyścić wszystkie tickety?"
+                data-confirm={gettext("Clear all tickets?")}
                 class="shrink-0 border border-red-300 text-red-700 px-3 py-1.5 text-sm hover:bg-red-50"
               >
-                Wyczyść
+                {gettext("Clear")}
               </button>
             </div>
           </div>

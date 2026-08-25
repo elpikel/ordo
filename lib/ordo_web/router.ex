@@ -11,6 +11,7 @@ defmodule OrdoWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_scope_for_user
+    plug OrdoWeb.Locale
   end
 
   pipeline :api do
@@ -24,13 +25,16 @@ defmodule OrdoWeb.Router do
 
     # Public one-click demo login (no password): logs in the seeded demo user.
     get "/demo", UserSessionController, :enter_demo
+
+    # Language switch (persists choice in session, redirects back).
+    get "/locale/:locale", LocaleController, :update
   end
 
   scope "/", OrdoWeb do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :tenant_app,
-      on_mount: [{OrdoWeb.UserAuth, :require_authenticated}] do
+      on_mount: [OrdoWeb.Locale, {OrdoWeb.UserAuth, :require_authenticated}] do
       live "/inbox", InboxLive
       live "/inbox/:id", InboxLive
       live "/settings", TenantSettingsLive
@@ -71,7 +75,7 @@ defmodule OrdoWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :require_authenticated_user,
-      on_mount: [{OrdoWeb.UserAuth, :require_authenticated}] do
+      on_mount: [OrdoWeb.Locale, {OrdoWeb.UserAuth, :require_authenticated}] do
       live "/users/settings", UserLive.Settings, :edit
       live "/users/settings/confirm-email/:token", UserLive.Settings, :confirm_email
     end
@@ -83,7 +87,7 @@ defmodule OrdoWeb.Router do
     pipe_through [:browser]
 
     live_session :current_user,
-      on_mount: [{OrdoWeb.UserAuth, :mount_current_scope}] do
+      on_mount: [OrdoWeb.Locale, {OrdoWeb.UserAuth, :mount_current_scope}] do
       live "/users/log-in", UserLive.Login, :new
       live "/users/log-in/:token", UserLive.Confirmation, :new
     end

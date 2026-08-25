@@ -8,9 +8,9 @@ defmodule OrdoWeb.UserLive.LoginTest do
     test "renders login page", %{conn: conn} do
       {:ok, _lv, html} = live(conn, ~p"/users/log-in")
 
-      assert html =~ "Log in"
-      assert html =~ "magic login link"
-      assert html =~ "Log in with email"
+      assert html =~ "Zaloguj się"
+      assert html =~ "link do logowania"
+      assert html =~ "Zaloguj przez e-mail"
     end
   end
 
@@ -26,7 +26,7 @@ defmodule OrdoWeb.UserLive.LoginTest do
         |> render_submit()
         |> follow_redirect(conn, ~p"/users/log-in")
 
-      assert html =~ "If your email is in our system"
+      assert html =~ "Jeśli Twój adres jest w naszym systemie"
 
       assert Ordo.Repo.get_by!(Ordo.Accounts.UserToken, user_id: user.id).context ==
                "login"
@@ -41,7 +41,7 @@ defmodule OrdoWeb.UserLive.LoginTest do
         |> render_submit()
         |> follow_redirect(conn, ~p"/users/log-in")
 
-      assert html =~ "If your email is in our system"
+      assert html =~ "Jeśli Twój adres jest w naszym systemie"
     end
   end
 
@@ -70,7 +70,7 @@ defmodule OrdoWeb.UserLive.LoginTest do
       render_submit(form, %{user: %{remember_me: true}})
 
       conn = follow_trigger_action(form, conn)
-      assert Phoenix.Flash.get(conn.assigns.flash, :error) == "Invalid email or password"
+      assert Phoenix.Flash.get(conn.assigns.flash, :error) == "Nieprawidłowy e-mail lub hasło"
       assert redirected_to(conn) == ~p"/users/log-in"
     end
   end
@@ -84,9 +84,9 @@ defmodule OrdoWeb.UserLive.LoginTest do
     test "shows login page with email filled in", %{conn: conn, user: user} do
       {:ok, _lv, html} = live(conn, ~p"/users/log-in")
 
-      assert html =~ "You need to reauthenticate"
+      assert html =~ "Zaloguj się ponownie"
       refute html =~ "Register"
-      assert html =~ "Log in with email"
+      assert html =~ "Zaloguj przez e-mail"
 
       assert html =~
                ~s(<input type="email" name="user[email]" id="login_form_magic_email" value="#{user.email}")

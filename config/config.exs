@@ -67,6 +67,9 @@ config :ordo,
   ecto_repos: [Ordo.Repo],
   generators: [timestamp_type: :utc_datetime]
 
+# Polish is the default language (UI copy, emails, and validation errors).
+config :gettext, :default_locale, "pl"
+
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 

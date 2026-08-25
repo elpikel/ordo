@@ -90,27 +90,32 @@ defmodule OrdoWeb.CoreComponents do
       <.button navigate={~p"/"}>Home</.button>
   """
   attr :rest, :global, include: ~w(href navigate patch method download name value disabled)
-  attr :class, :any
-  attr :variant, :string, values: ~w(primary)
+  attr :class, :any, default: nil
+  attr :variant, :string, values: [nil | ~w(primary)], default: nil
   slot :inner_block, required: true
 
+  @button_base "inline-flex items-center justify-center gap-1.5 font-mono text-sm px-4 py-2 rounded-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label disabled:opacity-50 disabled:pointer-events-none"
+
   def button(%{rest: rest} = assigns) do
-    variants = %{"primary" => "btn-primary", nil => "btn-primary btn-soft"}
+    variants = %{
+      "primary" => "bg-ink text-white hover:bg-ink-soft",
+      nil => "bg-paper-card text-ink border border-ink hover:bg-ink hover:text-white"
+    }
 
     assigns =
-      assign_new(assigns, :class, fn ->
-        ["btn", Map.fetch!(variants, assigns[:variant])]
-      end)
+      assigns
+      |> assign(:variant_class, Map.fetch!(variants, assigns[:variant]))
+      |> assign(:base, @button_base)
 
     if rest[:href] || rest[:navigate] || rest[:patch] do
       ~H"""
-      <.link class={@class} {@rest}>
+      <.link class={[@base, @variant_class, @class]} {@rest}>
         {render_slot(@inner_block)}
       </.link>
       """
     else
       ~H"""
-      <button class={@class} {@rest}>
+      <button class={[@base, @variant_class, @class]} {@rest}>
         {render_slot(@inner_block)}
       </button>
       """
@@ -253,15 +258,15 @@ defmodule OrdoWeb.CoreComponents do
 
   def input(%{type: "textarea"} = assigns) do
     ~H"""
-    <div class="fieldset mb-2">
-      <label>
-        <span :if={@label} class="label mb-1">{@label}</span>
+    <div class="mb-4">
+      <label class="block">
+        <span :if={@label} class="block text-sm text-ink-soft mb-1">{@label}</span>
         <textarea
           id={@id}
           name={@name}
           class={[
-            @class || "w-full textarea",
-            @errors != [] && (@error_class || "textarea-error")
+            @class || input_base(),
+            @errors != [] && (@error_class || "border-red-400")
           ]}
           {@rest}
         >{Phoenix.HTML.Form.normalize_value("textarea", @value)}</textarea>
@@ -274,17 +279,17 @@ defmodule OrdoWeb.CoreComponents do
   # All other inputs text, datetime-local, url, password, etc. are handled here...
   def input(assigns) do
     ~H"""
-    <div class="fieldset mb-2">
-      <label>
-        <span :if={@label} class="label mb-1">{@label}</span>
+    <div class="mb-4">
+      <label class="block">
+        <span :if={@label} class="block text-sm text-ink-soft mb-1">{@label}</span>
         <input
           type={@type}
           name={@name}
           id={@id}
           value={Phoenix.HTML.Form.normalize_value(@type, @value)}
           class={[
-            @class || "w-full input",
-            @errors != [] && (@error_class || "input-error")
+            @class || input_base(),
+            @errors != [] && (@error_class || "border-red-400")
           ]}
           {@rest}
         />
@@ -294,11 +299,15 @@ defmodule OrdoWeb.CoreComponents do
     """
   end
 
+  defp input_base,
+    do:
+      "w-full border border-slate-300 bg-paper-card px-3 py-2 font-mono text-sm text-ink placeholder:text-ink-mute focus:outline-none focus:ring-2 focus:ring-label read-only:bg-paper read-only:text-ink-mute"
+
   # Helper used by inputs to generate form errors
   defp error(assigns) do
     ~H"""
-    <p class="mt-1.5 flex gap-2 items-center text-sm text-error">
-      <.icon name="hero-exclamation-circle" class="size-5" />
+    <p class="mt-1.5 flex gap-1.5 items-center text-sm text-red-700">
+      <.icon name="hero-exclamation-circle" class="size-4" />
       {render_slot(@inner_block)}
     </p>
     """
@@ -313,12 +322,12 @@ defmodule OrdoWeb.CoreComponents do
 
   def header(assigns) do
     ~H"""
-    <header class={[@actions != [] && "flex items-center justify-between gap-6", "pb-4"]}>
+    <header class={[@actions != [] && "flex items-center justify-between gap-6", "pb-2"]}>
       <div>
-        <h1 class="text-lg font-semibold leading-8">
+        <h1 class="font-display font-bold text-2xl tracking-tight text-ink">
           {render_slot(@inner_block)}
         </h1>
-        <p :if={@subtitle != []} class="text-sm text-base-content/70">
+        <p :if={@subtitle != []} class="text-sm text-ink-soft mt-1">
           {render_slot(@subtitle)}
         </p>
       </div>

@@ -1,0 +1,1101 @@
+## "msgid"s in this file come from POT (.pot) files.
+###
+### Do not add, change, or remove "msgid"s manually here as
+### they're tied to the ones in the corresponding POT file
+### (with the same domain).
+###
+### Use "mix gettext.extract --merge" or "mix gettext.merge"
+### to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: pl\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10||n%100>=20) ? 1 : 2);\n"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:196
+#, elixir-autogen, elixir-format
+msgid "01 / READ"
+msgstr "01 / CZYTA"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:202
+#, elixir-autogen, elixir-format
+msgid "02 / ACT"
+msgstr "02 / DZIAŁA"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:208
+#, elixir-autogen, elixir-format
+msgid "03 / RESOLVE"
+msgstr "03 / ROZWIĄZUJE"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:128
+#, elixir-autogen, elixir-format
+msgid "3 pilot slots · free during pilot"
+msgstr "3 miejsca w pilotażu · bezpłatnie w czasie pilotażu"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:225
+#, elixir-autogen, elixir-format
+msgid ": Ordo drafts, you approve. When its drafts stop needing edits, you switch that category to"
+msgstr ": Ordo pisze wersję roboczą, Ty ją zatwierdzasz. Gdy jego wersje przestają wymagać poprawek, przełączasz tę kategorię na"
+
+#: lib/ordo_web/live/user_live/settings.ex:142
+#, elixir-autogen, elixir-format
+msgid "A link to confirm your email change has been sent to the new address."
+msgstr "Link potwierdzający zmianę adresu e-mail został wysłany na nowy adres."
+
+#: lib/ordo_web/live/tenant_settings_live.ex:234
+#, elixir-autogen, elixir-format
+msgid "A new token is saved only when a new value is provided."
+msgstr "Nowy token zapisywany jest tylko przy podaniu nowej wartości."
+
+#: lib/ordo_web/live/tenant_settings_live.ex:127
+#, elixir-autogen, elixir-format
+msgid "ACTIVE"
+msgstr "AKTYWNA"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:233
+#: lib/ordo_web/controllers/page_html/home.html.heex:237
+#, elixir-autogen, elixir-format
+msgid "AUTOPILOT"
+msgstr "AUTOPILOT"
+
+#: lib/ordo_web/live/user_live/settings.ex:27
+#, elixir-autogen, elixir-format
+msgid "Account Settings"
+msgstr "Ustawienia konta"
+
+#: lib/ordo_web/components/core_components.ex:376
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "Akcje"
+
+#: lib/ordo/accounts/user_notifier.ex:105
+#, elixir-autogen, elixir-format
+msgid "Activate account"
+msgstr "Aktywuj konto"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:285
+#: lib/ordo_web/live/tenant_settings_live.ex:335
+#, elixir-autogen, elixir-format
+msgid "Add mailbox"
+msgstr "Dodaj skrzynkę"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:243
+#, elixir-autogen, elixir-format
+msgid "Addresses that Ordo monitors. Mail is fetched from the INBOX folder every minute."
+msgstr "Adresy, które Ordo monitoruje. Poczta pobierana jest z folderu INBOX co minutę."
+
+#: lib/ordo_web/live/inbox_live.ex:131
+#: lib/ordo_web/live/inbox_live.ex:169
+#, elixir-autogen, elixir-format
+msgid "All mailboxes"
+msgstr "Wszystkie skrzynki"
+
+#: lib/ordo_web/live/inbox_live.ex:373
+#, elixir-autogen, elixir-format
+msgid "Approve and send"
+msgstr "Zatwierdź i wyślij"
+
+#: lib/ordo_web/components/layouts.ex:167
+#: lib/ordo_web/components/layouts.ex:179
+#, elixir-autogen, elixir-format
+msgid "Attempting to reconnect"
+msgstr "Próba ponownego połączenia"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:226
+#, elixir-autogen, elixir-format
+msgid "Autopilot"
+msgstr "Autopilot"
+
+#: lib/ordo_web/live/user_live/settings.ex:21
+#, elixir-autogen, elixir-format
+msgid "Back to inbox"
+msgstr "Wróć do skrzynki"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "Back to mailbox"
+msgstr "Wróć do skrzynki"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "BaseLinker connection inactive"
+msgstr "połączenie z BaseLinkerem nieaktywne"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:48
+#, elixir-autogen, elixir-format
+msgid "BaseLinker token saved."
+msgstr "Token BaseLinker zapisany."
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:308
+#, elixir-autogen, elixir-format
+msgid "Built in Gdańsk, EU"
+msgstr "Stworzone w Gdańsku, UE"
+
+#: lib/ordo_web/live/inbox_live.ex:478
+#, elixir-autogen, elixir-format
+msgid "COMPLAINT · HUMAN"
+msgstr "REKLAMACJA · CZŁOWIEK"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:222
+#, elixir-autogen, elixir-format
+msgid "CONNECTED"
+msgstr "POŁĄCZONO"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:241
+#, elixir-autogen, elixir-format
+msgid "COPILOT"
+msgstr "COPILOT"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:207
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:343
+#, elixir-autogen, elixir-format
+msgid "Cancel editing"
+msgstr "Anuluj edycję"
+
+#: lib/ordo_web/live/inbox_live.ex:458
+#, elixir-autogen, elixir-format
+msgid "Cancellation"
+msgstr "Anulacja"
+
+#: lib/ordo_web/live/user_live/settings.ex:42
+#, elixir-autogen, elixir-format
+msgid "Change Email"
+msgstr "Zmień e-mail"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:230
+#, elixir-autogen, elixir-format
+msgid "Change token"
+msgstr "Zmień token"
+
+#: lib/ordo_web/live/user_live/settings.ex:41
+#, elixir-autogen, elixir-format
+msgid "Changing..."
+msgstr "Zmieniam..."
+
+#: lib/ordo_web/live/tenant_settings_live.ex:410
+#, elixir-autogen, elixir-format
+msgid "Clear"
+msgstr "Wyczyść"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:400
+#, elixir-autogen, elixir-format
+msgid "Clear all tickets"
+msgstr "Wyczyść wszystkie tickety"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:407
+#, elixir-autogen, elixir-format
+msgid "Clear all tickets?"
+msgstr "Wyczyścić wszystkie tickety?"
+
+#: lib/ordo/accounts/user_notifier.ex:73
+#, elixir-autogen, elixir-format
+msgid "Click the button below to log in to your Ordo account."
+msgstr "Kliknij przycisk poniżej, aby zalogować się na swoje konto Ordo."
+
+#: lib/ordo_web/live/inbox_live.ex:423
+#, elixir-autogen, elixir-format
+msgid "Close"
+msgstr "Zamknij"
+
+#: lib/ordo_web/live/inbox_live.ex:459
+#, elixir-autogen, elixir-format
+msgid "Complaint"
+msgstr "Reklamacja"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:244
+#, elixir-autogen, elixir-format
+msgid "Complaints"
+msgstr "Reklamacje"
+
+#: lib/ordo/accounts/user_notifier.ex:128
+#, elixir-autogen, elixir-format
+msgid "Confirm account"
+msgstr "Potwierdź konto"
+
+#: lib/ordo_web/live/user_live/confirmation.ex:36
+#, elixir-autogen, elixir-format
+msgid "Confirm and log in only this time"
+msgstr "Potwierdź i zaloguj tylko ten raz"
+
+#: lib/ordo_web/live/user_live/confirmation.ex:33
+#, elixir-autogen, elixir-format
+msgid "Confirm and stay logged in"
+msgstr "Potwierdź i pozostań zalogowany"
+
+#: lib/ordo/accounts/user_notifier.ex:44
+#, elixir-autogen, elixir-format
+msgid "Confirm email change"
+msgstr "Potwierdź zmianę e-maila"
+
+#: lib/ordo_web/live/user_live/settings.ex:75
+#, elixir-autogen, elixir-format
+msgid "Confirm new password"
+msgstr "Powtórz nowe hasło"
+
+#: lib/ordo/accounts/user_notifier.ex:42
+#, elixir-autogen, elixir-format
+msgid "Confirm the change to your Ordo account email by clicking the button below."
+msgstr "Potwierdź zmianę adresu e-mail konta Ordo, klikając przycisk poniżej."
+
+#: lib/ordo/accounts/user_notifier.ex:125
+#, elixir-autogen, elixir-format
+msgid "Confirm your Ordo account"
+msgstr "Potwierdź konto Ordo"
+
+#: lib/ordo/accounts/user_notifier.ex:126
+#, elixir-autogen, elixir-format
+msgid "Confirm your Ordo account by clicking the button below."
+msgstr "Potwierdź swoje konto Ordo, klikając przycisk poniżej."
+
+#: lib/ordo/accounts/user_notifier.ex:41
+#, elixir-autogen, elixir-format
+msgid "Confirm your new email"
+msgstr "Potwierdź nowy adres e-mail"
+
+#: lib/ordo/accounts/user_notifier.ex:116
+#, elixir-autogen, elixir-format
+msgid "Confirmation instructions"
+msgstr "Potwierdzenie konta"
+
+#: lib/ordo_web/live/user_live/confirmation.ex:29
+#: lib/ordo_web/live/user_live/confirmation.ex:35
+#, elixir-autogen, elixir-format
+msgid "Confirming..."
+msgstr "Potwierdzam..."
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:225
+#, elixir-autogen, elixir-format
+msgid "Copilot"
+msgstr "Copilot"
+
+#: lib/ordo_web/live/inbox_live.ex:301
+#, elixir-autogen, elixir-format
+msgid "Customer"
+msgstr "Klient"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:355
+#, elixir-autogen, elixir-format
+msgid "DEMO DATA"
+msgstr "DANE DEMO"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:128
+#, elixir-autogen, elixir-format
+msgid "DISABLED"
+msgstr "WYŁĄCZONA"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:271
+#, elixir-autogen, elixir-format
+msgid "Delete"
+msgstr "Usuń"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:268
+#, elixir-autogen, elixir-format
+msgid "Delete mailbox %{email}?"
+msgstr "Usunąć skrzynkę %{email}?"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:402
+#, elixir-autogen, elixir-format
+msgid "Deletes demo tickets. This operation cannot be undone."
+msgstr "Usuwa tickety demo. Tej operacji nie można cofnąć."
+
+#: lib/ordo_web/live/tenant_settings_live.ex:378
+#, elixir-autogen, elixir-format
+msgid "Drop in a single email as if from a customer."
+msgstr "Wrzuć pojedynczy e-mail jak od klienta."
+
+#: lib/ordo_web/live/tenant_settings_live.ex:241
+#, elixir-autogen, elixir-format
+msgid "EMAIL MAILBOXES"
+msgstr "SKRZYNKI E-MAIL"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:263
+#, elixir-autogen, elixir-format
+msgid "Edit"
+msgstr "Edytuj"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:285
+#, elixir-autogen, elixir-format
+msgid "Edit mailbox: %{email}"
+msgstr "Edytuj skrzynkę: %{email}"
+
+#: lib/ordo_web/live/user_live/login.ex:49
+#: lib/ordo_web/live/user_live/login.ex:78
+#: lib/ordo_web/live/user_live/settings.ex:36
+#, elixir-autogen, elixir-format
+msgid "Email"
+msgstr "E-mail"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:289
+#, elixir-autogen, elixir-format
+msgid "Email address"
+msgstr "Adres e-mail"
+
+#: lib/ordo_web/live/user_live/settings.ex:95
+#, elixir-autogen, elixir-format
+msgid "Email change link is invalid or it has expired."
+msgstr "Link do zmiany adresu e-mail jest nieprawidłowy lub wygasł."
+
+#: lib/ordo_web/live/user_live/settings.ex:92
+#, elixir-autogen, elixir-format
+msgid "Email changed successfully."
+msgstr "Adres e-mail został zmieniony."
+
+#: lib/ordo_web/live/tenant_settings_live.ex:106
+#, elixir-autogen, elixir-format
+msgid "Email generated — open the mailbox."
+msgstr "Wygenerowano e-mail — otwórz skrzynkę."
+
+#: lib/ordo_web/live/inbox_live.ex:235
+#, elixir-autogen, elixir-format
+msgid "Empty. Import a mailbox in Settings (⚙)."
+msgstr "Pusto. Zaimportuj skrzynkę w Ustawieniach (⚙)."
+
+#: lib/ordo_web/live/tenant_settings_live.ex:44
+#, elixir-autogen, elixir-format
+msgid "Enter a token."
+msgstr "Podaj token."
+
+#: lib/ordo_web/live/user_live/login.ex:19
+#, elixir-autogen, elixir-format
+msgid "Enter your email and we'll send you a magic login link."
+msgstr "Podaj adres e-mail — wyślemy Ci link do logowania."
+
+#: lib/ordo_web/live/tenant_settings_live.ex:67
+#, elixir-autogen, elixir-format
+msgid "Error: %{errors}"
+msgstr "Błąd: %{errors}"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:225
+#, elixir-autogen, elixir-format
+msgid "Every ticket category starts in"
+msgstr "Każda kategoria zgłoszeń zaczyna w trybie"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:133
+#, elixir-autogen, elixir-format
+msgid "Example: Ordo resolving a customer email automatically"
+msgstr "Przykład: Ordo automatycznie rozwiązuje mail od klienta"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:103
+#, elixir-autogen, elixir-format
+msgid "For stores on BaseLinker · Shoper · IdoSell"
+msgstr "Dla sklepów na BaseLinker · Shoper · IdoSell"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:93
+#, elixir-autogen, elixir-format
+msgid "Get early access"
+msgstr "Uzyskaj wczesny dostęp"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:246
+#, elixir-autogen, elixir-format
+msgid "HUMAN ONLY"
+msgstr "TYLKO CZŁOWIEK"
+
+#: lib/ordo/accounts/user_notifier.ex:139
+#: lib/ordo/accounts/user_notifier.ex:168
+#, elixir-autogen, elixir-format
+msgid "Hi %{email},"
+msgstr "Cześć %{email},"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:166
+#, elixir-autogen, elixir-format
+msgid "Hi Anna! Your parcel left us on 12 Aug and is out for delivery today. Track it here: inpost.pl/620441882. It should reach your locker by 6 pm."
+msgstr "Cześć Anna! Twoja paczka wyszła od nas 12 sierpnia i dziś jest w doręczeniu. Śledź ją tutaj: inpost.pl/620441882. Powinna dotrzeć do paczkomatu do godziny 18:00."
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:149
+#, elixir-autogen, elixir-format
+msgid "Hi, I ordered a week ago and still nothing. Where is my package?"
+msgstr "Cześć, zamówiłam tydzień temu i wciąż nic. Gdzie jest moja paczka?"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:120
+#, elixir-autogen, elixir-format
+msgid "Hire Ordo"
+msgstr "Zatrudnij Ordo"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:299
+#, elixir-autogen, elixir-format
+msgid "IMAP server"
+msgstr "Serwer IMAP"
+
+#: lib/ordo/accounts/user_notifier.ex:121
+#, elixir-autogen, elixir-format
+msgid "If you didn't create an account with us, please ignore this."
+msgstr "Jeśli nie zakładałeś u nas konta, zignoruj tę wiadomość."
+
+#: lib/ordo/accounts/user_notifier.ex:129
+#, elixir-autogen, elixir-format
+msgid "If you didn't create an account with us, you can safely ignore this email."
+msgstr "Jeśli nie zakładałeś u nas konta, możesz spokojnie zignorować tę wiadomość."
+
+#: lib/ordo/accounts/user_notifier.ex:37
+#, elixir-autogen, elixir-format
+msgid "If you didn't request this change, please ignore this."
+msgstr "Jeśli to nie Ty prosiłeś o tę zmianę, zignoruj tę wiadomość."
+
+#: lib/ordo/accounts/user_notifier.ex:45
+#, elixir-autogen, elixir-format
+msgid "If you didn't request this change, you can safely ignore this email."
+msgstr "Jeśli to nie Ty prosiłeś o tę zmianę, możesz spokojnie zignorować tę wiadomość."
+
+#: lib/ordo/accounts/user_notifier.ex:68
+#, elixir-autogen, elixir-format
+msgid "If you didn't request this email, please ignore this."
+msgstr "Jeśli to nie Ty prosiłeś o tę wiadomość, zignoruj ją."
+
+#: lib/ordo/accounts/user_notifier.ex:76
+#, elixir-autogen, elixir-format
+msgid "If you didn't request this email, you can safely ignore it."
+msgstr "Jeśli to nie Ty prosiłeś o tę wiadomość, możesz ją spokojnie zignorować."
+
+#: lib/ordo_web/live/user_live/login.ex:127
+#, elixir-autogen, elixir-format
+msgid "If your email is in our system, you will receive instructions for logging in shortly."
+msgstr "Jeśli Twój adres jest w naszym systemie, wkrótce otrzymasz instrukcje logowania."
+
+#: lib/ordo_web/live/tenant_settings_live.ex:371
+#, elixir-autogen, elixir-format
+msgid "Import"
+msgstr "Importuj"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:362
+#, elixir-autogen, elixir-format
+msgid "Import mailbox"
+msgstr "Importuj skrzynkę"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:96
+#, elixir-autogen, elixir-format
+msgid "Importing mailbox — open the mailbox to see it."
+msgstr "Importuję skrzynkę — otwórz skrzynkę, aby zobaczyć."
+
+#: lib/ordo_web/controllers/user_session_controller.ex:56
+#, elixir-autogen, elixir-format
+msgid "Invalid email or password"
+msgstr "Nieprawidłowy e-mail lub hasło"
+
+#: lib/ordo_web/live/inbox_live.ex:456
+#, elixir-autogen, elixir-format
+msgid "Invoice"
+msgstr "Faktura"
+
+#: lib/ordo_web/live/inbox_live.ex:429
+#, elixir-autogen, elixir-format
+msgid "It doesn't make anything up beyond them."
+msgstr "Nie zmyśla poza nimi."
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:222
+#, elixir-autogen, elixir-format
+msgid "It doesn't promote itself."
+msgstr "Ono nie awansuje się samo."
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:204
+#, elixir-autogen, elixir-format
+msgid "It looks the order up in BaseLinker and does the work: checks tracking, registers the return, triggers the refund. Real actions, not canned answers."
+msgstr "Sprawdza zamówienie w BaseLinker i wykonuje pracę: sprawdza śledzenie, rejestruje zwrot, uruchamia refundację. Realne działania, a nie gotowe formułki."
+
+#: lib/ordo_web/live/user_live/confirmation.ex:62
+#, elixir-autogen, elixir-format
+msgid "Keep me logged in on this device"
+msgstr "Zapamiętaj mnie na tym urządzeniu"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "LOGIN ERROR"
+msgstr "BŁĄD LOGOWANIA"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:87
+#, elixir-autogen, elixir-format
+msgid "Live demo →"
+msgstr "Demo na żywo →"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:364
+#, elixir-autogen, elixir-format
+msgid "Load a sample set of tickets into the mailbox."
+msgstr "Wczytaj przykładowy zestaw ticketów do skrzynki."
+
+#: lib/ordo/accounts/user_notifier.ex:75
+#: lib/ordo_web/live/user_live/confirmation.ex:52
+#: lib/ordo_web/live/user_live/login.ex:14
+#, elixir-autogen, elixir-format
+msgid "Log in"
+msgstr "Zaloguj się"
+
+#: lib/ordo_web/live/user_live/login.ex:91
+#, elixir-autogen, elixir-format
+msgid "Log in and stay logged in"
+msgstr "Zaloguj i pozostań zalogowany"
+
+#: lib/ordo/accounts/user_notifier.ex:63
+#, elixir-autogen, elixir-format
+msgid "Log in instructions"
+msgstr "Logowanie do Ordo"
+
+#: lib/ordo_web/live/user_live/login.ex:94
+#, elixir-autogen, elixir-format
+msgid "Log in only this time"
+msgstr "Zaloguj tylko ten raz"
+
+#: lib/ordo/accounts/user_notifier.ex:72
+#, elixir-autogen, elixir-format
+msgid "Log in to Ordo"
+msgstr "Zaloguj się do Ordo"
+
+#: lib/ordo_web/live/user_live/login.ex:56
+#, elixir-autogen, elixir-format
+msgid "Log in with email"
+msgstr "Zaloguj przez e-mail"
+
+#: lib/ordo_web/live/user_live/confirmation.ex:65
+#, elixir-autogen, elixir-format
+msgid "Log me in only this time"
+msgstr "Zaloguj tylko ten raz"
+
+#: lib/ordo_web/controllers/user_session_controller.ex:77
+#, elixir-autogen, elixir-format
+msgid "Logged out successfully."
+msgstr "Wylogowano."
+
+#: lib/ordo_web/live/user_live/confirmation.ex:51
+#: lib/ordo_web/live/user_live/confirmation.ex:58
+#: lib/ordo_web/live/user_live/confirmation.ex:64
+#, elixir-autogen, elixir-format
+msgid "Logging in..."
+msgstr "Loguję..."
+
+#: lib/ordo_web/live/inbox_live.ex:343
+#, elixir-autogen, elixir-format
+msgid "Looking up the order…"
+msgstr "Szukam zamówienia…"
+
+#: lib/ordo_web/live/inbox_live.ex:163
+#, elixir-autogen, elixir-format
+msgid "MAILBOXES"
+msgstr "SKRZYNKI"
+
+#: lib/ordo_web/live/user_live/confirmation.ex:90
+#, elixir-autogen, elixir-format
+msgid "Magic link is invalid or it has expired."
+msgstr "Link magiczny jest nieprawidłowy lub wygasł."
+
+#: lib/ordo_web/live/tenant_settings_live.ex:91
+#, elixir-autogen, elixir-format
+msgid "Mailbox deleted."
+msgstr "Skrzynka usunięta."
+
+#: lib/ordo_web/live/tenant_settings_live.ex:66
+#, elixir-autogen, elixir-format
+msgid "Mailbox saved."
+msgstr "Zapisano skrzynkę."
+
+#: lib/ordo_web/live/tenant_settings_live.ex:357
+#, elixir-autogen, elixir-format
+msgid "Manage the contents of the demo environment."
+msgstr "Zarządzanie zawartością środowiska demonstracyjnego."
+
+#: lib/ordo_web/live/user_live/settings.ex:28
+#, elixir-autogen, elixir-format
+msgid "Manage your account email address and password settings"
+msgstr "Zarządzaj adresem e-mail i hasłem swojego konta."
+
+#: lib/ordo_web/live/tenant_settings_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "NO TOKEN"
+msgstr "BRAK TOKENU"
+
+#: lib/ordo_web/live/user_live/settings.ex:67
+#, elixir-autogen, elixir-format
+msgid "New password"
+msgstr "Nowe hasło"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:280
+#, elixir-autogen, elixir-format
+msgid "No mailboxes. Add the first one below."
+msgstr "Brak skrzynek. Dodaj pierwszą poniżej."
+
+#: lib/ordo_web/live/inbox_live.ex:344
+#, elixir-autogen, elixir-format
+msgid "No order found for this address."
+msgstr "Nie znaleziono zamówienia dla tego adresu."
+
+#: lib/ordo/accounts/user_notifier.ex:94
+#: lib/ordo/accounts/user_notifier.ex:106
+#, elixir-autogen, elixir-format
+msgid "Once you're in, set a password on the settings page so you can log in again later. If you didn't expect this invitation, please ignore this email."
+msgstr "Po zalogowaniu ustaw hasło w ustawieniach konta, aby móc logować się później. Jeśli nie spodziewałeś się tego zaproszenia, zignoruj tę wiadomość."
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:192
+#, elixir-autogen, elixir-format
+msgid "One email, three moves"
+msgstr "Jeden mail, trzy ruchy"
+
+#: lib/ordo/accounts/user_notifier.ex:171
+#, elixir-autogen, elixir-format
+msgid "Or paste this link into your browser:"
+msgstr "Lub wklej ten link do przeglądarki:"
+
+#: lib/ordo_web/live/inbox_live.ex:457
+#, elixir-autogen, elixir-format
+msgid "Order change"
+msgstr "Zmiana zamówienia"
+
+#: lib/ordo_web/live/inbox_live.ex:429
+#, elixir-autogen, elixir-format
+msgid "Ordo bases its replies on these facts."
+msgstr "Na tych faktach Ordo opiera odpowiedzi."
+
+#: lib/ordo/accounts/user_notifier.ex:101
+#, elixir-autogen, elixir-format
+msgid "Ordo handles your shop's support email — reads it, pulls the order from BaseLinker, and drafts the reply. Click below to activate your account and open your inbox."
+msgstr "Ordo obsługuje pocztę e-mail Twojego sklepu — czyta wiadomości, pobiera zamówienie z BaseLinkera i przygotowuje odpowiedź. Kliknij poniżej, aby aktywować konto i otworzyć skrzynkę."
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:198
+#, elixir-autogen, elixir-format
+msgid "Ordo plugs into your support inbox and understands what the customer actually needs — in Polish, English, or 20+ other languages."
+msgstr "Ordo podłącza się do Twojej skrzynki obsługi i rozumie, czego naprawdę potrzebuje klient — po polsku, angielsku i w ponad 20 innych językach."
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:113
+#, elixir-autogen, elixir-format
+msgid "Ordo reads every “where is my order?”, looks the order up in BaseLinker, takes the action — status, return, refund — and replies to your customer. You watch it work before you let it work alone."
+msgstr "Ordo czyta każde „gdzie jest moje zamówienie?”, sprawdza je w BaseLinker, wykonuje działanie — status, zwrot, refundację — i odpowiada Twojemu klientowi. Najpierw patrzysz, jak pracuje, zanim pozwolisz mu działać samodzielnie."
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Ordo reads your support inbox, takes real actions in BaseLinker — order status, returns, refunds — and replies to customers. Built for European e-commerce."
+msgstr "Ordo czyta Twoją skrzynkę obsługi klienta, wykonuje realne działania w BaseLinker — status zamówienia, zwroty, refundacje — i odpowiada klientom. Stworzone dla europejskiego e-commerce."
+
+#: lib/ordo/accounts/user_notifier.ex:179
+#, elixir-autogen, elixir-format
+msgid "Ordo — AI customer support for e-commerce"
+msgstr "Ordo — obsługa klienta AI dla e-commerce"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:6
+#: lib/ordo_web/controllers/page_html/home.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Ordo — AI that resolves your store's support email"
+msgstr "Ordo — AI, która sama załatwia maile do obsługi Twojego sklepu"
+
+#: lib/ordo_web/live/inbox_live.ex:460
+#, elixir-autogen, elixir-format
+msgid "Other"
+msgstr "Inne"
+
+#: lib/ordo_web/live/inbox_live.ex:453
+#, elixir-autogen, elixir-format
+msgid "Package status"
+msgstr "Status paczki"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:321
+#: lib/ordo_web/live/user_live/login.ex:86
+#, elixir-autogen, elixir-format
+msgid "Password"
+msgstr "Hasło"
+
+#: lib/ordo_web/controllers/user_session_controller.ex:72
+#, elixir-autogen, elixir-format
+msgid "Password updated successfully!"
+msgstr "Hasło zostało zaktualizowane."
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:274
+#, elixir-autogen, elixir-format
+msgid "Pilot program"
+msgstr "Program pilotażowy"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:308
+#, elixir-autogen, elixir-format
+msgid "Port"
+msgstr "Port"
+
+#: lib/ordo_web/live/inbox_live.ex:353
+#, elixir-autogen, elixir-format
+msgid "REPLY"
+msgstr "ODPOWIEDŹ"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:182
+#, elixir-autogen, elixir-format
+msgid "RESOLVED"
+msgstr "ROZWIĄZANE"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Reads every “where is my order?”, acts in BaseLinker, replies to the customer. Copilot first, Autopilot when the numbers say so."
+msgstr "Czyta każde „gdzie jest moje zamówienie?”, działa w BaseLinker, odpowiada klientowi. Najpierw Copilot, a Autopilot wtedy, gdy potwierdzą to liczby."
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:240
+#, elixir-autogen, elixir-format
+msgid "Refunds"
+msgstr "Refundacje"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:291
+#, elixir-autogen, elixir-format
+msgid "Request a slot"
+msgstr "Zarezerwuj miejsce"
+
+#: lib/ordo_web/live/inbox_live.ex:454
+#, elixir-autogen, elixir-format
+msgid "Return"
+msgstr "Zwrot"
+
+#: lib/ordo_web/live/inbox_live.ex:455
+#, elixir-autogen, elixir-format
+msgid "Return status"
+msgstr "Status zwrotu"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:236
+#, elixir-autogen, elixir-format
+msgid "Returns & exchanges"
+msgstr "Zwroty i wymiany"
+
+#: lib/ordo_web/live/inbox_live.ex:476
+#, elixir-autogen, elixir-format
+msgid "SENT · %{count} s"
+msgstr "WYSŁANE · %{count} s"
+
+#: lib/ordo_web/live/inbox_live.ex:415
+#, elixir-autogen, elixir-format
+msgid "SHOP RULES"
+msgstr "ZASADY SKLEPU"
+
+#: lib/ordo_web/live/user_live/settings.ex:80
+#, elixir-autogen, elixir-format
+msgid "Save Password"
+msgstr "Zapisz hasło"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:335
+#, elixir-autogen, elixir-format
+msgid "Save changes"
+msgstr "Zapisz zmiany"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:199
+#, elixir-autogen, elixir-format
+msgid "Save token"
+msgstr "Zapisz token"
+
+#: lib/ordo_web/live/user_live/settings.ex:79
+#, elixir-autogen, elixir-format
+msgid "Saving..."
+msgstr "Zapisuję..."
+
+#: lib/ordo_web/live/tenant_settings_live.ex:376
+#, elixir-autogen, elixir-format
+msgid "Scenarios"
+msgstr "Scenariusze"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:126
+#, elixir-autogen, elixir-format
+msgid "See live demo"
+msgstr "Zobacz demo na żywo"
+
+#: lib/ordo_web/live/inbox_live.ex:285
+#, elixir-autogen, elixir-format
+msgid "Select a ticket from the list."
+msgstr "Wybierz ticket z listy."
+
+#: lib/ordo_web/live/inbox_live.ex:196
+#, elixir-autogen, elixir-format
+msgid "Settings"
+msgstr "Ustawienia"
+
+#: lib/ordo_web/live/inbox_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "Shop rules"
+msgstr "Zasady sklepu"
+
+#: lib/ordo_web/components/layouts.ex:174
+#, elixir-autogen, elixir-format
+msgid "Something went wrong!"
+msgstr "Coś poszło nie tak!"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:106
+#, elixir-autogen, elixir-format
+msgid "Support email that"
+msgstr "Obsługa klienta, która"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:138
+#, elixir-autogen, elixir-format
+msgid "TICKET"
+msgstr "ZGŁOSZENIE"
+
+#: lib/ordo_web/live/inbox_live.ex:228
+#, elixir-autogen, elixir-format
+msgid "TICKETS"
+msgstr "TICKETY"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:172
+#, elixir-autogen, elixir-format
+msgid "The API token connects Ordo with your store's orders, shipments and documents. You can generate it in the BaseLinker panel: My account → API."
+msgstr "Token API łączy Ordo z zamówieniami, przesyłkami i dokumentami sklepu. Wygenerujesz go w panelu BaseLinkera: Moje konto → API."
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:210
+#, elixir-autogen, elixir-format
+msgid "The customer gets a complete answer in under a minute, the ticket closes itself, and your inbox stays quiet."
+msgstr "Klient dostaje pełną odpowiedź w niecałą minutę, zgłoszenie zamyka się samo, a Twoja skrzynka pozostaje spokojna."
+
+#: lib/ordo_web/controllers/user_session_controller.ex:40
+#, elixir-autogen, elixir-format
+msgid "The link is invalid or it has expired."
+msgstr "Link jest nieprawidłowy lub wygasł."
+
+#: lib/ordo_web/live/tenant_settings_live.ex:348
+#, elixir-autogen, elixir-format
+msgid "The password is encrypted in the database. When editing, it is saved only when a new value is provided."
+msgstr "Hasło jest szyfrowane w bazie. Przy edycji zapisywane jest tylko przy podaniu nowej wartości."
+
+#: lib/ordo_web/live/tenant_settings_live.ex:211
+#, elixir-autogen, elixir-format
+msgid "The token is encrypted in the database and is never shown again."
+msgstr "Token jest szyfrowany w bazie i nigdy nie jest wyświetlany ponownie."
+
+#: lib/ordo_web/live/tenant_settings_live.ex:101
+#, elixir-autogen, elixir-format
+msgid "Tickets cleared."
+msgstr "Wyczyszczono tickety."
+
+#: lib/ordo_web/live/user_live/confirmation.ex:74
+#, elixir-autogen, elixir-format
+msgid "Tip: If you prefer passwords, you can enable them in the user settings."
+msgstr "Wskazówka: jeśli wolisz logować się hasłem, ustawisz je w ustawieniach konta."
+
+#: lib/ordo_web/live/user_live/login.ex:33
+#, elixir-autogen, elixir-format
+msgid "To see sent emails, visit"
+msgstr "Aby zobaczyć wysłane wiadomości, otwórz"
+
+#: lib/ordo/accounts/user_notifier.ex:32
+#, elixir-autogen, elixir-format
+msgid "Update email instructions"
+msgstr "Zmiana adresu e-mail"
+
+#: lib/ordo_web/controllers/user_session_controller.ex:21
+#, elixir-autogen, elixir-format
+msgid "User confirmed successfully."
+msgstr "Konto zostało potwierdzone."
+
+#: lib/ordo_web/live/tenant_settings_live.ex:312
+#, elixir-autogen, elixir-format
+msgid "Username"
+msgstr "Użytkownik"
+
+#: lib/ordo_web/components/layouts.ex:162
+#, elixir-autogen, elixir-format
+msgid "We can't find the internet"
+msgstr "Brak połączenia z internetem"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:295
+#, elixir-autogen, elixir-format
+msgid "We reply within one business day. No newsletter, no spam."
+msgstr "Odpowiadamy w ciągu jednego dnia roboczego. Bez newslettera, bez spamu."
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:276
+#, elixir-autogen, elixir-format
+msgid "We're onboarding three stores that get 300+ support emails a month. Free during the pilot, direct line to the founder, and your workflows shape what Ordo becomes. If that's you, leave your email."
+msgstr "Wdrażamy trzy sklepy, które otrzymują ponad 300 maili obsługi miesięcznie. Bezpłatnie w czasie pilotażu, bezpośredni kontakt z założycielem, a Twoje procesy kształtują to, czym stanie się Ordo. Jeśli to o Tobie, zostaw swój adres e-mail."
+
+#: lib/ordo_web/live/user_live/confirmation.ex:13
+#, elixir-autogen, elixir-format
+msgid "Welcome %{email}"
+msgstr "Witaj %{email}"
+
+#: lib/ordo_web/controllers/user_session_controller.ex:25
+#, elixir-autogen, elixir-format
+msgid "Welcome back!"
+msgstr "Witaj ponownie!"
+
+#: lib/ordo_web/controllers/user_session_controller.ex:16
+#, elixir-autogen, elixir-format
+msgid "Welcome to the Ordo demo."
+msgstr "Witaj w wersji demo Ordo."
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:256
+#, elixir-autogen, elixir-format
+msgid "Works with"
+msgstr "Współpracuje z"
+
+#: lib/ordo_web/live/user_live/login.ex:31
+#, elixir-autogen, elixir-format
+msgid "You are running the local mail adapter."
+msgstr "Używasz lokalnego adaptera poczty."
+
+#: lib/ordo/accounts/user_notifier.ex:35
+#, elixir-autogen, elixir-format
+msgid "You can change your email by visiting the URL below:"
+msgstr "Możesz zmienić swój adres e-mail, otwierając poniższy link:"
+
+#: lib/ordo/accounts/user_notifier.ex:119
+#, elixir-autogen, elixir-format
+msgid "You can confirm your account by visiting the URL below:"
+msgstr "Możesz potwierdzić swoje konto, otwierając poniższy link:"
+
+#: lib/ordo/accounts/user_notifier.ex:66
+#, elixir-autogen, elixir-format
+msgid "You can log into your account by visiting the URL below:"
+msgstr "Możesz zalogować się na swoje konto, otwierając poniższy link:"
+
+#: lib/ordo_web/user_auth.ex:225
+#: lib/ordo_web/user_auth.ex:269
+#, elixir-autogen, elixir-format
+msgid "You must log in to access this page."
+msgstr "Musisz się zalogować, aby otworzyć tę stronę."
+
+#: lib/ordo_web/user_auth.ex:240
+#, elixir-autogen, elixir-format
+msgid "You must re-authenticate to access this page."
+msgstr "Zaloguj się ponownie, aby otworzyć tę stronę."
+
+#: lib/ordo_web/live/user_live/login.ex:17
+#, elixir-autogen, elixir-format
+msgid "You need to reauthenticate to perform sensitive actions on your account."
+msgstr "Zaloguj się ponownie, aby wykonać operacje na koncie."
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:222
+#, elixir-autogen, elixir-format
+msgid "You promote it."
+msgstr "Ty go awansujesz."
+
+#: lib/ordo/accounts/user_notifier.ex:89
+#: lib/ordo/accounts/user_notifier.ex:100
+#, elixir-autogen, elixir-format
+msgid "You've been invited to Ordo"
+msgstr "Masz zaproszenie do Ordo"
+
+#: lib/ordo/accounts/user_notifier.ex:92
+#, elixir-autogen, elixir-format
+msgid "You've been invited to Ordo. Click the link below to activate your account and log in:"
+msgstr "Masz zaproszenie do Ordo. Kliknij poniższy link, aby aktywować konto i się zalogować:"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:279
+#, elixir-autogen, elixir-format
+msgid "Your work email"
+msgstr "Twój służbowy adres e-mail"
+
+#: lib/ordo_web/live/inbox_live.ex:179
+#, elixir-autogen, elixir-format
+msgid "active"
+msgstr "aktywna"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:107
+#, elixir-autogen, elixir-format
+msgid "answers"
+msgstr "robi się"
+
+#: lib/ordo_web/components/core_components.ex:75
+#, elixir-autogen, elixir-format
+msgid "close"
+msgstr "zamknij"
+
+#: lib/ordo_web/live/inbox_live.ex:321
+#, elixir-autogen, elixir-format
+msgid "date"
+msgstr "data"
+
+#: lib/ordo_web/live/inbox_live.ex:170
+#: lib/ordo_web/live/inbox_live.ex:230
+#, elixir-autogen, elixir-format
+msgid "draft"
+msgstr "draft"
+
+#: lib/ordo_web/live/inbox_live.ex:383
+#, elixir-autogen, elixir-format
+msgid "edit the text above if needed"
+msgstr "edytuj tekst powyżej, jeśli trzeba"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:316
+#, elixir-autogen, elixir-format
+msgid "full email address"
+msgstr "pełny adres e-mail"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:110
+#, elixir-autogen, elixir-format
+msgid "itself"
+msgstr "sama"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:173
+#, elixir-autogen, elixir-format
+msgid "no human involved"
+msgstr "bez udziału człowieka"
+
+#: lib/ordo_web/live/inbox_live.ex:318
+#, elixir-autogen, elixir-format
+msgid "no."
+msgstr "nr"
+
+#: lib/ordo_web/live/user_live/login.ex:62
+#, elixir-autogen, elixir-format
+msgid "or"
+msgstr "lub"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:140
+#, elixir-autogen, elixir-format
+msgid "order"
+msgstr "zamówienie"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:159
+#, elixir-autogen, elixir-format
+msgid "out for delivery"
+msgstr "w doręczeniu"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "paste API token…"
+msgstr "wklej token API…"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:36
+#: lib/ordo_web/live/tenant_settings_live.ex:145
+#, elixir-autogen, elixir-format
+msgid "settings"
+msgstr "ustawienia"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:158
+#, elixir-autogen, elixir-format
+msgid "shipped 12 Aug"
+msgstr "wysłano 12 sie"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:264
+#, elixir-autogen, elixir-format
+msgid "soon"
+msgstr "wkrótce"
+
+#: lib/ordo_web/live/inbox_live.ex:324
+#, elixir-autogen, elixir-format
+msgid "status"
+msgstr "status"
+
+#: lib/ordo_web/live/inbox_live.ex:380
+#, elixir-autogen, elixir-format
+msgid "take over"
+msgstr "przejmij"
+
+#: lib/ordo_web/live/user_live/login.ex:33
+#, elixir-autogen, elixir-format
+msgid "the mailbox page"
+msgstr "podgląd skrzynki"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:224
+#, elixir-autogen, elixir-format
+msgid "token"
+msgstr "token"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:227
+#, elixir-autogen, elixir-format
+msgid "— one at a time, based on numbers, not promises. Refunds can stay human-approved forever if that's how you sleep better."
+msgstr "— po jednej naraz, w oparciu o liczby, a nie obietnice. Refundacje mogą na zawsze wymagać akceptacji człowieka, jeśli tak śpisz spokojniej."
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:232
+#, elixir-autogen, elixir-format
+msgid "“Where is my order?”"
+msgstr "„Gdzie jest moje zamówienie?”"
+
+#: lib/ordo_web/live/inbox_live.ex:360
+#, elixir-autogen, elixir-format
+msgid "● Ordo is working…"
+msgstr "● Ordo pracuje…"
+
+#: lib/ordo_web/live/inbox_live.ex:274
+#, elixir-autogen, elixir-format
+msgid "● loading…"
+msgstr "● ładowanie…"
+
+#: lib/ordo_web/live/inbox_live.ex:393
+#, elixir-autogen, elixir-format
+msgid "✓ sent · %{count} s"
+msgstr "✓ wysłane · %{count} s"

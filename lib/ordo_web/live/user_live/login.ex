@@ -11,23 +11,26 @@ defmodule OrdoWeb.UserLive.Login do
       <div class="mx-auto max-w-sm space-y-4">
         <div class="text-center">
           <.header>
-            <p>Log in</p>
+            <p>{gettext("Log in")}</p>
             <:subtitle>
               <%= if @current_scope do %>
-                You need to reauthenticate to perform sensitive actions on your account.
+                {gettext("You need to reauthenticate to perform sensitive actions on your account.")}
               <% else %>
-                Enter your email and we'll send you a magic login link.
+                {gettext("Enter your email and we'll send you a magic login link.")}
               <% end %>
             </:subtitle>
           </.header>
         </div>
 
-        <div :if={local_mail_adapter?()} class="alert alert-info">
-          <.icon name="hero-information-circle" class="size-6 shrink-0" />
+        <div
+          :if={local_mail_adapter?()}
+          class="flex gap-2 items-start border border-slate-200 bg-paper-card px-4 py-3 text-sm text-ink-soft"
+        >
+          <.icon name="hero-information-circle" class="size-5 shrink-0 text-label-deep" />
           <div>
-            <p>You are running the local mail adapter.</p>
+            <p>{gettext("You are running the local mail adapter.")}</p>
             <p>
-              To see sent emails, visit <.link href="/dev/mailbox" class="underline">the mailbox page</.link>.
+              {gettext("To see sent emails, visit")} <.link href="/dev/mailbox" class="underline">{gettext("the mailbox page")}</.link>.
             </p>
           </div>
         </div>
@@ -43,18 +46,22 @@ defmodule OrdoWeb.UserLive.Login do
             readonly={!!@current_scope}
             field={f[:email]}
             type="email"
-            label="Email"
+            label={gettext("Email")}
             autocomplete="username"
             spellcheck="false"
             required
             phx-mounted={JS.focus()}
           />
-          <.button class="btn btn-primary w-full">
-            Log in with email <span aria-hidden="true">→</span>
+          <.button variant="primary" class="w-full">
+            {gettext("Log in with email")} <span aria-hidden="true">→</span>
           </.button>
         </.form>
 
-        <div class="divider">or</div>
+        <div class="flex items-center gap-3 py-1">
+          <span class="h-px flex-1 bg-slate-200"></span>
+          <span class="font-mono text-xs text-ink-mute">{gettext("or")}</span>
+          <span class="h-px flex-1 bg-slate-200"></span>
+        </div>
 
         <.form
           :let={f}
@@ -68,7 +75,7 @@ defmodule OrdoWeb.UserLive.Login do
             readonly={!!@current_scope}
             field={f[:email]}
             type="email"
-            label="Email"
+            label={gettext("Email")}
             autocomplete="username"
             spellcheck="false"
             required
@@ -76,15 +83,15 @@ defmodule OrdoWeb.UserLive.Login do
           <.input
             field={@form[:password]}
             type="password"
-            label="Password"
+            label={gettext("Password")}
             autocomplete="current-password"
             spellcheck="false"
           />
-          <.button class="btn btn-primary w-full" name={@form[:remember_me].name} value="true">
-            Log in and stay logged in <span aria-hidden="true">→</span>
+          <.button variant="primary" class="w-full" name={@form[:remember_me].name} value="true">
+            {gettext("Log in and stay logged in")} <span aria-hidden="true">→</span>
           </.button>
-          <.button class="btn btn-primary btn-soft w-full mt-2">
-            Log in only this time
+          <.button class="w-full mt-2">
+            {gettext("Log in only this time")}
           </.button>
         </.form>
       </div>
@@ -117,7 +124,7 @@ defmodule OrdoWeb.UserLive.Login do
     end
 
     info =
-      "If your email is in our system, you will receive instructions for logging in shortly."
+      gettext("If your email is in our system, you will receive instructions for logging in shortly.")
 
     {:noreply,
      socket

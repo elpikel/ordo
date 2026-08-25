@@ -18,7 +18,7 @@ defmodule OrdoWeb.UserLive.ConfirmationTest do
         end)
 
       {:ok, _lv, html} = live(conn, ~p"/users/log-in/#{token}")
-      assert html =~ "Confirm and stay logged in"
+      assert html =~ "Potwierdź i pozostań zalogowany"
     end
 
     test "renders login page for confirmed user", %{conn: conn, confirmed_user: user} do
@@ -29,7 +29,7 @@ defmodule OrdoWeb.UserLive.ConfirmationTest do
 
       {:ok, _lv, html} = live(conn, ~p"/users/log-in/#{token}")
       refute html =~ "Confirm my account"
-      assert html =~ "Keep me logged in on this device"
+      assert html =~ "Zapamiętaj mnie na tym urządzeniu"
     end
 
     test "renders login page for already logged in user", %{conn: conn, confirmed_user: user} do
@@ -42,7 +42,7 @@ defmodule OrdoWeb.UserLive.ConfirmationTest do
 
       {:ok, _lv, html} = live(conn, ~p"/users/log-in/#{token}")
       refute html =~ "Confirm my account"
-      assert html =~ "Log in"
+      assert html =~ "Zaloguj się"
     end
 
     test "confirms the given token once", %{conn: conn, unconfirmed_user: user} do
@@ -59,7 +59,7 @@ defmodule OrdoWeb.UserLive.ConfirmationTest do
       conn = follow_trigger_action(form, conn)
 
       assert Phoenix.Flash.get(conn.assigns.flash, :info) =~
-               "User confirmed successfully"
+               "Konto zostało potwierdzone"
 
       assert Accounts.get_user!(user.id).confirmed_at
       # we are logged in now
@@ -74,7 +74,7 @@ defmodule OrdoWeb.UserLive.ConfirmationTest do
         |> live(~p"/users/log-in/#{token}")
         |> follow_redirect(conn, ~p"/users/log-in")
 
-      assert html =~ "Magic link is invalid or it has expired"
+      assert html =~ "Link magiczny jest nieprawidłowy lub wygasł"
     end
 
     test "logs confirmed user in without changing confirmed_at", %{
@@ -94,7 +94,7 @@ defmodule OrdoWeb.UserLive.ConfirmationTest do
       conn = follow_trigger_action(form, conn)
 
       assert Phoenix.Flash.get(conn.assigns.flash, :info) =~
-               "Welcome back!"
+               "Witaj ponownie!"
 
       assert Accounts.get_user!(user.id).confirmed_at == user.confirmed_at
 
@@ -106,7 +106,7 @@ defmodule OrdoWeb.UserLive.ConfirmationTest do
         |> live(~p"/users/log-in/#{token}")
         |> follow_redirect(conn, ~p"/users/log-in")
 
-      assert html =~ "Magic link is invalid or it has expired"
+      assert html =~ "Link magiczny jest nieprawidłowy lub wygasł"
     end
 
     test "raises error for invalid token", %{conn: conn} do
@@ -115,7 +115,7 @@ defmodule OrdoWeb.UserLive.ConfirmationTest do
         |> live(~p"/users/log-in/invalid-token")
         |> follow_redirect(conn, ~p"/users/log-in")
 
-      assert html =~ "Magic link is invalid or it has expired"
+      assert html =~ "Link magiczny jest nieprawidłowy lub wygasł"
     end
   end
 end

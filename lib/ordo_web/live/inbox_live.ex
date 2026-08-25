@@ -128,7 +128,7 @@ defmodule OrdoWeb.InboxLive do
   def render(assigns) do
     current = assigns.mailbox_id && Enum.find(assigns.mailboxes, &(&1.id == assigns.mailbox_id))
 
-    assigns = assign(assigns, :current_label, (current && current.email) || "Wszystkie skrzynki")
+    assigns = assign(assigns, :current_label, (current && current.email) || gettext("All mailboxes"))
 
     ~H"""
     <div class="bg-paper text-ink font-body antialiased h-screen overflow-hidden flex flex-col">
@@ -160,14 +160,14 @@ defmodule OrdoWeb.InboxLive do
             class="hidden absolute top-full left-0 mt-1 w-72 bg-paper-card border border-slate-200 shadow-lg rounded-sm py-1"
           >
             <p class="px-4 pt-2 pb-1 font-mono text-[10px] tracking-[0.2em] text-ink-mute">
-              SKRZYNKI
+              {gettext("MAILBOXES")}
             </p>
             <button
               phx-click={JS.patch(~p"/inbox") |> JS.hide(to: "#mbx-menu")}
               class="w-full text-left px-4 py-2 hover:bg-paper flex items-center justify-between"
             >
-              <span class="font-mono text-sm">Wszystkie skrzynki</span>
-              <span class="font-mono text-[10px] text-label-deep">{@stats.drafts} draft</span>
+              <span class="font-mono text-sm">{gettext("All mailboxes")}</span>
+              <span class="font-mono text-[10px] text-label-deep">{@stats.drafts} {gettext("draft")}</span>
             </button>
             <button
               :for={m <- @mailboxes}
@@ -176,7 +176,7 @@ defmodule OrdoWeb.InboxLive do
             >
               <span class="font-mono text-sm">{m.email}</span>
               <span class="font-mono text-[10px] text-ink-mute">
-                {if m.active, do: "aktywna", else: "—"}
+                {if m.active, do: gettext("active"), else: "—"}
               </span>
             </button>
           </div>
@@ -189,11 +189,11 @@ defmodule OrdoWeb.InboxLive do
             }
             class="px-3 py-1.5 text-sm text-ink-soft hover:bg-paper rounded"
           >
-            Zasady sklepu
+            {gettext("Shop rules")}
           </button>
           <.link
             navigate={~p"/settings"}
-            title="Ustawienia"
+            title={gettext("Settings")}
             class="p-2 text-ink-mute hover:text-ink hover:bg-paper rounded block"
           >
             <svg
@@ -216,6 +216,7 @@ defmodule OrdoWeb.InboxLive do
             </svg>
           </.link>
           <span class="w-px h-5 bg-slate-200 mx-1"></span>
+          <Layouts.locale_switcher locale={@locale} />
           <Layouts.account_menu current_scope={@current_scope} id="inbox-account-menu" />
         </div>
       </header>
@@ -224,14 +225,14 @@ defmodule OrdoWeb.InboxLive do
         <!-- LEFT: ticket list -->
         <aside class="w-[300px] shrink-0 border-r border-slate-200 bg-paper-card flex flex-col">
           <div class="px-4 py-3 border-b border-slate-200 flex items-center justify-between">
-            <span class="font-mono text-[11px] tracking-[0.2em] text-ink-mute">TICKETY</span>
+            <span class="font-mono text-[11px] tracking-[0.2em] text-ink-mute">{gettext("TICKETS")}</span>
             <span class="font-mono text-[11px] text-ink-mute">
-              {@stats.total} · <span class="text-label-deep">{@stats.drafts} draft</span>
+              {@stats.total} · <span class="text-label-deep">{@stats.drafts} {gettext("draft")}</span>
             </span>
           </div>
 
           <p :if={@stats.total == 0} class="px-4 py-6 text-sm text-ink-mute">
-            Pusto. Zaimportuj skrzynkę w Ustawieniach (⚙).
+            {gettext("Empty. Import a mailbox in Settings (⚙).")}
           </p>
 
           <div class="overflow-y-auto flex-1">
@@ -270,7 +271,7 @@ defmodule OrdoWeb.InboxLive do
               phx-viewport-bottom="load_more"
               class="px-4 py-3 text-center font-mono text-[11px] text-ink-mute"
             >
-              <span class="inline-block animate-pulse">● ładowanie…</span>
+              <span class="inline-block animate-pulse">{gettext("● loading…")}</span>
             </div>
           </div>
         </aside>
@@ -281,7 +282,7 @@ defmodule OrdoWeb.InboxLive do
             :if={@ticket == nil}
             class="h-full flex items-center justify-center text-sm text-ink-mute"
           >
-            Wybierz ticket z listy.
+            {gettext("Select a ticket from the list.")}
           </div>
 
           <div :if={@ticket} class="max-w-4xl mx-auto px-6 py-6 space-y-5">
@@ -297,7 +298,7 @@ defmodule OrdoWeb.InboxLive do
                 <div class="px-4 py-4 space-y-4">
                   <div :for={m <- customer_messages(@ticket)}>
                     <p class="font-mono text-[11px] text-ink-mute mb-2">
-                      {time_of(m)} · {@ticket.customer_name || "Klient"}
+                      {time_of(m)} · {@ticket.customer_name || gettext("Customer")}
                     </p>
                     <div class="bg-slate-100 rounded-sm px-4 py-3 text-[15px] leading-relaxed whitespace-pre-wrap">
                       {m.body}
@@ -314,13 +315,13 @@ defmodule OrdoWeb.InboxLive do
                 <div class="px-4 py-3 font-mono text-[13px]">
                   <div :if={@ticket.order}>
                     <div class="flex justify-between py-1">
-                      <span class="text-ink-mute">nr</span><span>{@ticket.order["number"]}</span>
+                      <span class="text-ink-mute">{gettext("no.")}</span><span>{@ticket.order["number"]}</span>
                     </div>
                     <div class="flex justify-between py-1">
-                      <span class="text-ink-mute">data</span><span>{@ticket.order["date"]}</span>
+                      <span class="text-ink-mute">{gettext("date")}</span><span>{@ticket.order["date"]}</span>
                     </div>
                     <div class="flex justify-between py-1">
-                      <span class="text-ink-mute">status</span><span>{@ticket.order["status"]}</span>
+                      <span class="text-ink-mute">{gettext("status")}</span><span>{@ticket.order["status"]}</span>
                     </div>
                     <div :if={@ticket.order["tracking"]} class="flex justify-between py-1">
                       <span class="text-ink-mute">{@ticket.order["courier"]}</span><span>{@ticket.order["tracking"]}</span>
@@ -339,8 +340,8 @@ defmodule OrdoWeb.InboxLive do
                   </div>
                   <p :if={is_nil(@ticket.order)} class="text-[12px] text-ink-mute font-body">
                     {if @ticket.status in ~w(new classified),
-                      do: "Szukam zamówienia…",
-                      else: "Nie znaleziono zamówienia dla tego adresu."}
+                      do: gettext("Looking up the order…"),
+                      else: gettext("No order found for this address.")}
                   </p>
                 </div>
               </div>
@@ -349,14 +350,14 @@ defmodule OrdoWeb.InboxLive do
     <!-- answer card -->
             <div class="bg-paper-card shadow-card rounded-sm">
               <div class="px-4 py-2.5 border-b border-slate-200 flex items-center justify-between">
-                <span class="font-mono text-xs tracking-wide">ODPOWIEDŹ</span>
+                <span class="font-mono text-xs tracking-wide">{gettext("REPLY")}</span>
                 <span :if={@ticket.category} class="font-mono text-xs text-label-deep">
                   {category_label(@ticket.category)}
                 </span>
               </div>
               <div class="px-4 py-4">
                 <div :if={@ticket.status in ~w(new classified)} class="text-sm text-ink-mute">
-                  <span class="inline-block animate-pulse">● Ordo pracuje…</span>
+                  <span class="inline-block animate-pulse">{gettext("● Ordo is working…")}</span>
                 </div>
 
                 <form :if={@ticket.status == "draft_ready"} phx-submit="approve">
@@ -369,17 +370,17 @@ defmodule OrdoWeb.InboxLive do
                       type="submit"
                       class="bg-ink text-white font-mono text-sm px-5 py-2.5 hover:bg-ink-soft transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
                     >
-                      Zatwierdź i wyślij
+                      {gettext("Approve and send")}
                     </button>
                     <button
                       type="button"
                       phx-click="take_over"
                       class="font-mono text-[12px] text-ink-mute hover:text-ink"
                     >
-                      przejmij
+                      {gettext("take over")}
                     </button>
                     <span class="ml-auto font-mono text-[12px] text-ink-mute">
-                      edytuj tekst powyżej, jeśli trzeba
+                      {gettext("edit the text above if needed")}
                     </span>
                   </div>
                 </form>
@@ -389,7 +390,7 @@ defmodule OrdoWeb.InboxLive do
                     {@ticket.draft}
                   </div>
                   <p class="font-mono text-[12px] text-okay mt-3">
-                    ✓ wysłane · {@ticket.resolution_seconds} s
+                    {gettext("✓ sent · %{count} s", count: @ticket.resolution_seconds)}
                   </p>
                 </div>
               </div>
@@ -411,7 +412,7 @@ defmodule OrdoWeb.InboxLive do
       >
         <div class="px-5 py-4 border-b-2 border-ink flex items-center justify-between">
           <div>
-            <p class="font-mono text-[11px] tracking-[0.2em] text-ink-mute">ZASADY SKLEPU</p>
+            <p class="font-mono text-[11px] tracking-[0.2em] text-ink-mute">{gettext("SHOP RULES")}</p>
             <p class="font-semibold text-sm mt-0.5">{@tenant.name}</p>
           </div>
           <button
@@ -419,13 +420,13 @@ defmodule OrdoWeb.InboxLive do
               JS.add_class("sheet-hidden", to: "#rules-sheet") |> JS.hide(to: "#rules-backdrop")
             }
             class="p-2 text-ink-mute hover:text-ink hover:bg-paper rounded"
-            aria-label="Zamknij"
+            aria-label={gettext("Close")}
           >
             ✕
           </button>
         </div>
         <p class="px-5 py-3 text-[13px] text-ink-soft border-b border-slate-100">
-          Na tych faktach Ordo opiera odpowiedzi. <strong>Nie zmyśla poza nimi.</strong>
+          {gettext("Ordo bases its replies on these facts.")} <strong>{gettext("It doesn't make anything up beyond them.")}</strong>
         </p>
         <div class="flex-1 overflow-y-auto divide-y divide-slate-100">
           <div
@@ -449,18 +450,15 @@ defmodule OrdoWeb.InboxLive do
     """
   end
 
-  @category_labels %{
-    "PACKAGE_STATUS" => "Status paczki",
-    "RETURN" => "Zwrot",
-    "RETURN_STATUS" => "Status zwrotu",
-    "INVOICE" => "Faktura",
-    "ORDER_CHANGE" => "Zmiana zamówienia",
-    "CANCELLATION" => "Anulacja",
-    "COMPLAINT" => "Reklamacja",
-    "OTHER" => "Inne"
-  }
-
-  defp category_label(code), do: Map.get(@category_labels, code, code)
+  defp category_label("PACKAGE_STATUS"), do: gettext("Package status")
+  defp category_label("RETURN"), do: gettext("Return")
+  defp category_label("RETURN_STATUS"), do: gettext("Return status")
+  defp category_label("INVOICE"), do: gettext("Invoice")
+  defp category_label("ORDER_CHANGE"), do: gettext("Order change")
+  defp category_label("CANCELLATION"), do: gettext("Cancellation")
+  defp category_label("COMPLAINT"), do: gettext("Complaint")
+  defp category_label("OTHER"), do: gettext("Other")
+  defp category_label(code), do: code
 
   defp time_of(%{inserted_at: at}), do: Calendar.strftime(at, "%H:%M")
 
@@ -474,8 +472,10 @@ defmodule OrdoWeb.InboxLive do
     end
   end
 
-  defp badge(%{status: "answered"} = t), do: {"WYSŁANE · #{t.resolution_seconds} s", "border-okay text-okay"}
-  defp badge(%{category: "COMPLAINT"}), do: {"REKLAMACJA · CZŁOWIEK", "border-label-deep text-label-deep"}
+  defp badge(%{status: "answered"} = t),
+    do: {gettext("SENT · %{count} s", count: t.resolution_seconds), "border-okay text-okay"}
+
+  defp badge(%{category: "COMPLAINT"}), do: {gettext("COMPLAINT · HUMAN"), "border-label-deep text-label-deep"}
   defp badge(%{category: nil}), do: {"…", "border-slate-300 text-ink-mute"}
   defp badge(%{category: c}), do: {String.upcase(category_label(c)), "border-slate-300 text-ink-mute"}
 end

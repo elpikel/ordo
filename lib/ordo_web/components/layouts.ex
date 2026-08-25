@@ -31,42 +31,32 @@ defmodule OrdoWeb.Layouts do
     default: nil,
     doc: "the current [scope](https://hexdocs.pm/phoenix/scopes.html)"
 
+  attr :locale, :string, default: nil, doc: "active locale for the switcher; defaults to Gettext's"
+
   slot :inner_block, required: true
+  slot :header_actions, doc: "optional links rendered on the right of the header bar"
 
   def app(assigns) do
-    ~H"""
-    <header class="navbar px-4 sm:px-6 lg:px-8">
-      <div class="flex-1">
-        <a href="/" class="flex-1 flex w-fit items-center gap-2">
-          <img src={~p"/images/logo.svg"} width="36" />
-          <span class="text-sm font-semibold">v{Application.spec(:phoenix, :vsn)}</span>
-        </a>
-      </div>
-      <div class="flex-none">
-        <ul class="flex flex-column px-1 space-x-4 items-center">
-          <li>
-            <a href="https://phoenixframework.org/" class="btn btn-ghost">Website</a>
-          </li>
-          <li>
-            <a href="https://github.com/phoenixframework/phoenix" class="btn btn-ghost">GitHub</a>
-          </li>
-          <li>
-            <.theme_toggle />
-          </li>
-          <li>
-            <a href="https://hexdocs.pm/phoenix/overview.html" class="btn btn-primary">
-              Get Started <span aria-hidden="true">&rarr;</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </header>
+    assigns = assign(assigns, :locale, assigns.locale || Gettext.get_locale(OrdoWeb.Gettext))
 
-    <main class="px-4 py-20 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-2xl space-y-4">
-        {render_slot(@inner_block)}
-      </div>
-    </main>
+    ~H"""
+    <div class="min-h-screen bg-paper text-ink font-body antialiased">
+      <header class="h-14 bg-paper-card border-b-2 border-ink flex items-center px-5 gap-4">
+        <a href={~p"/"} class="font-mono font-semibold tracking-[0.3em] text-base select-none">
+          ORDO<span class="text-label-deep">.</span>
+        </a>
+        <div class="ml-auto flex items-center gap-3">
+          {render_slot(@header_actions)}
+          <.locale_switcher locale={@locale} />
+        </div>
+      </header>
+
+      <main class="px-4 py-16 sm:px-6">
+        <div class="mx-auto max-w-sm space-y-4">
+          {render_slot(@inner_block)}
+        </div>
+      </main>
+    </div>
 
     <.flash_group flash={@flash} />
     """
@@ -115,6 +105,37 @@ defmodule OrdoWeb.Layouts do
           Wyloguj
         </.link>
       </div>
+    </div>
+    """
+  end
+
+  @doc """
+  Renders a compact language switcher (PL / EN). Each link is a full navigation
+  to `/locale/:locale`, which stores the choice in the session and returns here.
+
+  ## Examples
+
+      <.locale_switcher locale={@locale} />
+  """
+  attr :locale, :string, required: true, doc: "the currently active locale"
+
+  def locale_switcher(assigns) do
+    assigns = assign(assigns, :locales, OrdoWeb.Locale.supported())
+
+    ~H"""
+    <div class="flex items-center gap-1 font-mono text-xs">
+      <%= for {loc, i} <- Enum.with_index(@locales) do %>
+        <span :if={i > 0} class="text-slate-300">/</span>
+        <.link
+          href={~p"/locale/#{loc}"}
+          class={[
+            "uppercase px-1 py-0.5 rounded transition-colors",
+            (loc == @locale && "text-ink font-semibold") || "text-ink-mute hover:text-ink"
+          ]}
+        >
+          {loc}
+        </.link>
+      <% end %>
     </div>
     """
   end

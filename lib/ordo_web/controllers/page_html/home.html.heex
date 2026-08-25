@@ -81,6 +81,12 @@
       <nav class="flex items-center gap-5">
         <OrdoWeb.Layouts.locale_switcher locale={@locale} />
         <a
+          href={if @locale == "en", do: ~p"/en/blog", else: ~p"/blog"}
+          class="font-mono text-sm text-ink-soft hover:text-ink transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
+        >
+          {gettext("Blog")}
+        </a>
+        <a
           href={~p"/demo"}
           class="font-mono text-sm text-ink-soft hover:text-ink transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
         >

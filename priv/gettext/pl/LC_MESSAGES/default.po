@@ -781,6 +781,7 @@ msgstr "Zapisuję..."
 msgid "Scenarios"
 msgstr "Scenariusze"
 
+#: lib/ordo_web/controllers/blog_html.ex:99
 #: lib/ordo_web/controllers/page_html/home.html.heex:126
 #, elixir-autogen, elixir-format
 msgid "See live demo"
@@ -1099,3 +1100,48 @@ msgstr "● ładowanie…"
 #, elixir-autogen, elixir-format
 msgid "✓ sent · %{count} s"
 msgstr "✓ wysłane · %{count} s"
+
+#: lib/ordo_web/controllers/blog_html.ex:177
+#, elixir-autogen, elixir-format
+msgid "Back to homepage"
+msgstr "Powrót na stronę główną"
+
+#: lib/ordo_web/controllers/blog_html.ex:24
+#: lib/ordo_web/controllers/blog_html.ex:73
+#, elixir-autogen, elixir-format
+msgid "Blog"
+msgstr "Blog"
+
+#: lib/ordo_web/controllers/blog_controller.ex:20
+#: lib/ordo_web/controllers/blog_html.ex:27
+#, elixir-autogen, elixir-format
+msgid "Ordo blog"
+msgstr "Blog Ordo"
+
+#: lib/ordo_web/controllers/blog_html.ex:93
+#, elixir-autogen, elixir-format
+msgid "Ordo reads your support inbox, acts in BaseLinker, and drafts the reply. Watch it work on a live demo."
+msgstr "Ordo czyta Twoją skrzynkę obsługi, działa w BaseLinker i przygotowuje odpowiedź. Zobacz to na żywym demo."
+
+#: lib/ordo_web/controllers/blog_controller.ex:39
+#, elixir-autogen, elixir-format
+msgid "Post not found."
+msgstr "Nie znaleziono wpisu."
+
+#: lib/ordo_web/controllers/blog_controller.ex:21
+#: lib/ordo_web/controllers/blog_controller.ex:133
+#: lib/ordo_web/controllers/blog_html.ex:30
+#, elixir-autogen, elixir-format
+msgid "Practical notes on automating e-commerce customer support."
+msgstr "Praktyczne notatki o automatyzacji obsługi klienta w e-commerce."
+
+#: lib/ordo_web/controllers/blog_html.ex:91
+#, elixir-autogen, elixir-format
+msgid "See Ordo in action"
+msgstr "Zobacz Ordo w akcji"
+
+#: lib/ordo_web/controllers/blog_html.ex:37
+#: lib/ordo_web/controllers/blog_html.ex:79
+#, elixir-autogen, elixir-format
+msgid "min read"
+msgstr "min czytania"

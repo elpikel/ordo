@@ -28,6 +28,15 @@ defmodule OrdoWeb.Router do
 
     # Language switch (persists choice in session, redirects back).
     get "/locale/:locale", LocaleController, :update
+
+    # Static, bilingual blog (SEO). Feed routes before :slug so they aren't captured.
+    get "/blog", BlogController, :index
+    get "/blog/feed.xml", BlogController, :feed
+    get "/blog/:slug", BlogController, :show
+    get "/en/blog", BlogController, :index
+    get "/en/blog/feed.xml", BlogController, :feed
+    get "/en/blog/:slug", BlogController, :show
+    get "/sitemap.xml", SitemapController, :index
   end
 
   scope "/", OrdoWeb do

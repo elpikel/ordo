@@ -37,6 +37,7 @@ defmodule OrdoWeb.Router do
     get "/en/blog/feed.xml", BlogController, :feed
     get "/en/blog/:slug", BlogController, :show
     get "/sitemap.xml", SitemapController, :index
+    get "/robots.txt", SitemapController, :robots
   end
 
   scope "/", OrdoWeb do

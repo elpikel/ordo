@@ -17,7 +17,8 @@ defmodule OrdoWeb do
   those modules here.
   """
 
-  def static_paths, do: ~w(assets fonts images favicon.ico favicon.svg apple-touch-icon.png robots.txt)
+  # robots.txt is served dynamically by OrdoWeb.SitemapController (host-correct Sitemap URL).
+  def static_paths, do: ~w(assets fonts images favicon.ico favicon.svg apple-touch-icon.png)
 
   def router do
     quote do

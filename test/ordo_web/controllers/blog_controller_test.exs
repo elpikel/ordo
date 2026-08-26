@@ -58,12 +58,22 @@ defmodule OrdoWeb.BlogControllerTest do
       assert body =~ "Jak zautomatyzować obsługę klienta"
     end
 
-    test "GET /sitemap.xml lists posts in both languages with alternates", %{conn: conn} do
+    test "GET /sitemap.xml lists posts in both languages with alternates and lastmod", %{conn: conn} do
       body = conn |> get(~p"/sitemap.xml") |> response(200)
       assert body =~ "<urlset"
       assert body =~ "/blog/jak-zautomatyzowac-obsluge-klienta-w-e-commerce"
       assert body =~ "/en/blog/how-to-automate-ecommerce-customer-support"
       assert body =~ ~s(xhtml:link rel="alternate")
+      assert body =~ "<lastmod>2026-02-24</lastmod>"
+    end
+
+    test "GET /robots.txt allows crawling and points to the sitemap", %{conn: conn} do
+      conn = get(conn, ~p"/robots.txt")
+      body = response(conn, 200)
+      assert response_content_type(conn, :txt) =~ "text/plain"
+      assert body =~ "User-agent: *"
+      assert body =~ ~r{Sitemap: https?://\S+/sitemap\.xml}
+      assert body =~ "Disallow: /users/"
     end
   end
 end

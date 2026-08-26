@@ -64,7 +64,7 @@ defmodule OrdoWeb.BlogControllerTest do
       assert body =~ "/blog/jak-zautomatyzowac-obsluge-klienta-w-e-commerce"
       assert body =~ "/en/blog/how-to-automate-ecommerce-customer-support"
       assert body =~ ~s(xhtml:link rel="alternate")
-      assert body =~ "<lastmod>2026-02-24</lastmod>"
+      assert body =~ "<lastmod>2026-08-26</lastmod>"
     end
 
     test "GET /robots.txt allows crawling and points to the sitemap", %{conn: conn} do

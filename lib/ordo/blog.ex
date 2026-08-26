@@ -24,7 +24,7 @@ defmodule Ordo.Blog do
       title: "Jak zautomatyzować obsługę klienta w e-commerce (bez utraty jakości)",
       description:
         "Praktyczny przewodnik: które maile obsługi da się zautomatyzować, jak zacząć od trybu Copilot i kiedy bezpiecznie przejść na Autopilota.",
-      date: ~D[2026-02-10],
+      date: ~D[2026-08-19],
       tags: ["obsługa klienta", "automatyzacja", "e-commerce"],
       read_minutes: 6
     },
@@ -35,7 +35,7 @@ defmodule Ordo.Blog do
       title: "How to Automate E-commerce Customer Support (Without Losing Quality)",
       description:
         "A practical guide: which support emails you can safely automate, how to start in Copilot mode, and when to switch to Autopilot.",
-      date: ~D[2026-02-10],
+      date: ~D[2026-08-19],
       tags: ["customer support", "automation", "e-commerce"],
       read_minutes: 6
     },
@@ -46,7 +46,7 @@ defmodule Ordo.Blog do
       title: "„Gdzie jest moja paczka?” — jak odpowiadać automatycznie i trafnie",
       description:
         "Najczęstsze pytanie w obsłudze sklepu. Pokazujemy, jak łączyć status z BaseLinkera z odpowiedzią do klienta w kilka sekund.",
-      date: ~D[2026-02-24],
+      date: ~D[2026-08-26],
       tags: ["BaseLinker", "wysyłka", "obsługa klienta"],
       read_minutes: 5
     },
@@ -57,7 +57,7 @@ defmodule Ordo.Blog do
       title: "\"Where Is My Order?\" — How to Reply Automatically and Accurately",
       description:
         "The single most common support question. Here's how to turn a BaseLinker tracking status into a customer-ready reply in seconds.",
-      date: ~D[2026-02-24],
+      date: ~D[2026-08-26],
       tags: ["BaseLinker", "shipping", "customer support"],
       read_minutes: 5
     }

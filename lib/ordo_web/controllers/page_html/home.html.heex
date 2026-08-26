@@ -6,15 +6,26 @@
     <title>{gettext("Ordo — AI that resolves your store's support email")}</title>
     <meta
       name="description"
-      content={gettext("Ordo reads your support inbox, takes real actions in BaseLinker — order status, returns, refunds — and replies to customers. Built for European e-commerce.")}
+      content={
+        gettext(
+          "Ordo reads your support inbox, takes real actions in BaseLinker — order status, returns, refunds — and replies to customers. Built for European e-commerce."
+        )
+      }
     />
     <link rel="canonical" href="https://hireordo.com" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://hireordo.com" />
-    <meta property="og:title" content={gettext("Ordo — AI that resolves your store's support email")} />
+    <meta
+      property="og:title"
+      content={gettext("Ordo — AI that resolves your store's support email")}
+    />
     <meta
       property="og:description"
-      content={gettext("Reads every “where is my order?”, acts in BaseLinker, replies to the customer. Copilot first, Autopilot when the numbers say so.")}
+      content={
+        gettext(
+          "Reads every “where is my order?”, acts in BaseLinker, replies to the customer. Copilot first, Autopilot when the numbers say so."
+        )
+      }
     />
     <meta name="twitter:card" content="summary" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -78,26 +89,21 @@
       <div class="font-mono font-medium tracking-[0.35em] text-lg select-none">
         ORDO<span class="text-label-deep">.</span>
       </div>
-      <nav class="flex items-center gap-5">
-        <OrdoWeb.Layouts.locale_switcher locale={@locale} />
+      <nav class="flex items-center gap-4 sm:gap-6">
         <a
           href={if @locale == "en", do: ~p"/en/blog", else: ~p"/blog"}
-          class="font-mono text-sm text-ink-soft hover:text-ink transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
+          class="group relative font-mono text-sm font-medium text-ink py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
         >
           {gettext("Blog")}
+          <span
+            class="absolute -bottom-0.5 left-0 h-[2px] w-full origin-left scale-x-0 bg-label transition-transform duration-200 group-hover:scale-x-100"
+            aria-hidden="true"
+          >
+          </span>
         </a>
-        <a
-          href={~p"/demo"}
-          class="font-mono text-sm text-ink-soft hover:text-ink transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
-        >
-          {gettext("Live demo →")}
-        </a>
-        <a
-          href="#early-access"
-          class="font-mono text-sm border border-ink px-4 py-2 hover:bg-ink hover:text-paper transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
-        >
-          {gettext("Get early access")}
-        </a>
+
+        <span class="h-5 w-px bg-slate-300" aria-hidden="true"></span>
+        <OrdoWeb.Layouts.locale_switcher locale={@locale} />
       </nav>
     </header>
     
@@ -116,7 +122,9 @@
               ></span><span class="relative">{gettext("itself")}</span></span>.
           </h1>
           <p class="mt-6 text-lg text-ink-soft max-w-md leading-relaxed">
-            {gettext("Ordo reads every “where is my order?”, looks the order up in BaseLinker, takes the action — status, return, refund — and replies to your customer. You watch it work before you let it work alone.")}
+            {gettext(
+              "Ordo reads every “where is my order?”, looks the order up in BaseLinker, takes the action — status, return, refund — and replies to your customer. You watch it work before you let it work alone."
+            )}
           </p>
           <div class="mt-8 flex flex-wrap items-center gap-4">
             <a
@@ -131,12 +139,17 @@
             >
               {gettext("See live demo")}
             </a>
-            <span class="font-mono text-xs text-ink-mute">{gettext("3 pilot slots · free during pilot")}</span>
+            <span class="font-mono text-xs text-ink-mute">
+              {gettext("3 pilot slots · free during pilot")}
+            </span>
           </div>
         </div>
         
 <!-- signature: the self-resolving ticket -->
-        <div class="relative" aria-label={gettext("Example: Ordo resolving a customer email automatically")}>
+        <div
+          class="relative"
+          aria-label={gettext("Example: Ordo resolving a customer email automatically")}
+        >
           <div class="bg-paper-card border border-slate-300 shadow-[6px_6px_0_0_#16233B14]">
             
 <!-- ticket head -->
@@ -169,7 +182,9 @@
               <div class="seq seq-4">
                 <p class="font-mono text-[11px] text-ink-mute mb-1">14:02 · Ordo</p>
                 <p class="bg-ink text-paper px-3 py-2 leading-snug">
-                  {gettext("Hi Anna! Your parcel left us on 12 Aug and is out for delivery today. Track it here: inpost.pl/620441882. It should reach your locker by 6 pm.")}
+                  {gettext(
+                    "Hi Anna! Your parcel left us on 12 Aug and is out for delivery today. Track it here: inpost.pl/620441882. It should reach your locker by 6 pm."
+                  )}
                 </p>
               </div>
               
@@ -201,19 +216,25 @@
           <div>
             <p class="font-mono text-label-deep text-sm mb-3">{gettext("01 / READ")}</p>
             <p class="text-ink-soft leading-relaxed">
-              {gettext("Ordo plugs into your support inbox and understands what the customer actually needs — in Polish, English, or 20+ other languages.")}
+              {gettext(
+                "Ordo plugs into your support inbox and understands what the customer actually needs — in Polish, English, or 20+ other languages."
+              )}
             </p>
           </div>
           <div>
             <p class="font-mono text-label-deep text-sm mb-3">{gettext("02 / ACT")}</p>
             <p class="text-ink-soft leading-relaxed">
-              {gettext("It looks the order up in BaseLinker and does the work: checks tracking, registers the return, triggers the refund. Real actions, not canned answers.")}
+              {gettext(
+                "It looks the order up in BaseLinker and does the work: checks tracking, registers the return, triggers the refund. Real actions, not canned answers."
+              )}
             </p>
           </div>
           <div>
             <p class="font-mono text-label-deep text-sm mb-3">{gettext("03 / RESOLVE")}</p>
             <p class="text-ink-soft leading-relaxed">
-              {gettext("The customer gets a complete answer in under a minute, the ticket closes itself, and your inbox stays quiet.")}
+              {gettext(
+                "The customer gets a complete answer in under a minute, the ticket closes itself, and your inbox stays quiet."
+              )}
             </p>
           </div>
         </div>
@@ -228,23 +249,33 @@
             {gettext("You promote it.")}<br />{gettext("It doesn't promote itself.")}
           </h2>
           <p class="text-ink-soft leading-relaxed max-w-md">
-            {gettext("Every ticket category starts in")} <strong class="text-ink">{gettext("Copilot")}</strong>{gettext(": Ordo drafts, you approve. When its drafts stop needing edits, you switch that category to")}
+            {gettext("Every ticket category starts in")} <strong class="text-ink">{gettext("Copilot")}</strong>{gettext(
+              ": Ordo drafts, you approve. When its drafts stop needing edits, you switch that category to"
+            )}
             <strong class="text-ink">{gettext("Autopilot")}</strong>
-            {gettext("— one at a time, based on numbers, not promises. Refunds can stay human-approved forever if that's how you sleep better.")}
+            {gettext(
+              "— one at a time, based on numbers, not promises. Refunds can stay human-approved forever if that's how you sleep better."
+            )}
           </p>
         </div>
         <div class="space-y-3 font-mono text-sm">
           <div class="flex items-center justify-between border border-slate-300 bg-paper-card px-4 py-3">
             <span>{gettext("“Where is my order?”")}</span>
-            <span class="text-okay border border-okay px-2 py-0.5 text-xs">{gettext("AUTOPILOT")}</span>
+            <span class="text-okay border border-okay px-2 py-0.5 text-xs">
+              {gettext("AUTOPILOT")}
+            </span>
           </div>
           <div class="flex items-center justify-between border border-slate-300 bg-paper-card px-4 py-3">
             <span>{gettext("Returns & exchanges")}</span>
-            <span class="text-okay border border-okay px-2 py-0.5 text-xs">{gettext("AUTOPILOT")}</span>
+            <span class="text-okay border border-okay px-2 py-0.5 text-xs">
+              {gettext("AUTOPILOT")}
+            </span>
           </div>
           <div class="flex items-center justify-between border border-slate-300 bg-paper-card px-4 py-3">
             <span>{gettext("Refunds")}</span>
-            <span class="text-ink-mute border border-slate-400 px-2 py-0.5 text-xs">{gettext("COPILOT")}</span>
+            <span class="text-ink-mute border border-slate-400 px-2 py-0.5 text-xs">
+              {gettext("COPILOT")}
+            </span>
           </div>
           <div class="flex items-center justify-between border border-slate-300 bg-paper-card px-4 py-3">
             <span>{gettext("Complaints")}</span>
@@ -259,7 +290,9 @@
       
 <!-- ── Integrations ────────────────────────────────────────────────── -->
       <section class="max-w-6xl mx-auto px-5 sm:px-8 py-16">
-        <p class="font-mono text-xs tracking-[0.25em] text-ink-mute uppercase mb-6">{gettext("Works with")}</p>
+        <p class="font-mono text-xs tracking-[0.25em] text-ink-mute uppercase mb-6">
+          {gettext("Works with")}
+        </p>
         <div class="flex flex-wrap gap-3 font-mono text-sm">
           <span class="border border-slate-300 bg-paper-card px-4 py-2">BaseLinker</span>
           <span class="border border-slate-300 bg-paper-card px-4 py-2">Shoper</span>
@@ -277,9 +310,13 @@
 <!-- ── Early access ────────────────────────────────────────────────── -->
       <section id="early-access" class="max-w-6xl mx-auto px-5 sm:px-8 py-20">
         <div class="max-w-xl">
-          <h2 class="font-display font-bold text-3xl tracking-tight mb-4">{gettext("Pilot program")}</h2>
+          <h2 class="font-display font-bold text-3xl tracking-tight mb-4">
+            {gettext("Pilot program")}
+          </h2>
           <p class="text-ink-soft leading-relaxed mb-8">
-            {gettext("We're onboarding three stores that get 300+ support emails a month. Free during the pilot, direct line to the founder, and your workflows shape what Ordo becomes. If that's you, leave your email.")}
+            {gettext(
+              "We're onboarding three stores that get 300+ support emails a month. Free during the pilot, direct line to the founder, and your workflows shape what Ordo becomes. If that's you, leave your email."
+            )}
           </p>
           <form id="pilot-form" class="flex flex-col sm:flex-row gap-3">
             <label for="email" class="sr-only">{gettext("Your work email")}</label>

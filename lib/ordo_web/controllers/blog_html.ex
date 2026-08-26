@@ -69,13 +69,18 @@ defmodule OrdoWeb.BlogHTML do
       feed_url={@feed_url}
     >
       <article class="max-w-2xl mx-auto px-5 sm:px-8 py-14">
-        <.link navigate={index_path(@post.locale)} class="font-mono text-xs text-ink-mute hover:text-ink">
+        <.link
+          navigate={index_path(@post.locale)}
+          class="font-mono text-xs text-ink-mute hover:text-ink"
+        >
           ← {gettext("Blog")}
         </.link>
 
         <header class="mt-6 mb-8">
           <p class="font-mono text-xs text-ink-mute mb-3">
-            <time datetime={Date.to_iso8601(@post.date)}>{format_date(@post.date, @post.locale)}</time>
+            <time datetime={Date.to_iso8601(@post.date)}>
+              {format_date(@post.date, @post.locale)}
+            </time>
             · {@post.read_minutes} {gettext("min read")}
           </p>
           <h1 class="font-display font-bold text-3xl sm:text-4xl tracking-tight leading-[1.12]">
@@ -90,7 +95,9 @@ defmodule OrdoWeb.BlogHTML do
         <aside class="mt-14 border-t-2 border-ink pt-8">
           <p class="font-display font-bold text-xl mb-2">{gettext("See Ordo in action")}</p>
           <p class="text-ink-soft mb-4">
-            {gettext("Ordo reads your support inbox, acts in BaseLinker, and drafts the reply. Watch it work on a live demo.")}
+            {gettext(
+              "Ordo reads your support inbox, acts in BaseLinker, and drafts the reply. Watch it work on a live demo."
+            )}
           </p>
           <a
             href={~p"/demo"}

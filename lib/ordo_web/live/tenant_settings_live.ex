@@ -1,8 +1,8 @@
 defmodule OrdoWeb.TenantSettingsLive do
-  @moduledoc "Per-tenant setup: BaseLinker token + mailboxes (+ demo controls). Tenant comes from current_scope."
+  @moduledoc "Per-tenant setup: BaseLinker token + channels (+ demo controls). Tenant comes from current_scope."
   use OrdoWeb, :live_view
 
-  alias Ordo.Mailboxes
+  alias Ordo.Channels
   alias Ordo.Support
 
   @blank_mb %{id: nil, email: "", imap_host: "", imap_port: "993", username: "", smtp_host: "", smtp_port: "587"}
@@ -29,7 +29,7 @@ defmodule OrdoWeb.TenantSettingsLive do
     {:ok,
      assign(socket,
        tenant: tenant,
-       mailboxes: Mailboxes.list_for_tenant(tenant.id),
+       channels: Channels.list_for_tenant(tenant.id),
        editing_token: false,
        mb: @blank_mb,
        notice: nil,
@@ -57,9 +57,9 @@ defmodule OrdoWeb.TenantSettingsLive do
 
     result =
       if mb.id do
-        Mailboxes.update(Mailboxes.get!(mb.id), drop_blank_password(params))
+        Channels.update(Channels.get!(mb.id), drop_blank_password(params))
       else
-        Mailboxes.create(Map.put(params, "tenant_id", socket.assigns.tenant.id))
+        params |> Map.put("tenant_id", socket.assigns.tenant.id) |> Map.put("type", "email") |> Channels.create()
       end
 
     case result do
@@ -69,7 +69,7 @@ defmodule OrdoWeb.TenantSettingsLive do
   end
 
   def handle_event("edit_mailbox", %{"id" => id}, socket) do
-    m = Mailboxes.get!(id)
+    m = Channels.get!(id)
 
     mb = %{
       id: m.id,
@@ -86,14 +86,26 @@ defmodule OrdoWeb.TenantSettingsLive do
 
   def handle_event("cancel_edit", _params, socket), do: {:noreply, assign(socket, mb: @blank_mb)}
 
-  def handle_event("delete_mailbox", %{"id" => id}, socket) do
-    Mailboxes.delete!(id)
-    {:noreply, socket |> reload() |> assign(mb: @blank_mb) |> notice(gettext("Mailbox deleted."))}
+  def handle_event("delete_channel", %{"id" => id}, socket) do
+    Channels.delete!(id)
+    {:noreply, socket |> reload() |> assign(mb: @blank_mb) |> notice(gettext("Channel removed."))}
+  end
+
+  def handle_event("connect_gbp", _params, socket) do
+    case Channels.create(%{tenant_id: socket.assigns.tenant.id, type: "gbp", name: "Google"}) do
+      {:ok, _} -> {:noreply, socket |> reload() |> notice(gettext("Google Business Profile connected."))}
+      {:error, cs} -> {:noreply, notice(socket, gettext("Error: %{errors}", errors: errors(cs)))}
+    end
   end
 
   def handle_event("import_mailbox", _params, socket) do
     Support.import_demo_mailbox!(socket.assigns.tenant)
     {:noreply, notice(socket, gettext("Importing mailbox — open the mailbox to see it."))}
+  end
+
+  def handle_event("import_reviews", _params, socket) do
+    Support.import_demo_reviews!(socket.assigns.tenant)
+    {:noreply, notice(socket, gettext("Importing Google reviews — open the inbox to see them."))}
   end
 
   def handle_event("clear_inbox", _params, socket) do
@@ -106,8 +118,10 @@ defmodule OrdoWeb.TenantSettingsLive do
     {:noreply, notice(socket, gettext("Email generated — open the mailbox."))}
   end
 
-  defp reload(socket), do: assign(socket, mailboxes: Mailboxes.list_for_tenant(socket.assigns.tenant.id))
+  defp reload(socket), do: assign(socket, channels: Channels.list_for_tenant(socket.assigns.tenant.id))
   defp notice(socket, msg), do: assign(socket, notice: msg)
+
+  defp has_gbp?(channels), do: Enum.any?(channels, &(&1.type == "gbp"))
 
   defp drop_blank_password(params) do
     if String.trim(params["password"] || "") == "", do: Map.delete(params, "password"), else: params
@@ -121,10 +135,18 @@ defmodule OrdoWeb.TenantSettingsLive do
 
   defp mask(_), do: "••••••••••••"
 
-  defp mailbox_status(m) do
+  defp channel_kind_label(%{type: "gbp"}), do: gettext("GOOGLE")
+  defp channel_kind_label(_), do: gettext("EMAIL")
+
+  defp channel_identity(%{type: "gbp"} = c), do: c.name || gettext("Google Business Profile")
+  defp channel_identity(c), do: c.email
+
+  defp channel_status(%{type: "gbp"}), do: {gettext("CONNECTED"), "border-okay text-okay"}
+
+  defp channel_status(c) do
     cond do
-      m.last_error -> {gettext("LOGIN ERROR"), "border-red-300 text-red-700"}
-      m.active -> {gettext("ACTIVE"), "border-okay text-okay"}
+      c.last_error -> {gettext("LOGIN ERROR"), "border-red-300 text-red-700"}
+      c.active -> {gettext("ACTIVE"), "border-okay text-okay"}
       true -> {gettext("DISABLED"), "border-slate-300 text-ink-mute"}
     end
   end
@@ -182,7 +204,9 @@ defmodule OrdoWeb.TenantSettingsLive do
               <span class="font-mono text-[10px] px-2 py-0.5 border border-slate-300 text-ink-mute">
                 {gettext("NO TOKEN")}
               </span>
-              <span class="text-[12px] text-ink-mute">{gettext("BaseLinker connection inactive")}</span>
+              <span class="text-[12px] text-ink-mute">
+                {gettext("BaseLinker connection inactive")}
+              </span>
             </div>
             <form phx-submit="save_baselinker" class="flex gap-2">
               <input
@@ -221,7 +245,9 @@ defmodule OrdoWeb.TenantSettingsLive do
                 <span class="font-mono text-[10px] px-2 py-0.5 border border-okay text-okay">
                   {gettext("CONNECTED")}
                 </span>
-                <span class="font-mono text-sm text-ink-mute">{gettext("token")} {mask(@tenant.bl_token)}</span>
+                <span class="font-mono text-sm text-ink-mute">
+                  {gettext("token")} {mask(@tenant.bl_token)}
+                </span>
               </div>
               <button
                 phx-click="change_token"
@@ -236,53 +262,91 @@ defmodule OrdoWeb.TenantSettingsLive do
           </div>
         </section>
         
-    <!-- Mailboxes -->
+    <!-- Channels -->
         <section>
-          <h2 class="font-mono text-[11px] tracking-[0.2em] text-ink-mute mb-1">{gettext("EMAIL MAILBOXES")}</h2>
+          <h2 class="font-mono text-[11px] tracking-[0.2em] text-ink-mute mb-1">
+            {gettext("CHANNELS")}
+          </h2>
           <p class="text-sm text-ink-soft mb-4">
-            {gettext("Addresses that Ordo monitors. Mail is fetched from the INBOX folder every minute.")}
+            {gettext(
+              "Everywhere Ordo hears from customers — email mailboxes and your Google Business Profile — feeding one inbox."
+            )}
           </p>
 
           <div
-            :if={@mailboxes != []}
+            :if={@channels != []}
             class="bg-paper-card border border-slate-200 rounded-sm divide-y divide-slate-100"
           >
-            <div :for={m <- @mailboxes} class="px-4 py-3 flex items-center justify-between gap-4">
-              <div class="min-w-0">
-                <p class="font-mono text-sm truncate">{m.email}</p>
-                <p class="text-[12px] text-ink-mute mt-0.5">{m.imap_host}:{m.imap_port}</p>
+            <div :for={c <- @channels} class="px-4 py-3 flex items-center justify-between gap-4">
+              <div class="min-w-0 flex items-center gap-2">
+                <span class="font-mono text-[10px] px-1.5 py-0.5 border border-slate-300 text-ink-mute shrink-0">
+                  {channel_kind_label(c)}
+                </span>
+                <div class="min-w-0">
+                  <p class="font-mono text-sm truncate">{channel_identity(c)}</p>
+                  <p :if={c.type == "email"} class="text-[12px] text-ink-mute mt-0.5">
+                    {c.imap_host}:{c.imap_port}
+                  </p>
+                </div>
               </div>
               <div class="flex items-center gap-2 shrink-0">
-                <% {label, cls} = mailbox_status(m) %>
+                <% {label, cls} = channel_status(c) %>
                 <span class={["font-mono text-[10px] px-2 py-0.5 border", cls]}>{label}</span>
                 <button
+                  :if={c.type == "email"}
                   phx-click="edit_mailbox"
-                  phx-value-id={m.id}
+                  phx-value-id={c.id}
                   class="text-sm text-ink-soft hover:text-ink border border-slate-300 px-3 py-1 hover:bg-paper"
                 >
                   {gettext("Edit")}
                 </button>
                 <button
-                  phx-click="delete_mailbox"
-                  phx-value-id={m.id}
-                  data-confirm={gettext("Delete mailbox %{email}?", email: m.email)}
+                  phx-click="delete_channel"
+                  phx-value-id={c.id}
+                  data-confirm={
+                    if c.type == "gbp",
+                      do: gettext("Disconnect Google Business Profile?"),
+                      else: gettext("Delete mailbox %{email}?", email: c.email)
+                  }
                   class="text-sm text-red-700 border border-red-300 px-3 py-1 hover:bg-red-50"
                 >
-                  {gettext("Delete")}
+                  {if c.type == "gbp", do: gettext("Disconnect"), else: gettext("Delete")}
                 </button>
               </div>
             </div>
           </div>
           <div
-            :if={@mailboxes == []}
+            :if={@channels == []}
             class="bg-paper-card border border-dashed border-slate-300 rounded-sm px-4 py-8 text-center"
           >
-            <p class="text-sm text-ink-mute">{gettext("No mailboxes. Add the first one below.")}</p>
+            <p class="text-sm text-ink-mute">{gettext("No channels yet. Connect one below.")}</p>
           </div>
-
+          
+    <!-- Connect Google Business Profile -->
+          <div
+            :if={!has_gbp?(@channels)}
+            class="mt-4 bg-paper-card border border-slate-200 rounded-sm px-4 py-4 flex items-center justify-between gap-4"
+          >
+            <div>
+              <p class="text-sm font-semibold">{gettext("Google Business Profile")}</p>
+              <p class="text-[12px] text-ink-mute mt-0.5">
+                {gettext("Connect your Google profile to answer reviews straight from the inbox.")}
+              </p>
+            </div>
+            <button
+              phx-click="connect_gbp"
+              class="shrink-0 bg-ink text-white font-mono text-sm px-4 py-2 hover:bg-ink-soft focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
+            >
+              {gettext("Connect")}
+            </button>
+          </div>
+          
+    <!-- Add / edit email mailbox -->
           <div class="mt-4 bg-paper-card border border-slate-200 rounded-sm px-4 py-4">
             <p class="text-sm font-semibold mb-3">
-              {if @mb.id, do: gettext("Edit mailbox: %{email}", email: @mb.email), else: gettext("Add mailbox")}
+              {if @mb.id,
+                do: gettext("Edit mailbox: %{email}", email: @mb.email),
+                else: gettext("Add email mailbox")}
             </p>
             <form phx-submit="submit_mailbox" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div class="sm:col-span-2">
@@ -345,14 +409,18 @@ defmodule OrdoWeb.TenantSettingsLive do
               </div>
             </form>
             <p class="text-[12px] text-ink-mute mt-2">
-              {gettext("The password is encrypted in the database. When editing, it is saved only when a new value is provided.")}
+              {gettext(
+                "The password is encrypted in the database. When editing, it is saved only when a new value is provided."
+              )}
             </p>
           </div>
         </section>
         
     <!-- Demo controls (demo tenant only) -->
         <section :if={@tenant.demo}>
-          <h2 class="font-mono text-[11px] tracking-[0.2em] text-ink-mute mb-1">{gettext("DEMO DATA")}</h2>
+          <h2 class="font-mono text-[11px] tracking-[0.2em] text-ink-mute mb-1">
+            {gettext("DEMO DATA")}
+          </h2>
           <p class="text-sm text-ink-soft mb-4">
             {gettext("Manage the contents of the demo environment.")}
           </p>
@@ -366,6 +434,20 @@ defmodule OrdoWeb.TenantSettingsLive do
               </div>
               <button
                 phx-click="import_mailbox"
+                class="shrink-0 border border-slate-300 px-3 py-1.5 text-sm hover:bg-paper"
+              >
+                {gettext("Import")}
+              </button>
+            </div>
+            <div class="px-4 py-3 flex items-center justify-between gap-4">
+              <div>
+                <p class="text-sm font-medium">{gettext("Import Google reviews")}</p>
+                <p class="text-[12px] text-ink-mute mt-0.5">
+                  {gettext("Load sample Google Business Profile reviews into the inbox.")}
+                </p>
+              </div>
+              <button
+                phx-click="import_reviews"
                 class="shrink-0 border border-slate-300 px-3 py-1.5 text-sm hover:bg-paper"
               >
                 {gettext("Import")}

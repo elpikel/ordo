@@ -5,7 +5,7 @@ defmodule Ordo.Support.Tenant do
   import Ecto.Changeset
 
   alias Ordo.Accounts.User
-  alias Ordo.Support.Mailbox
+  alias Ordo.Support.Channel
   alias Ordo.Support.PolicyFact
   alias Ordo.Support.Ticket
 
@@ -20,7 +20,7 @@ defmodule Ordo.Support.Tenant do
 
     has_many :policy_facts, PolicyFact, preload_order: [asc: :position]
     has_many :tickets, Ticket
-    has_many :mailboxes, Mailbox
+    has_many :channels, Channel
     has_many :users, User
 
     timestamps(type: :utc_datetime_usec)

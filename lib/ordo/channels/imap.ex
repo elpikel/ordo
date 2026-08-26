@@ -1,4 +1,4 @@
-defmodule Ordo.Mailboxes.Fetcher.IMAP do
+defmodule Ordo.Channels.Fetcher.IMAP do
   @moduledoc """
   Minimal poll-based IMAP fetch over `:ssl` (ADR-0007): connect, LOGIN, SELECT,
   UID FETCH new messages by the stored cursor, close. Reads INBOX only (ADR-0008).
@@ -10,7 +10,7 @@ defmodule Ordo.Mailboxes.Fetcher.IMAP do
 
   Best-effort protocol code; verify against a real mailbox (e.g. Gmail app password).
   """
-  @behaviour Ordo.Mailboxes.Fetcher
+  @behaviour Ordo.Channels.Fetcher
 
   require Logger
 

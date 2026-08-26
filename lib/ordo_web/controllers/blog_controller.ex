@@ -94,29 +94,35 @@ defmodule OrdoWeb.BlogController do
   ## JSON-LD (structured data)
 
   defp index_jsonld(locale) do
-    Jason.encode!(%{
-      "@context" => "https://schema.org",
-      "@type" => "Blog",
-      "name" => "Ordo blog",
-      "url" => abs_url(index_path(locale)),
-      "inLanguage" => locale,
-      "publisher" => %{"@type" => "Organization", "name" => "Ordo", "url" => "https://hireordo.com"}
-    }, escape: :html_safe)
+    Jason.encode!(
+      %{
+        "@context" => "https://schema.org",
+        "@type" => "Blog",
+        "name" => "Ordo blog",
+        "url" => abs_url(index_path(locale)),
+        "inLanguage" => locale,
+        "publisher" => %{"@type" => "Organization", "name" => "Ordo", "url" => "https://hireordo.com"}
+      },
+      escape: :html_safe
+    )
   end
 
   defp article_jsonld(post) do
-    Jason.encode!(%{
-      "@context" => "https://schema.org",
-      "@type" => "BlogPosting",
-      "headline" => post.title,
-      "description" => post.description,
-      "datePublished" => Date.to_iso8601(post.date),
-      "inLanguage" => post.locale,
-      "keywords" => Enum.join(post.tags, ", "),
-      "mainEntityOfPage" => abs_url(post_path(post)),
-      "author" => %{"@type" => "Organization", "name" => "Ordo"},
-      "publisher" => %{"@type" => "Organization", "name" => "Ordo", "url" => "https://hireordo.com"}
-    }, escape: :html_safe)
+    Jason.encode!(
+      %{
+        "@context" => "https://schema.org",
+        "@type" => "BlogPosting",
+        "headline" => post.title,
+        "description" => post.description,
+        "datePublished" => Date.to_iso8601(post.date),
+        "inLanguage" => post.locale,
+        "keywords" => Enum.join(post.tags, ", "),
+        "mainEntityOfPage" => abs_url(post_path(post)),
+        "author" => %{"@type" => "Organization", "name" => "Ordo"},
+        "publisher" => %{"@type" => "Organization", "name" => "Ordo", "url" => "https://hireordo.com"}
+      },
+      escape: :html_safe
+    )
   end
 
   ## RSS 2.0

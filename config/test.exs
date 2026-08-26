@@ -40,7 +40,7 @@ config :ordo, OrdoWeb.Endpoint,
   server: false
 
 # Use the fake mail fetcher in tests (no live IMAP).
-config :ordo, :mailbox_fetcher, Ordo.Mailboxes.Fetcher.Fake
+config :ordo, :channel_fetcher, Ordo.Channels.Fetcher.Fake
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime

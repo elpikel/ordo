@@ -2,8 +2,9 @@ defmodule OrdoWeb.InboxLive do
   @moduledoc "Support panel: three-column inbox with rules slide-over and BaseLinker receipt."
   use OrdoWeb, :live_view
 
-  alias Ordo.Mailboxes
+  alias Ordo.Channels
   alias Ordo.Support
+  alias Ordo.Support.Ticket
 
   @per_page 20
 
@@ -17,8 +18,8 @@ defmodule OrdoWeb.InboxLive do
      socket
      |> assign(
        tenant: tenant,
-       mailboxes: Mailboxes.list_for_tenant(tenant.id),
-       mailbox_id: nil,
+       channels: Channels.list_for_tenant(tenant.id),
+       channel_id: nil,
        selected_id: nil,
        ticket: nil,
        page: 0,
@@ -32,24 +33,24 @@ defmodule OrdoWeb.InboxLive do
 
   @impl true
   def handle_params(params, _uri, socket) do
-    mailbox_id = parse_int(params["mbx"])
+    channel_id = parse_int(params["ch"])
     tenant_id = socket.assigns.tenant.id
-    first_page = Support.list_tickets(tenant_id, mailbox_id, limit: @per_page, offset: 0)
+    first_page = Support.list_tickets(tenant_id, channel_id, limit: @per_page, offset: 0)
 
     socket =
       socket
       |> assign(
-        mailbox_id: mailbox_id,
+        channel_id: channel_id,
         page: 0,
         end_reached: length(first_page) < @per_page,
-        stats: Support.ticket_stats(tenant_id, mailbox_id)
+        stats: Support.ticket_stats(tenant_id, channel_id)
       )
       |> stream(:tickets, first_page, reset: true)
 
     case parse_int(params["id"]) do
       nil ->
         case first_page do
-          [first | _] -> {:noreply, push_patch(socket, to: ticket_href(mailbox_id, first.id))}
+          [first | _] -> {:noreply, push_patch(socket, to: ticket_href(channel_id, first.id))}
           [] -> {:noreply, assign(socket, selected_id: nil, ticket: nil)}
         end
 
@@ -68,7 +69,7 @@ defmodule OrdoWeb.InboxLive do
        end)
 
   defp ticket_href(nil, id), do: ~p"/inbox/#{id}"
-  defp ticket_href(mbx, id), do: ~p"/inbox/#{id}?#{[mbx: mbx]}"
+  defp ticket_href(channel_id, id), do: ~p"/inbox/#{id}?#{[ch: channel_id]}"
 
   @impl true
   def handle_event("load_more", _params, %{assigns: %{end_reached: true}} = socket), do: {:noreply, socket}
@@ -77,7 +78,7 @@ defmodule OrdoWeb.InboxLive do
     page = socket.assigns.page + 1
 
     more =
-      Support.list_tickets(socket.assigns.tenant.id, socket.assigns.mailbox_id,
+      Support.list_tickets(socket.assigns.tenant.id, socket.assigns.channel_id,
         limit: @per_page,
         offset: page * @per_page
       )
@@ -122,13 +123,16 @@ defmodule OrdoWeb.InboxLive do
   end
 
   defp refresh_stats(socket),
-    do: assign(socket, stats: Support.ticket_stats(socket.assigns.tenant.id, socket.assigns.mailbox_id))
+    do: assign(socket, stats: Support.ticket_stats(socket.assigns.tenant.id, socket.assigns.channel_id))
 
   @impl true
   def render(assigns) do
-    current = assigns.mailbox_id && Enum.find(assigns.mailboxes, &(&1.id == assigns.mailbox_id))
+    current = assigns.channel_id && Enum.find(assigns.channels, &(&1.id == assigns.channel_id))
 
-    assigns = assign(assigns, :current_label, (current && current.email) || gettext("All mailboxes"))
+    assigns =
+      assigns
+      |> assign(:current_label, channel_label(current))
+      |> assign(:ticket_type, assigns.ticket && Ticket.channel_type(assigns.ticket))
 
     ~H"""
     <div class="bg-paper text-ink font-body antialiased h-screen overflow-hidden flex flex-col">
@@ -160,23 +164,25 @@ defmodule OrdoWeb.InboxLive do
             class="hidden absolute top-full left-0 mt-1 w-72 bg-paper-card border border-slate-200 shadow-lg rounded-sm py-1"
           >
             <p class="px-4 pt-2 pb-1 font-mono text-[10px] tracking-[0.2em] text-ink-mute">
-              {gettext("MAILBOXES")}
+              {gettext("CHANNELS")}
             </p>
             <button
               phx-click={JS.patch(~p"/inbox") |> JS.hide(to: "#mbx-menu")}
               class="w-full text-left px-4 py-2 hover:bg-paper flex items-center justify-between"
             >
-              <span class="font-mono text-sm">{gettext("All mailboxes")}</span>
-              <span class="font-mono text-[10px] text-label-deep">{@stats.drafts} {gettext("draft")}</span>
+              <span class="font-mono text-sm">{gettext("All channels")}</span>
+              <span class="font-mono text-[10px] text-label-deep">
+                {@stats.drafts} {gettext("draft")}
+              </span>
             </button>
             <button
-              :for={m <- @mailboxes}
-              phx-click={JS.patch(~p"/inbox?#{[mbx: m.id]}") |> JS.hide(to: "#mbx-menu")}
+              :for={c <- @channels}
+              phx-click={JS.patch(~p"/inbox?#{[ch: c.id]}") |> JS.hide(to: "#mbx-menu")}
               class="w-full text-left px-4 py-2 hover:bg-paper flex items-center justify-between"
             >
-              <span class="font-mono text-sm">{m.email}</span>
+              <span class="font-mono text-sm">{channel_label(c)}</span>
               <span class="font-mono text-[10px] text-ink-mute">
-                {if m.active, do: gettext("active"), else: "—"}
+                {if c.active, do: gettext("active"), else: "—"}
               </span>
             </button>
           </div>
@@ -225,7 +231,9 @@ defmodule OrdoWeb.InboxLive do
         <!-- LEFT: ticket list -->
         <aside class="w-[300px] shrink-0 border-r border-slate-200 bg-paper-card flex flex-col">
           <div class="px-4 py-3 border-b border-slate-200 flex items-center justify-between">
-            <span class="font-mono text-[11px] tracking-[0.2em] text-ink-mute">{gettext("TICKETS")}</span>
+            <span class="font-mono text-[11px] tracking-[0.2em] text-ink-mute">
+              {gettext("TICKETS")}
+            </span>
             <span class="font-mono text-[11px] text-ink-mute">
               {@stats.total} · <span class="text-label-deep">{@stats.drafts} {gettext("draft")}</span>
             </span>
@@ -240,7 +248,7 @@ defmodule OrdoWeb.InboxLive do
               <.link
                 :for={{dom_id, t} <- @streams.tickets}
                 id={dom_id}
-                patch={ticket_href(@mailbox_id, t.id)}
+                patch={ticket_href(@channel_id, t.id)}
                 class={[
                   "block w-full text-left px-4 py-3 border-l-[3px]",
                   ticket_row_class(t, @selected_id)
@@ -257,10 +265,25 @@ defmodule OrdoWeb.InboxLive do
                     {if t.status == "answered", do: "✓ ", else: ""}{time_of(t)}
                   </span>
                 </div>
+                <p
+                  :if={Ticket.channel_type(t) == "gbp"}
+                  class="font-mono text-[11px] text-label-deep mt-0.5"
+                >
+                  {stars(t.meta["rating"])}
+                </p>
                 <p class="text-sm text-ink-soft truncate mt-0.5">{t.subject}</p>
                 <% {label, cls} = badge(t) %>
-                <span class={["inline-block mt-1.5 font-mono text-[10px] px-1.5 py-0.5 border", cls]}>
-                  {label}
+                <span class="inline-flex items-center gap-1 mt-1.5">
+                  <span
+                    :if={Ticket.channel_type(t) == "gbp"}
+                    class="font-mono text-[10px] text-ink-mute"
+                    title="Google"
+                  >
+                    ★G
+                  </span>
+                  <span class={["inline-block font-mono text-[10px] px-1.5 py-0.5 border", cls]}>
+                    {label}
+                  </span>
                 </span>
               </.link>
             </div>
@@ -286,7 +309,28 @@ defmodule OrdoWeb.InboxLive do
           </div>
 
           <div :if={@ticket} class="max-w-4xl mx-auto px-6 py-6 space-y-5">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <!-- GBP review card -->
+            <div :if={@ticket_type == "gbp"} class="bg-paper-card shadow-card rounded-sm">
+              <div class="px-4 py-2.5 border-b border-slate-200 flex items-center justify-between">
+                <span class="font-mono text-xs tracking-wide">{gettext("REVIEW")} · Google</span>
+                <span class="font-mono text-xs text-label-deep">
+                  {stars(@ticket.meta["rating"])} · {@ticket.meta["posted"]}
+                </span>
+              </div>
+              <div class="px-4 py-4">
+                <p class="font-mono text-[11px] text-ink-mute mb-2">
+                  {@ticket.customer_name} · {@ticket.meta["author_kind"]}
+                </p>
+                <div
+                  :for={m <- customer_messages(@ticket)}
+                  class="bg-slate-100 rounded-sm px-4 py-3 text-[15px] leading-relaxed whitespace-pre-wrap"
+                >
+                  {m.body}
+                </div>
+              </div>
+            </div>
+
+            <div :if={@ticket_type != "gbp"} class="grid grid-cols-1 lg:grid-cols-2 gap-5">
               <!-- customer message card -->
               <div class="bg-paper-card shadow-card rounded-sm">
                 <div class="px-4 py-2.5 border-b border-slate-200 flex items-center justify-between">
@@ -370,7 +414,9 @@ defmodule OrdoWeb.InboxLive do
                       type="submit"
                       class="bg-ink text-white font-mono text-sm px-5 py-2.5 hover:bg-ink-soft transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
                     >
-                      {gettext("Approve and send")}
+                      {if @ticket_type == "gbp",
+                        do: gettext("Approve and publish"),
+                        else: gettext("Approve and send")}
                     </button>
                     <button
                       type="button"
@@ -393,6 +439,15 @@ defmodule OrdoWeb.InboxLive do
                     {gettext("✓ sent · %{count} s", count: @ticket.resolution_seconds)}
                   </p>
                 </div>
+
+                <p
+                  :if={@ticket_type == "gbp"}
+                  class="font-mono text-[11px] text-ink-mute mt-4 pt-3 border-t border-slate-100"
+                >
+                  {gettext(
+                    "Negative reviews are never published automatically — a human always approves them."
+                  )}
+                </p>
               </div>
             </div>
           </div>
@@ -412,7 +467,9 @@ defmodule OrdoWeb.InboxLive do
       >
         <div class="px-5 py-4 border-b-2 border-ink flex items-center justify-between">
           <div>
-            <p class="font-mono text-[11px] tracking-[0.2em] text-ink-mute">{gettext("SHOP RULES")}</p>
+            <p class="font-mono text-[11px] tracking-[0.2em] text-ink-mute">
+              {gettext("SHOP RULES")}
+            </p>
             <p class="font-semibold text-sm mt-0.5">{@tenant.name}</p>
           </div>
           <button
@@ -426,7 +483,8 @@ defmodule OrdoWeb.InboxLive do
           </button>
         </div>
         <p class="px-5 py-3 text-[13px] text-ink-soft border-b border-slate-100">
-          {gettext("Ordo bases its replies on these facts.")} <strong>{gettext("It doesn't make anything up beyond them.")}</strong>
+          {gettext("Ordo bases its replies on these facts.")}
+          <strong>{gettext("It doesn't make anything up beyond them.")}</strong>
         </p>
         <div class="flex-1 overflow-y-auto divide-y divide-slate-100">
           <div
@@ -450,6 +508,10 @@ defmodule OrdoWeb.InboxLive do
     """
   end
 
+  defp channel_label(nil), do: gettext("All channels")
+  defp channel_label(%{type: "gbp"}), do: gettext("Google reviews")
+  defp channel_label(%{email: email}), do: email
+
   defp category_label("PACKAGE_STATUS"), do: gettext("Package status")
   defp category_label("RETURN"), do: gettext("Return")
   defp category_label("RETURN_STATUS"), do: gettext("Return status")
@@ -458,7 +520,15 @@ defmodule OrdoWeb.InboxLive do
   defp category_label("CANCELLATION"), do: gettext("Cancellation")
   defp category_label("COMPLAINT"), do: gettext("Complaint")
   defp category_label("OTHER"), do: gettext("Other")
+  defp category_label("REVIEW_POSITIVE"), do: gettext("Thank-you")
+  defp category_label("REVIEW_NEGATIVE"), do: gettext("Negative")
+  defp category_label("REVIEW_MIXED"), do: gettext("Mixed")
   defp category_label(code), do: code
+
+  defp stars(rating) when is_integer(rating) and rating in 0..5,
+    do: String.duplicate("★", rating) <> String.duplicate("☆", 5 - rating)
+
+  defp stars(_), do: "★★★★★"
 
   defp time_of(%{inserted_at: at}), do: Calendar.strftime(at, "%H:%M")
 
@@ -476,6 +546,7 @@ defmodule OrdoWeb.InboxLive do
     do: {gettext("SENT · %{count} s", count: t.resolution_seconds), "border-okay text-okay"}
 
   defp badge(%{category: "COMPLAINT"}), do: {gettext("COMPLAINT · HUMAN"), "border-label-deep text-label-deep"}
+  defp badge(%{category: "REVIEW_NEGATIVE"}), do: {gettext("NEGATIVE · HUMAN"), "border-label-deep text-label-deep"}
   defp badge(%{category: nil}), do: {"…", "border-slate-300 text-ink-mute"}
   defp badge(%{category: c}), do: {String.upcase(category_label(c)), "border-slate-300 text-ink-mute"}
 end

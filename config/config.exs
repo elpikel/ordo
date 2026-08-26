@@ -17,17 +17,20 @@ config :esbuild,
     env: %{"NODE_PATH" => [Path.expand("../deps", __DIR__), Mix.Project.build_path()]}
   ]
 
+# Polish is the default language (UI copy, emails, and validation errors).
+config :gettext, :default_locale, "pl"
+
 # Configure Elixir's Logger
 config :logger, :default_formatter,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-# Oban — mailbox polling. A cron job fans out one PollMailbox per active mailbox.
+# Oban — channel polling. A cron job fans out one PollChannel per active email channel.
 config :ordo, Oban,
   repo: Ordo.Repo,
-  queues: [mailbox: 5],
+  queues: [channel: 5],
   plugins: [
-    {Oban.Plugins.Cron, crontab: [{"* * * * *", Ordo.Mailboxes.ScheduleJob}]}
+    {Oban.Plugins.Cron, crontab: [{"* * * * *", Ordo.Channels.ScheduleJob}]}
   ]
 
 # Configure the mailer
@@ -66,9 +69,6 @@ config :ordo, :scopes,
 config :ordo,
   ecto_repos: [Ordo.Repo],
   generators: [timestamp_type: :utc_datetime]
-
-# Polish is the default language (UI copy, emails, and validation errors).
-config :gettext, :default_locale, "pl"
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason

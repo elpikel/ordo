@@ -28,14 +28,61 @@ defmodule Ordo.Demo do
   @general "sklep@hireordo.com"
   @complaints "reklamacje@hireordo.com"
 
-  @doc "Demo mailboxes seeded on the demo tenant (never polled — see Mailboxes.list_active)."
+  @doc "Demo email channels seeded on the demo tenant (never polled — see Channels.list_active)."
   def mailboxes, do: [@general, @complaints]
+
+  @doc "Demo Google Business Profile channel seeded on the demo tenant."
+  def gbp_channel, do: %{type: "gbp", name: "Google", active: true}
 
   @complaint_re ~r/reklamac|uszkodz|spleśn|ważności|skandal/iu
 
   @doc "Which demo mailbox a fixture email 'arrived at' — complaints route to reklamacje@."
   def mailbox_for(%{subject: subject, body: body}) do
     if Regex.match?(@complaint_re, "#{subject} #{body}"), do: @complaints, else: @general
+  end
+
+  @doc """
+  Seeded Google Business Profile reviews for the demo (channel: gbp). Rating
+  drives classification (5★ → thank-you, ≤2★ → needs a human, else mixed).
+  """
+  def reviews do
+    [
+      %{
+        id: "r-anna",
+        author: "Anna Kowalska",
+        author_kind: "Lokalna przewodniczka · 32 opinie",
+        rating: 5,
+        posted: "wczoraj",
+        text:
+          "Zamówienie dotarło błyskawicznie, a masło orzechowe jest rewelacyjne. Napisałam maila z pytaniem o skład i dostałam odpowiedź w kilka minut. Obsługa na medal, polecam z całego serca!"
+      },
+      %{
+        id: "r-marek",
+        author: "Marek Wiśniewski",
+        author_kind: "3 opinie",
+        rating: 2,
+        posted: "2 dni temu",
+        text:
+          "Miało być 48 godzin, a paczka szła ponad tydzień. Produkty w porządku, ale na dostawę czekałem stanowczo za długo i nikt mnie nie poinformował o opóźnieniu."
+      },
+      %{
+        id: "r-kasia",
+        author: "Katarzyna Lewandowska",
+        author_kind: "8 opinii",
+        rating: 4,
+        posted: "3 dni temu",
+        text:
+          "Batony proteinowe świetne, zamawiam nie pierwszy raz. Tym razem jeden przyszedł lekko pognieciony w transporcie, ale poza tym wszystko super."
+      },
+      %{
+        id: "r-piotr",
+        author: "Piotr Zieliński",
+        author_kind: "Lokalny przewodnik · 51 opinii",
+        rating: 5,
+        posted: "5 dni temu",
+        text: "Najlepsze płatki jakie jadłem, zamawiam regularnie. Szybka wysyłka i zawsze świeże."
+      }
+    ]
   end
 
   @doc "Structured, accepted Policy facts (see CONTEXT.md: Policy fact)."

@@ -31,9 +31,7 @@ defmodule OrdoWeb.SitemapController do
   end
 
   defp sitemap do
-    entries =
-      [home_entry() | index_entries() ++ post_entries()]
-      |> Enum.join("\n")
+    entries = Enum.join([home_entry() | index_entries() ++ post_entries()], "\n")
 
     """
     <?xml version="1.0" encoding="UTF-8"?>

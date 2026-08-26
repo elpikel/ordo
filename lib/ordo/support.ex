@@ -13,9 +13,10 @@ defmodule Ordo.Support do
   alias Ordo.Accounts.User
   alias Ordo.AI
   alias Ordo.BaseLinker
+  alias Ordo.Channels
   alias Ordo.Demo
   alias Ordo.Repo
-  alias Ordo.Support.Mailbox
+  alias Ordo.Support.Channel
   alias Ordo.Support.Message
   alias Ordo.Support.PolicyFact
   alias Ordo.Support.Tenant
@@ -54,7 +55,7 @@ defmodule Ordo.Support do
           t
       end
 
-    seed_demo_mailboxes!(tenant)
+    seed_demo_channels!(tenant)
     seed_demo_user!(tenant)
     with_policy(tenant)
   end
@@ -81,12 +82,146 @@ defmodule Ordo.Support do
     end
   end
 
-  defp seed_demo_mailboxes!(tenant) do
+  defp seed_demo_channels!(tenant) do
     Enum.each(Demo.mailboxes(), fn email ->
-      if is_nil(Repo.get_by(Mailbox, tenant_id: tenant.id, email: email)) do
-        %Mailbox{} |> Mailbox.changeset(%{tenant_id: tenant.id, email: email, active: true}) |> Repo.insert!()
+      if is_nil(Repo.get_by(Channel, tenant_id: tenant.id, email: email)) do
+        %Channel{}
+        |> Channel.changeset(%{tenant_id: tenant.id, type: "email", email: email, active: true})
+        |> Repo.insert!()
       end
     end)
+
+    if is_nil(Channels.gbp_channel(tenant.id)) do
+      %Channel{}
+      |> Channel.changeset(Map.put(Demo.gbp_channel(), :tenant_id, tenant.id))
+      |> Repo.insert!()
+    end
+  end
+
+  @doc """
+  Ensure the demo tenant exists (with its channels, incl. the gbp channel) and
+  seed its inbox with tickets + messages, so a fresh deploy shows a populated
+  demo without clicking "Import". Idempotent — a no-op once tickets exist.
+
+  Runs the demo pipeline inline (no Task/sleeps/broadcasts): `Ordo.AI` and the
+  demo `BaseLinker` are deterministic offline, so this is migration-safe.
+  """
+  def seed_demo_inbox! do
+    seed_demo_inbox!(ensure_demo_tenant!())
+  end
+
+  def seed_demo_inbox!(tenant) do
+    if Repo.exists?(from t in Ticket, where: t.tenant_id == ^tenant.id) do
+      :ok
+    else
+      by_email =
+        Map.new(
+          Repo.all(from c in Channel, where: c.tenant_id == ^tenant.id and c.type == "email"),
+          &{&1.email, &1.id}
+        )
+
+      Enum.each(Demo.emails(), &seed_email_ticket!(tenant, by_email, &1))
+
+      gbp = Channels.gbp_channel(tenant.id)
+      Enum.each(Demo.reviews(), &seed_review_ticket!(tenant, gbp, &1))
+      :ok
+    end
+  end
+
+  @doc """
+  Repair a demo account whose inbox was seeded before the gbp channel existed:
+  ensure the gbp channel, re-home orphaned review tickets (null channel_id) onto
+  it, and seed any reviews still missing — so the Google channel is populated.
+  Idempotent and safe to run repeatedly.
+  """
+  def fix_demo_account! do
+    fix_demo_account!(ensure_demo_tenant!())
+  end
+
+  def fix_demo_account!(tenant) do
+    if gbp = Channels.gbp_channel(tenant.id) do
+      Repo.update_all(
+        from(t in Ticket,
+          where: t.tenant_id == ^tenant.id and is_nil(t.channel_id) and not is_nil(fragment("? ->> 'review_id'", t.meta))
+        ),
+        set: [channel_id: gbp.id]
+      )
+
+      Enum.each(Demo.reviews(), &seed_review_ticket!(tenant, gbp, &1))
+    end
+
+    :ok
+  end
+
+  defp seed_email_ticket!(tenant, by_email, attrs) do
+    class = AI.classify(attrs.subject, attrs.body)
+    order = BaseLinker.resolve(tenant, class.order_ref, attrs.customer_email)
+
+    draft =
+      AI.compose(%{
+        category: class.category,
+        language: class.language,
+        message: attrs.body,
+        order: order,
+        policy: policy_lines(tenant.id),
+        signature: tenant.signature || "Zespół sklepu"
+      })
+
+    {:ok, ticket} =
+      %Ticket{}
+      |> Ticket.changeset(%{
+        tenant_id: tenant.id,
+        channel_id: Map.get(by_email, Demo.mailbox_for(attrs)),
+        customer_name: attrs.customer_name,
+        customer_email: attrs.customer_email,
+        subject: attrs.subject,
+        status: "draft_ready",
+        category: class.category,
+        language: class.language,
+        order_ref: class.order_ref,
+        sentiment: class.sentiment,
+        order: order,
+        draft: draft
+      })
+      |> Repo.insert()
+
+    %Message{}
+    |> Message.changeset(%{ticket_id: ticket.id, role: "customer", body: attrs.body})
+    |> Repo.insert!()
+  end
+
+  defp seed_review_ticket!(tenant, gbp, review) do
+    ext_id = "gbp:" <> review.id
+
+    if !message_exists?(ext_id) do
+      {category, sentiment} = classify_review(review.rating)
+      draft = compose_review_reply(category, review, tenant.signature || "Zespół")
+
+      {:ok, ticket} =
+        %Ticket{}
+        |> Ticket.changeset(%{
+          tenant_id: tenant.id,
+          channel_id: gbp && gbp.id,
+          customer_name: review.author,
+          subject: review_subject(review.text),
+          status: "draft_ready",
+          category: category,
+          sentiment: sentiment,
+          language: "pl",
+          draft: draft,
+          meta: %{
+            "rating" => review.rating,
+            "author_kind" => review.author_kind,
+            "review_id" => review.id,
+            "posted" => review.posted
+          }
+        })
+        |> Repo.insert()
+
+      %Message{}
+      |> Message.changeset(%{ticket_id: ticket.id, role: "customer", body: review.text, message_id: ext_id})
+      |> Repo.insert!()
+    end
   end
 
   defp seed_policy!(tenant) do
@@ -108,37 +243,38 @@ defmodule Ordo.Support do
     Repo.all(from p in PolicyFact, where: p.tenant_id == ^tenant_id, order_by: [asc: p.position])
   end
 
-  @doc "Tickets for a tenant, filtered to one mailbox (nil = all), paginated via :limit/:offset."
-  def list_tickets(tenant_id, mailbox_id \\ nil, opts \\ []) do
+  @doc "Tickets for a tenant, optionally filtered to one channel (nil = all), paginated via :limit/:offset."
+  def list_tickets(tenant_id, channel_id \\ nil, opts \\ []) do
     Ticket
     |> where([t], t.tenant_id == ^tenant_id)
-    |> maybe_mailbox(mailbox_id)
+    |> maybe_channel(channel_id)
     |> order_by([t], desc: t.inserted_at)
     |> maybe_limit(opts[:limit])
     |> maybe_offset(opts[:offset])
+    |> preload(:channel)
     |> Repo.all()
   end
 
   @doc "Counts for the list header: total tickets and drafts awaiting approval."
-  def ticket_stats(tenant_id, mailbox_id \\ nil) do
-    base = Ticket |> where([t], t.tenant_id == ^tenant_id) |> maybe_mailbox(mailbox_id)
+  def ticket_stats(tenant_id, channel_id \\ nil) do
+    base = Ticket |> where([t], t.tenant_id == ^tenant_id) |> maybe_channel(channel_id)
     %{total: Repo.aggregate(base, :count), drafts: Repo.aggregate(where(base, [t], t.status == "draft_ready"), :count)}
   end
 
-  defp maybe_mailbox(q, nil), do: q
-  defp maybe_mailbox(q, mailbox_id), do: where(q, [t], t.mailbox_id == ^mailbox_id)
+  defp maybe_channel(q, nil), do: q
+  defp maybe_channel(q, channel_id), do: where(q, [t], t.channel_id == ^channel_id)
   defp maybe_limit(q, nil), do: q
   defp maybe_limit(q, n), do: limit(q, ^n)
   defp maybe_offset(q, nil), do: q
   defp maybe_offset(q, n), do: offset(q, ^n)
 
-  def get_ticket!(id), do: Ticket |> Repo.get!(id) |> Repo.preload(:messages)
+  def get_ticket!(id), do: Ticket |> Repo.get!(id) |> Repo.preload([:messages, :channel])
 
   @doc "Load a ticket by id with messages, or nil if it doesn't exist."
   def get_ticket(id) do
     case Repo.get(Ticket, id) do
       nil -> nil
-      ticket -> Repo.preload(ticket, :messages)
+      ticket -> Repo.preload(ticket, [:messages, :channel])
     end
   end
 
@@ -151,17 +287,118 @@ defmodule Ordo.Support do
   @doc "Reset and live-ingest the demo mailbox (Importuj skrzynkę). Streams in."
   def import_demo_mailbox!(tenant) do
     clear_inbox!(tenant.id)
-    by_email = Map.new(Repo.all(from m in Mailbox, where: m.tenant_id == ^tenant.id), &{&1.email, &1.id})
+
+    by_email =
+      Map.new(
+        Repo.all(from c in Channel, where: c.tenant_id == ^tenant.id and c.type == "email"),
+        &{&1.email, &1.id}
+      )
 
     Task.start(fn ->
       Enum.each(Demo.emails(), fn attrs ->
-        mailbox_id = Map.get(by_email, Demo.mailbox_for(attrs))
-        receive_email(tenant.id, Map.put(attrs, :mailbox_id, mailbox_id))
+        channel_id = Map.get(by_email, Demo.mailbox_for(attrs))
+        receive_email(tenant.id, Map.put(attrs, :channel_id, channel_id))
         Process.sleep(200)
       end)
     end)
 
     :ok
+  end
+
+  @doc "Live-ingest the demo Google reviews. Streams in, like the mailbox import."
+  def import_demo_reviews!(tenant) do
+    Task.start(fn ->
+      Enum.each(Ordo.Channels.Gbp.fetch(tenant), fn review ->
+        receive_review(tenant, review)
+        Process.sleep(200)
+      end)
+    end)
+
+    :ok
+  end
+
+  @doc "Turn one Google review into a Ticket on the tenant's gbp channel, then draft a reply."
+  def receive_review(tenant, review) do
+    ext_id = "gbp:" <> review.id
+
+    if message_exists?(ext_id) do
+      {:skip, :duplicate}
+    else
+      gbp_channel = Channels.gbp_channel(tenant.id)
+
+      {:ok, ticket} =
+        %Ticket{}
+        |> Ticket.changeset(%{
+          tenant_id: tenant.id,
+          channel_id: gbp_channel && gbp_channel.id,
+          customer_name: review.author,
+          subject: review_subject(review.text),
+          status: "new",
+          meta: %{
+            "rating" => review.rating,
+            "author_kind" => review.author_kind,
+            "review_id" => review.id,
+            "posted" => review.posted
+          }
+        })
+        |> Repo.insert()
+
+      {:ok, _msg} =
+        %Message{}
+        |> Message.changeset(%{ticket_id: ticket.id, role: "customer", body: review.text, message_id: ext_id})
+        |> Repo.insert()
+
+      ticket = get_ticket!(ticket.id)
+      broadcast({:ticket_created, ticket})
+      Task.start(fn -> process_review(ticket, review) end)
+      {:ok, ticket}
+    end
+  end
+
+  defp review_subject(text) do
+    text = String.trim(text)
+    if String.length(text) > 60, do: String.slice(text, 0, 60) <> "…", else: text
+  end
+
+  # Reviews skip order lookup: classify by rating, then draft a public reply.
+  defp process_review(ticket, review) do
+    tenant = Repo.get!(Tenant, ticket.tenant_id)
+
+    Process.sleep(400)
+    {category, sentiment} = classify_review(review.rating)
+    ticket = update!(ticket, %{status: "classified", category: category, sentiment: sentiment, language: "pl"})
+    broadcast({:ticket_updated, ticket})
+
+    Process.sleep(500)
+    draft = compose_review_reply(category, review, tenant.signature || "Zespół")
+    ticket = update!(ticket, %{draft: draft, status: "draft_ready"})
+    broadcast({:ticket_updated, ticket})
+  end
+
+  defp classify_review(rating) when rating >= 5, do: {"REVIEW_POSITIVE", "positive"}
+  defp classify_review(rating) when rating <= 2, do: {"REVIEW_NEGATIVE", "angry"}
+  defp classify_review(_rating), do: {"REVIEW_MIXED", "neutral"}
+
+  defp compose_review_reply("REVIEW_POSITIVE", review, signature) do
+    "#{first_name(review.author)}, dziękujemy za tak miłe słowa — takie opinie dają nam najwięcej energii do działania! " <>
+      "Cieszymy się, że wszystko się spodobało, i zapraszamy ponownie.\n\nPozdrawiamy,\n#{signature}"
+  end
+
+  defp compose_review_reply("REVIEW_NEGATIVE", review, signature) do
+    "#{first_name(review.author)}, bardzo nam przykro z powodu tej sytuacji i przepraszamy za niedogodności. " <>
+      "Chcemy to naprawić — napiszemy do Państwa bezpośrednio, żeby wyjaśnić sprawę i zaproponować rozwiązanie.\n\nPozdrawiamy,\n#{signature}"
+  end
+
+  defp compose_review_reply(_mixed, review, signature) do
+    "#{first_name(review.author)}, dziękujemy za opinię i szczery feedback! Cieszymy się, że produkty smakują, " <>
+      "a uwagę o dostawie bierzemy sobie do serca i już nad tym pracujemy.\n\nPozdrawiamy,\n#{signature}"
+  end
+
+  defp first_name(author) do
+    case String.split(author, " ", parts: 2) do
+      [first | _] -> first
+      _ -> author
+    end
   end
 
   @doc "Feed the artificial inbox. Returns the created Ticket and kicks off processing."
@@ -170,7 +407,7 @@ defmodule Ordo.Support do
       %Ticket{}
       |> Ticket.changeset(%{
         tenant_id: tenant_id,
-        mailbox_id: attrs[:mailbox_id],
+        channel_id: attrs[:channel_id],
         customer_name: attrs[:customer_name],
         customer_email: attrs[:customer_email],
         subject: attrs[:subject],
@@ -249,6 +486,11 @@ defmodule Ordo.Support do
       |> Message.changeset(%{ticket_id: ticket.id, role: "ordo", body: body})
       |> Repo.insert()
 
+    # Publish/send the reply out on the ticket's own channel (email SMTP deferred,
+    # GBP publishes to Google — Fake no-ops in demo).
+    tenant = Repo.get!(Tenant, ticket.tenant_id)
+    Channels.send_reply(ticket, tenant, body)
+
     ticket =
       update!(ticket, %{
         draft: body,
@@ -269,8 +511,10 @@ defmodule Ordo.Support do
     {:ok, ticket}
   end
 
+  # Keep :channel loaded so broadcast tickets rendered straight into the inbox
+  # stream can still resolve their channel type (no query when already loaded).
   defp update!(ticket, attrs) do
-    ticket |> Ticket.changeset(attrs) |> Repo.update!()
+    ticket |> Ticket.changeset(attrs) |> Repo.update!() |> Repo.preload(:channel)
   end
 
   @doc """
@@ -278,7 +522,7 @@ defmodule Ordo.Support do
   no loop guard (ADR-0008): drop machine mail, dedup by Message-ID, then thread
   by References or create a new Ticket. Returns {:ok, ticket} or {:skip, reason}.
   """
-  def ingest_email(%Mailbox{} = mailbox, raw) do
+  def ingest_email(%Channel{} = channel, raw) do
     case parse_email(raw) do
       nil ->
         {:skip, :unparseable}
@@ -286,26 +530,26 @@ defmodule Ordo.Support do
       email ->
         cond do
           machine_mail?(email) -> {:skip, :machine}
-          from_self?(mailbox, email) -> {:skip, :self}
+          from_self?(channel, email) -> {:skip, :self}
           email.message_id && message_exists?(email.message_id) -> {:skip, :duplicate}
-          true -> do_ingest(mailbox, email)
+          true -> do_ingest(channel, email)
         end
     end
   end
 
-  defp do_ingest(mailbox, email) do
+  defp do_ingest(channel, email) do
     case find_thread(email) do
-      nil -> create_ticket_from_email(mailbox, email)
+      nil -> create_ticket_from_email(channel, email)
       ticket -> append_to_thread(ticket, email)
     end
   end
 
-  defp create_ticket_from_email(mailbox, email) do
+  defp create_ticket_from_email(channel, email) do
     {:ok, ticket} =
       %Ticket{}
       |> Ticket.changeset(%{
-        tenant_id: mailbox.tenant_id,
-        mailbox_id: mailbox.id,
+        tenant_id: channel.tenant_id,
+        channel_id: channel.id,
         customer_name: email.from_name,
         customer_email: email.from_email,
         subject: email.subject,
@@ -364,9 +608,9 @@ defmodule Ordo.Support do
       not is_nil(email.list_unsub)
   end
 
-  defp from_self?(mailbox, email) do
-    is_binary(email.from_email) and is_binary(mailbox.email) and
-      String.downcase(email.from_email) == String.downcase(mailbox.email)
+  defp from_self?(channel, email) do
+    is_binary(email.from_email) and is_binary(channel.email) and
+      String.downcase(email.from_email) == String.downcase(channel.email)
   end
 
   defp parse_email(raw) do

@@ -154,6 +154,8 @@ defmodule OrdoWeb.BlogHTML do
         />
         <link rel="icon" href={~p"/favicon.svg"} type="image/svg+xml" />
         <link phx-track-static rel="stylesheet" href={~p"/assets/css/app.css"} />
+        <script defer data-domain="hireordo.com" data-api="/api/event" src="/js/stats.js">
+        </script>
         {Phoenix.HTML.raw(~s(<script type="application/ld+json">) <> @jsonld <> "</script>")}
       </head>
       <body class="bg-paper text-ink font-body antialiased">

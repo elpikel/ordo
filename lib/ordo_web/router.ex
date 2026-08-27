@@ -51,9 +51,9 @@ defmodule OrdoWeb.Router do
     end
   end
 
-  # Analytics proxy to avoid ad blockers (no pipeline: POST /api/event must skip CSRF)
+  # Analytics event proxy to avoid ad blockers (no pipeline: POST /api/event must skip CSRF).
+  # The tracking script itself is a vendored static file at priv/static/js/stats.js.
   scope "/", OrdoWeb do
-    get "/js/stats.js", AnalyticsController, :script
     post "/api/event", AnalyticsController, :event
   end
 

@@ -28,7 +28,7 @@ config :logger, :default_formatter,
 # Oban — channel polling. A cron job fans out one PollChannel per active email channel.
 config :ordo, Oban,
   repo: Ordo.Repo,
-  queues: [channel: 5],
+  queues: [channel: 5, notifications: 10],
   plugins: [
     {Oban.Plugins.Cron, crontab: [{"* * * * *", Ordo.Channels.ScheduleJob}]}
   ]

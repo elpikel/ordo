@@ -91,6 +91,18 @@ defmodule OrdoWeb.TenantSettingsLive do
     {:noreply, socket |> reload() |> assign(mb: @blank_mb) |> notice(gettext("Channel removed."))}
   end
 
+  def handle_event("save_notifications", %{"notify" => params}, socket) do
+    attrs = %{
+      notify_enabled: params["enabled"] == "true",
+      notify_whatsapp: String.trim(params["whatsapp"] || "")
+    }
+
+    case Support.update_tenant(socket.assigns.tenant, attrs) do
+      {:ok, tenant} -> {:noreply, socket |> assign(tenant: tenant) |> notice(gettext("Notification settings saved."))}
+      {:error, cs} -> {:noreply, notice(socket, gettext("Error: %{errors}", errors: errors(cs)))}
+    end
+  end
+
   def handle_event("import_mailbox", _params, socket) do
     Support.import_demo_mailbox!(socket.assigns.tenant)
     {:noreply, notice(socket, gettext("Importing mailbox — open the mailbox to see it."))}
@@ -415,6 +427,64 @@ defmodule OrdoWeb.TenantSettingsLive do
               )}
             </p>
           </div>
+        </section>
+        
+    <!-- Notifications -->
+        <section>
+          <h2 class="font-mono text-[11px] tracking-[0.2em] text-ink-mute mb-1">
+            {gettext("NOTIFICATIONS")}
+          </h2>
+          <p class="text-sm text-ink-soft mb-4">
+            {gettext(
+              "Get pinged when a new message has a draft ready — with the original message and the proposed reply — so you can approve it from your email or WhatsApp."
+            )}
+          </p>
+
+          <form
+            phx-submit="save_notifications"
+            class="bg-paper-card border border-slate-200 rounded-sm px-4 py-4 space-y-4"
+          >
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="hidden" name="notify[enabled]" value="false" />
+              <input
+                type="checkbox"
+                name="notify[enabled]"
+                value="true"
+                checked={@tenant.notify_enabled}
+                class="mt-0.5 h-4 w-4 border-slate-300 text-ink focus:ring-label"
+              />
+              <span>
+                <span class="text-sm font-medium">
+                  {gettext("Notify me about incoming messages")}
+                </span>
+                <span class="block text-[12px] text-ink-mute mt-0.5">
+                  {gettext("Emails every teammate on this account. Off by default.")}
+                </span>
+              </span>
+            </label>
+
+            <div>
+              <label class="block text-[12px] text-ink-mute mb-1">
+                {gettext("WhatsApp number (optional)")}
+              </label>
+              <input
+                name="notify[whatsapp]"
+                value={@tenant.notify_whatsapp}
+                placeholder="+48 600 100 200"
+                class={input_class()}
+              />
+              <p class="text-[12px] text-ink-mute mt-1">
+                {gettext("Also send a WhatsApp you can approve by replying OK. Leave blank to skip.")}
+              </p>
+            </div>
+
+            <button
+              type="submit"
+              class="bg-ink text-white font-mono text-sm px-4 py-2 hover:bg-ink-soft focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
+            >
+              {gettext("Save")}
+            </button>
+          </form>
         </section>
         
     <!-- Demo controls (demo tenant only) -->

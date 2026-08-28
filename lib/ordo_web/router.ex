@@ -58,6 +58,21 @@ defmodule OrdoWeb.Router do
     get "/oauth/google/callback", GoogleOAuthController, :callback
   end
 
+  # One-click draft approval from the operator notification email. Authorized by
+  # a signed token in the path (not the session) — public, tamper-proof, and CSRF
+  # is moot since the secret token itself is required, so no :browser pipeline.
+  scope "/", OrdoWeb do
+    get "/n/:token", ApprovalController, :show
+    post "/n/:token", ApprovalController, :approve
+  end
+
+  # Inbound WhatsApp (Meta Cloud API) webhook. No pipeline: Meta's verification GET
+  # and signed POST negotiate no format and must skip CSRF.
+  scope "/webhooks", OrdoWeb do
+    get "/whatsapp", WhatsAppWebhookController, :verify
+    post "/whatsapp", WhatsAppWebhookController, :receive
+  end
+
   # Analytics event proxy to avoid ad blockers (no pipeline: POST /api/event must skip CSRF).
   # The tracking script itself is a vendored static file at priv/static/js/stats.js.
   scope "/", OrdoWeb do

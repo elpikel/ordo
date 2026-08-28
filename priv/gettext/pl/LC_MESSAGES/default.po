@@ -41,12 +41,12 @@ msgstr ": Ordo pisze wersję roboczą, Ty ją zatwierdzasz. Gdy jego wersje prze
 msgid "A link to confirm your email change has been sent to the new address."
 msgstr "Link potwierdzający zmianę adresu e-mail został wysłany na nowy adres."
 
-#: lib/ordo_web/live/tenant_settings_live.ex:255
+#: lib/ordo_web/live/tenant_settings_live.ex:267
 #, elixir-autogen, elixir-format
 msgid "A new token is saved only when a new value is provided."
 msgstr "Nowy token zapisywany jest tylko przy podaniu nowej wartości."
 
-#: lib/ordo_web/live/tenant_settings_live.ex:144
+#: lib/ordo_web/live/tenant_settings_live.ex:156
 #, elixir-autogen, elixir-format
 msgid "ACTIVE"
 msgstr "AKTYWNA"
@@ -72,11 +72,13 @@ msgstr "Akcje"
 msgid "Activate account"
 msgstr "Aktywuj konto"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:400
+#: lib/ordo_web/live/tenant_settings_live.ex:412
 #, elixir-autogen, elixir-format
 msgid "Add mailbox"
 msgstr "Dodaj skrzynkę"
 
+#: lib/ordo/notifications/operator_email.ex:35
+#: lib/ordo/notifications/operator_email.ex:65
 #: lib/ordo_web/live/inbox_live.ex:419
 #, elixir-autogen, elixir-format
 msgid "Approve and send"
@@ -98,12 +100,12 @@ msgstr "Autopilot"
 msgid "Back to inbox"
 msgstr "Wróć do skrzynki"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:170
+#: lib/ordo_web/live/tenant_settings_live.ex:182
 #, elixir-autogen, elixir-format
 msgid "Back to mailbox"
 msgstr "Wróć do skrzynki"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:203
+#: lib/ordo_web/live/tenant_settings_live.ex:215
 #, elixir-autogen, elixir-format
 msgid "BaseLinker connection inactive"
 msgstr "połączenie z BaseLinkerem nieaktywne"
@@ -123,8 +125,8 @@ msgstr "Stworzone w Gdańsku, UE"
 msgid "COMPLAINT · HUMAN"
 msgstr "REKLAMACJA · CZŁOWIEK"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:138
-#: lib/ordo_web/live/tenant_settings_live.ex:241
+#: lib/ordo_web/live/tenant_settings_live.ex:150
+#: lib/ordo_web/live/tenant_settings_live.ex:253
 #, elixir-autogen, elixir-format
 msgid "CONNECTED"
 msgstr "POŁĄCZONO"
@@ -134,12 +136,12 @@ msgstr "POŁĄCZONO"
 msgid "COPILOT"
 msgstr "COPILOT"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:226
+#: lib/ordo_web/live/tenant_settings_live.ex:238
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:408
+#: lib/ordo_web/live/tenant_settings_live.ex:420
 #, elixir-autogen, elixir-format
 msgid "Cancel editing"
 msgstr "Anuluj edycję"
@@ -154,7 +156,7 @@ msgstr "Anulacja"
 msgid "Change Email"
 msgstr "Zmień e-mail"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:251
+#: lib/ordo_web/live/tenant_settings_live.ex:263
 #, elixir-autogen, elixir-format
 msgid "Change token"
 msgstr "Zmień token"
@@ -164,17 +166,17 @@ msgstr "Zmień token"
 msgid "Changing..."
 msgstr "Zmieniam..."
 
-#: lib/ordo_web/live/tenant_settings_live.ex:493
+#: lib/ordo_web/live/tenant_settings_live.ex:563
 #, elixir-autogen, elixir-format
 msgid "Clear"
 msgstr "Wyczyść"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:483
+#: lib/ordo_web/live/tenant_settings_live.ex:553
 #, elixir-autogen, elixir-format
 msgid "Clear all tickets"
 msgstr "Wyczyść wszystkie tickety"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:490
+#: lib/ordo_web/live/tenant_settings_live.ex:560
 #, elixir-autogen, elixir-format
 msgid "Clear all tickets?"
 msgstr "Wyczyścić wszystkie tickety?"
@@ -265,42 +267,42 @@ msgstr "Copilot"
 msgid "Customer"
 msgstr "Klient"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:423
+#: lib/ordo_web/live/tenant_settings_live.ex:493
 #, elixir-autogen, elixir-format
 msgid "DEMO DATA"
 msgstr "DANE DEMO"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:145
+#: lib/ordo_web/live/tenant_settings_live.ex:157
 #, elixir-autogen, elixir-format
 msgid "DISABLED"
 msgstr "WYŁĄCZONA"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:315
+#: lib/ordo_web/live/tenant_settings_live.ex:327
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Usuń"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:311
+#: lib/ordo_web/live/tenant_settings_live.ex:323
 #, elixir-autogen, elixir-format
 msgid "Delete mailbox %{email}?"
 msgstr "Usunąć skrzynkę %{email}?"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:485
+#: lib/ordo_web/live/tenant_settings_live.ex:555
 #, elixir-autogen, elixir-format
 msgid "Deletes demo tickets. This operation cannot be undone."
 msgstr "Usuwa tickety demo. Tej operacji nie można cofnąć."
 
-#: lib/ordo_web/live/tenant_settings_live.ex:461
+#: lib/ordo_web/live/tenant_settings_live.ex:531
 #, elixir-autogen, elixir-format
 msgid "Drop in a single email as if from a customer."
 msgstr "Wrzuć pojedynczy e-mail jak od klienta."
 
-#: lib/ordo_web/live/tenant_settings_live.ex:296
+#: lib/ordo_web/live/tenant_settings_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Edit"
 msgstr "Edytuj"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:349
+#: lib/ordo_web/live/tenant_settings_live.ex:361
 #, elixir-autogen, elixir-format
 msgid "Edit mailbox: %{email}"
 msgstr "Edytuj skrzynkę: %{email}"
@@ -312,7 +314,7 @@ msgstr "Edytuj skrzynkę: %{email}"
 msgid "Email"
 msgstr "E-mail"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:354
+#: lib/ordo_web/live/tenant_settings_live.ex:366
 #, elixir-autogen, elixir-format
 msgid "Email address"
 msgstr "Adres e-mail"
@@ -327,7 +329,7 @@ msgstr "Link do zmiany adresu e-mail jest nieprawidłowy lub wygasł."
 msgid "Email changed successfully."
 msgstr "Adres e-mail został zmieniony."
 
-#: lib/ordo_web/live/tenant_settings_live.ex:111
+#: lib/ordo_web/live/tenant_settings_live.ex:123
 #, elixir-autogen, elixir-format
 msgid "Email generated — open the mailbox."
 msgstr "Wygenerowano e-mail — otwórz skrzynkę."
@@ -348,6 +350,7 @@ msgid "Enter your email and we'll send you a magic login link."
 msgstr "Podaj adres e-mail — wyślemy Ci link do logowania."
 
 #: lib/ordo_web/live/tenant_settings_live.ex:67
+#: lib/ordo_web/live/tenant_settings_live.ex:102
 #, elixir-autogen, elixir-format
 msgid "Error: %{errors}"
 msgstr "Błąd: %{errors}"
@@ -393,7 +396,7 @@ msgstr "Cześć, zamówiłam tydzień temu i wciąż nic. Gdzie jest moja paczka
 msgid "Hire Ordo"
 msgstr "Zatrudnij Ordo"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:364
+#: lib/ordo_web/live/tenant_settings_live.ex:376
 #, elixir-autogen, elixir-format
 msgid "IMAP server"
 msgstr "Serwer IMAP"
@@ -433,18 +436,18 @@ msgstr "Jeśli to nie Ty prosiłeś o tę wiadomość, możesz ją spokojnie zig
 msgid "If your email is in our system, you will receive instructions for logging in shortly."
 msgstr "Jeśli Twój adres jest w naszym systemie, wkrótce otrzymasz instrukcje logowania."
 
-#: lib/ordo_web/live/tenant_settings_live.ex:440
-#: lib/ordo_web/live/tenant_settings_live.ex:454
+#: lib/ordo_web/live/tenant_settings_live.ex:510
+#: lib/ordo_web/live/tenant_settings_live.ex:524
 #, elixir-autogen, elixir-format
 msgid "Import"
 msgstr "Importuj"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:431
+#: lib/ordo_web/live/tenant_settings_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Import mailbox"
 msgstr "Importuj skrzynkę"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:96
+#: lib/ordo_web/live/tenant_settings_live.ex:108
 #, elixir-autogen, elixir-format
 msgid "Importing mailbox — open the mailbox to see it."
 msgstr "Importuję skrzynkę — otwórz skrzynkę, aby zobaczyć."
@@ -479,12 +482,12 @@ msgstr "Sprawdza zamówienie w BaseLinker i wykonuje pracę: sprawdza śledzenie
 msgid "Keep me logged in on this device"
 msgstr "Zapamiętaj mnie na tym urządzeniu"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:143
+#: lib/ordo_web/live/tenant_settings_live.ex:155
 #, elixir-autogen, elixir-format
 msgid "LOGIN ERROR"
 msgstr "BŁĄD LOGOWANIA"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:433
+#: lib/ordo_web/live/tenant_settings_live.ex:503
 #, elixir-autogen, elixir-format
 msgid "Load a sample set of tickets into the mailbox."
 msgstr "Wczytaj przykładowy zestaw ticketów do skrzynki."
@@ -553,7 +556,7 @@ msgstr "Link magiczny jest nieprawidłowy lub wygasł."
 msgid "Mailbox saved."
 msgstr "Zapisano skrzynkę."
 
-#: lib/ordo_web/live/tenant_settings_live.ex:426
+#: lib/ordo_web/live/tenant_settings_live.ex:496
 #, elixir-autogen, elixir-format
 msgid "Manage the contents of the demo environment."
 msgstr "Zarządzanie zawartością środowiska demonstracyjnego."
@@ -563,7 +566,7 @@ msgstr "Zarządzanie zawartością środowiska demonstracyjnego."
 msgid "Manage your account email address and password settings"
 msgstr "Zarządzaj adresem e-mail i hasłem swojego konta."
 
-#: lib/ordo_web/live/tenant_settings_live.ex:200
+#: lib/ordo_web/live/tenant_settings_live.ex:212
 #, elixir-autogen, elixir-format
 msgid "NO TOKEN"
 msgstr "BRAK TOKENU"
@@ -625,6 +628,7 @@ msgid "Ordo reads your support inbox, takes real actions in BaseLinker — order
 msgstr "Ordo czyta Twoją skrzynkę obsługi klienta, wykonuje realne działania w BaseLinker — status zamówienia, zwroty, refundacje — i odpowiada klientom. Stworzone dla europejskiego e-commerce."
 
 #: lib/ordo/accounts/user_notifier.ex:179
+#: lib/ordo/notifications/operator_email.ex:71
 #, elixir-autogen, elixir-format
 msgid "Ordo — AI customer support for e-commerce"
 msgstr "Ordo — obsługa klienta AI dla e-commerce"
@@ -645,7 +649,7 @@ msgstr "Inne"
 msgid "Package status"
 msgstr "Status paczki"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:386
+#: lib/ordo_web/live/tenant_settings_live.ex:398
 #: lib/ordo_web/live/user_live/login.ex:86
 #, elixir-autogen, elixir-format
 msgid "Password"
@@ -661,7 +665,7 @@ msgstr "Hasło zostało zaktualizowane."
 msgid "Pilot program"
 msgstr "Program pilotażowy"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:373
+#: lib/ordo_web/live/tenant_settings_live.ex:385
 #, elixir-autogen, elixir-format
 msgid "Port"
 msgstr "Port"
@@ -721,12 +725,12 @@ msgstr "ZASADY SKLEPU"
 msgid "Save Password"
 msgstr "Zapisz hasło"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:400
+#: lib/ordo_web/live/tenant_settings_live.ex:412
 #, elixir-autogen, elixir-format
 msgid "Save changes"
 msgstr "Zapisz zmiany"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:218
+#: lib/ordo_web/live/tenant_settings_live.ex:230
 #, elixir-autogen, elixir-format
 msgid "Save token"
 msgstr "Zapisz token"
@@ -736,7 +740,7 @@ msgstr "Zapisz token"
 msgid "Saving..."
 msgstr "Zapisuję..."
 
-#: lib/ordo_web/live/tenant_settings_live.ex:459
+#: lib/ordo_web/live/tenant_settings_live.ex:529
 #, elixir-autogen, elixir-format
 msgid "Scenarios"
 msgstr "Scenariusze"
@@ -782,7 +786,7 @@ msgstr "ZGŁOSZENIE"
 msgid "TICKETS"
 msgstr "TICKETY"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:189
+#: lib/ordo_web/live/tenant_settings_live.ex:201
 #, elixir-autogen, elixir-format
 msgid "The API token connects Ordo with your store's orders, shipments and documents. You can generate it in the BaseLinker panel: My account → API."
 msgstr "Token API łączy Ordo z zamówieniami, przesyłkami i dokumentami sklepu. Wygenerujesz go w panelu BaseLinkera: Moje konto → API."
@@ -797,17 +801,17 @@ msgstr "Klient dostaje pełną odpowiedź w niecałą minutę, zgłoszenie zamyk
 msgid "The link is invalid or it has expired."
 msgstr "Link jest nieprawidłowy lub wygasł."
 
-#: lib/ordo_web/live/tenant_settings_live.ex:413
+#: lib/ordo_web/live/tenant_settings_live.ex:425
 #, elixir-autogen, elixir-format
 msgid "The password is encrypted in the database. When editing, it is saved only when a new value is provided."
 msgstr "Hasło jest szyfrowane w bazie. Przy edycji zapisywane jest tylko przy podaniu nowej wartości."
 
-#: lib/ordo_web/live/tenant_settings_live.ex:230
+#: lib/ordo_web/live/tenant_settings_live.ex:242
 #, elixir-autogen, elixir-format
 msgid "The token is encrypted in the database and is never shown again."
 msgstr "Token jest szyfrowany w bazie i nigdy nie jest wyświetlany ponownie."
 
-#: lib/ordo_web/live/tenant_settings_live.ex:106
+#: lib/ordo_web/live/tenant_settings_live.ex:118
 #, elixir-autogen, elixir-format
 msgid "Tickets cleared."
 msgstr "Wyczyszczono tickety."
@@ -832,7 +836,7 @@ msgstr "Zmiana adresu e-mail"
 msgid "User confirmed successfully."
 msgstr "Konto zostało potwierdzone."
 
-#: lib/ordo_web/live/tenant_settings_live.ex:377
+#: lib/ordo_web/live/tenant_settings_live.ex:389
 #, elixir-autogen, elixir-format
 msgid "Username"
 msgstr "Użytkownik"
@@ -961,7 +965,7 @@ msgstr "draft"
 msgid "edit the text above if needed"
 msgstr "edytuj tekst powyżej, jeśli trzeba"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:381
+#: lib/ordo_web/live/tenant_settings_live.ex:393
 #, elixir-autogen, elixir-format
 msgid "full email address"
 msgstr "pełny adres e-mail"
@@ -996,13 +1000,13 @@ msgstr "zamówienie"
 msgid "out for delivery"
 msgstr "w doręczeniu"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:211
+#: lib/ordo_web/live/tenant_settings_live.ex:223
 #, elixir-autogen, elixir-format
 msgid "paste API token…"
 msgstr "wklej token API…"
 
 #: lib/ordo_web/live/tenant_settings_live.ex:36
-#: lib/ordo_web/live/tenant_settings_live.ex:162
+#: lib/ordo_web/live/tenant_settings_live.ex:174
 #, elixir-autogen, elixir-format
 msgid "settings"
 msgstr "ustawienia"
@@ -1032,7 +1036,7 @@ msgstr "przejmij"
 msgid "the mailbox page"
 msgstr "podgląd skrzynki"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:244
+#: lib/ordo_web/live/tenant_settings_live.ex:256
 #, elixir-autogen, elixir-format
 msgid "token"
 msgstr "token"
@@ -1113,17 +1117,17 @@ msgstr "min czytania"
 msgid "Approve and publish"
 msgstr "Zatwierdź i opublikuj"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:445
+#: lib/ordo_web/live/tenant_settings_live.ex:515
 #, elixir-autogen, elixir-format
 msgid "Import Google reviews"
 msgstr "Importuj opinie Google"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:101
+#: lib/ordo_web/live/tenant_settings_live.ex:113
 #, elixir-autogen, elixir-format
 msgid "Importing Google reviews — open the inbox to see them."
 msgstr "Importuję opinie Google — otwórz skrzynkę, aby je zobaczyć."
 
-#: lib/ordo_web/live/tenant_settings_live.ex:447
+#: lib/ordo_web/live/tenant_settings_live.ex:517
 #, elixir-autogen, elixir-format
 msgid "Load sample Google Business Profile reviews into the inbox."
 msgstr "Wczytaj przykładowe opinie z Google do skrzynki."
@@ -1165,7 +1169,7 @@ msgid "All channels"
 msgstr "Wszystkie kanały"
 
 #: lib/ordo_web/live/inbox_live.ex:167
-#: lib/ordo_web/live/tenant_settings_live.ex:263
+#: lib/ordo_web/live/tenant_settings_live.ex:275
 #, elixir-autogen, elixir-format
 msgid "CHANNELS"
 msgstr "KANAŁY"
@@ -1175,7 +1179,7 @@ msgstr "KANAŁY"
 msgid "Google reviews"
 msgstr "Opinie Google"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:350
+#: lib/ordo_web/live/tenant_settings_live.ex:362
 #, elixir-autogen, elixir-format
 msgid "Add email mailbox"
 msgstr "Dodaj skrzynkę e-mail"
@@ -1185,38 +1189,38 @@ msgstr "Dodaj skrzynkę e-mail"
 msgid "Channel removed."
 msgstr "Kanał usunięty."
 
-#: lib/ordo_web/live/tenant_settings_live.ex:341
+#: lib/ordo_web/live/tenant_settings_live.ex:353
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "Połącz"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:315
+#: lib/ordo_web/live/tenant_settings_live.ex:327
 #, elixir-autogen, elixir-format
 msgid "Disconnect"
 msgstr "Odłącz"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:310
+#: lib/ordo_web/live/tenant_settings_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "Disconnect Google Business Profile?"
 msgstr "Odłączyć Profil Firmy w Google?"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:130
+#: lib/ordo_web/live/tenant_settings_live.ex:142
 #, elixir-autogen, elixir-format
 msgid "EMAIL"
 msgstr "E-MAIL"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:266
+#: lib/ordo_web/live/tenant_settings_live.ex:278
 #, elixir-autogen, elixir-format
 msgid "Everywhere Ordo hears from customers — email mailboxes and your Google Business Profile — feeding one inbox."
 msgstr "Wszędzie tam, gdzie Ordo słyszy klientów — skrzynki e-mail i Profil Firmy w Google — zasilając jedną skrzynkę."
 
-#: lib/ordo_web/live/tenant_settings_live.ex:129
+#: lib/ordo_web/live/tenant_settings_live.ex:141
 #, elixir-autogen, elixir-format
 msgid "GOOGLE"
 msgstr "GOOGLE"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:132
-#: lib/ordo_web/live/tenant_settings_live.ex:330
+#: lib/ordo_web/live/tenant_settings_live.ex:144
+#: lib/ordo_web/live/tenant_settings_live.ex:342
 #, elixir-autogen, elixir-format
 msgid "Google Business Profile"
 msgstr "Profil Firmy w Google"
@@ -1226,7 +1230,7 @@ msgstr "Profil Firmy w Google"
 msgid "Google Business Profile connected."
 msgstr "Profil Firmy w Google połączony."
 
-#: lib/ordo_web/live/tenant_settings_live.ex:324
+#: lib/ordo_web/live/tenant_settings_live.ex:336
 #, elixir-autogen, elixir-format
 msgid "No channels yet. Connect one below."
 msgstr "Brak kanałów. Połącz pierwszy poniżej."
@@ -1243,7 +1247,7 @@ msgstr "Coś poszło nie tak. Napisz do nas bezpośrednio: hello@hireordo.com"
 msgid "Thanks — we've got your email and will reply within one business day."
 msgstr "Dziękujemy — mamy Twój adres i odpowiemy w ciągu jednego dnia roboczego."
 
-#: lib/ordo_web/live/tenant_settings_live.ex:332
+#: lib/ordo_web/live/tenant_settings_live.ex:344
 #, elixir-autogen, elixir-format
 msgid "Connect a Google profile to answer its reviews straight from the inbox. Add as many as you manage."
 msgstr "Połącz profil Google, aby odpowiadać na jego opinie prosto ze skrzynki. Dodaj tyle, iloma zarządzasz."
@@ -1268,12 +1272,157 @@ msgstr "Połączenie z Google zostało anulowane."
 msgid "Invalid response from Google."
 msgstr "Nieprawidłowa odpowiedź z Google."
 
-#: lib/ordo_web/live/tenant_settings_live.ex:137
+#: lib/ordo_web/live/tenant_settings_live.ex:149
 #, elixir-autogen, elixir-format
 msgid "RECONNECT"
 msgstr "POŁĄCZ PONOWNIE"
 
-#: lib/ordo_web/live/tenant_settings_live.ex:303
+#: lib/ordo_web/live/tenant_settings_live.ex:315
 #, elixir-autogen, elixir-format
 msgid "Reconnect"
 msgstr "Połącz ponownie"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:477
+#, elixir-autogen, elixir-format
+msgid "Also send a WhatsApp you can approve by replying OK. Leave blank to skip."
+msgstr "Wyślemy też WhatsApp, który zatwierdzisz, odpisując OK. Zostaw puste, aby pominąć."
+
+#: lib/ordo_web/controllers/approval_controller.ex:50
+#, elixir-autogen, elixir-format
+msgid "Approve reply"
+msgstr "Zatwierdź odpowiedź"
+
+#: lib/ordo_web/controllers/approval_controller.ex:51
+#, elixir-autogen, elixir-format
+msgid "Approve this reply?"
+msgstr "Zatwierdzić tę odpowiedź?"
+
+#: lib/ordo/notifications/operator_email.ex:36
+#: lib/ordo/notifications/operator_email.ex:66
+#, elixir-autogen, elixir-format
+msgid "Edit in the inbox"
+msgstr "Edytuj w skrzynce"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:461
+#, elixir-autogen, elixir-format
+msgid "Emails every teammate on this account. Off by default."
+msgstr "Wysyła e-mail do każdej osoby na tym koncie. Domyślnie wyłączone."
+
+#: lib/ordo/notifications/operator_email.ex:57
+#, elixir-autogen, elixir-format
+msgid "From %{name}"
+msgstr "Od %{name}"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:438
+#, elixir-autogen, elixir-format
+msgid "Get pinged when a new message has a draft ready — with the original message and the proposed reply — so you can approve it from your email or WhatsApp."
+msgstr "Otrzymuj powiadomienie, gdy nowa wiadomość ma gotową wersję roboczą — z oryginalną wiadomością i proponowaną odpowiedzią — aby zatwierdzić ją z e-maila lub WhatsAppa."
+
+#: lib/ordo_web/controllers/approval_controller.ex:70
+#, elixir-autogen, elixir-format
+msgid "Link expired"
+msgstr "Link wygasł"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:435
+#, elixir-autogen, elixir-format
+msgid "NOTIFICATIONS"
+msgstr "POWIADOMIENIA"
+
+#: lib/ordo/notifications/operator_email.ex:27
+#, elixir-autogen, elixir-format
+msgid "New message from %{name}"
+msgstr "Nowa wiadomość od %{name}"
+
+#: lib/ordo/notifications/operator_email.ex:56
+#, elixir-autogen, elixir-format
+msgid "New reply to approve"
+msgstr "Nowa odpowiedź do zatwierdzenia"
+
+#: lib/ordo/notifications/operator_email.ex:18
+#, elixir-autogen, elixir-format
+msgid "New reply to approve — %{name}"
+msgstr "Nowa odpowiedź do zatwierdzenia — %{name}"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:101
+#, elixir-autogen, elixir-format
+msgid "Notification settings saved."
+msgstr "Ustawienia powiadomień zapisane."
+
+#: lib/ordo_web/live/tenant_settings_live.ex:458
+#, elixir-autogen, elixir-format
+msgid "Notify me about incoming messages"
+msgstr "Powiadamiaj mnie o przychodzących wiadomościach"
+
+#: lib/ordo_web/controllers/approval_controller.ex:72
+#, elixir-autogen, elixir-format
+msgid "Open the inbox to review and reply."
+msgstr "Otwórz skrzynkę, aby przejrzeć i odpowiedzieć."
+
+#: lib/ordo/notifications/operator_email.ex:32
+#: lib/ordo/notifications/operator_email.ex:62
+#: lib/ordo_web/controllers/approval_controller.ex:54
+#, elixir-autogen, elixir-format
+msgid "Ordo's proposed reply"
+msgstr "Proponowana odpowiedź Ordo"
+
+#: lib/ordo/notifications/operator_email.ex:29
+#: lib/ordo/notifications/operator_email.ex:59
+#: lib/ordo_web/controllers/approval_controller.ex:53
+#, elixir-autogen, elixir-format
+msgid "Original message"
+msgstr "Oryginalna wiadomość"
+
+#: lib/ordo_web/controllers/approval_controller.ex:62
+#, elixir-autogen, elixir-format
+msgid "Reply sent"
+msgstr "Odpowiedź wysłana"
+
+#: lib/ordo_web/controllers/approval_controller.ex:63
+#, elixir-autogen, elixir-format
+msgid "Reply sent ✓"
+msgstr "Odpowiedź wysłana ✓"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:485
+#, elixir-autogen, elixir-format
+msgid "Save"
+msgstr "Zapisz"
+
+#: lib/ordo_web/controllers/approval_controller.ex:56
+#, elixir-autogen, elixir-format
+msgid "Send this reply"
+msgstr "Wyślij tę odpowiedź"
+
+#: lib/ordo_web/controllers/approval_controller.ex:65
+#, elixir-autogen, elixir-format
+msgid "Sent reply"
+msgstr "Wysłana odpowiedź"
+
+#: lib/ordo_web/controllers/approval_controller.ex:71
+#, elixir-autogen, elixir-format
+msgid "This link is no longer valid"
+msgstr "Ten link jest już nieaktualny"
+
+#: lib/ordo_web/controllers/approval_controller.ex:64
+#, elixir-autogen, elixir-format
+msgid "This message has been answered — you can close this tab."
+msgstr "Na tę wiadomość już odpowiedziano — możesz zamknąć tę kartę."
+
+#: lib/ordo/notifications/operator_email.ex:66
+#, elixir-autogen, elixir-format
+msgid "Want to tweak it first?"
+msgstr "Chcesz najpierw coś poprawić?"
+
+#: lib/ordo_web/live/tenant_settings_live.ex:468
+#, elixir-autogen, elixir-format
+msgid "WhatsApp number (optional)"
+msgstr "Numer WhatsApp (opcjonalnie)"
+
+#: lib/ordo/notifications.ex:130
+#, elixir-autogen, elixir-format
+msgid "customer"
+msgstr "klient"
+
+#: lib/ordo/notifications.ex:110
+#, elixir-autogen, elixir-format
+msgid "🔔 New message from %{name}:\n\n\"%{original}\"\n\nOrdo's proposed reply:\n\n%{draft}\n\nReply OK %{code} to send it, or edit in the inbox: %{inbox_url}\n"
+msgstr "🔔 Nowa wiadomość od %{name}:\n\n\"%{original}\"\n\nProponowana odpowiedź Ordo:\n\n%{draft}\n\nOdpisz OK %{code}, aby wysłać, lub edytuj w skrzynce: %{inbox_url}\n"

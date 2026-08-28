@@ -17,6 +17,8 @@ defmodule Ordo.Support.Tenant do
     field :couriers, {:array, :string}, default: []
     field :demo, :boolean, default: false
     field :bl_token, Ordo.Encrypted.Binary, redact: true
+    field :notify_enabled, :boolean, default: false
+    field :notify_whatsapp, :string
 
     has_many :policy_facts, PolicyFact, preload_order: [asc: :position]
     has_many :tickets, Ticket
@@ -29,7 +31,17 @@ defmodule Ordo.Support.Tenant do
   @doc false
   def changeset(tenant, attrs) do
     tenant
-    |> cast(attrs, [:slug, :name, :support_email, :signature, :couriers, :demo, :bl_token])
+    |> cast(attrs, [
+      :slug,
+      :name,
+      :support_email,
+      :signature,
+      :couriers,
+      :demo,
+      :bl_token,
+      :notify_enabled,
+      :notify_whatsapp
+    ])
     |> validate_required([:slug, :name])
     |> unique_constraint(:slug)
   end

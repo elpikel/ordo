@@ -63,6 +63,18 @@ if config_env() == :prod do
     adapter: Swoosh.Adapters.Brevo,
     api_key: System.get_env("BREVO_API_KEY") || raise("environment variable BREVO_API_KEY is missing")
 
+  # WhatsApp Cloud API (Meta) — optional; operator notifications fall back to
+  # email until these are set. Outbound send + inbound "OK" approval webhook.
+  config :ordo, Ordo.Notifications.WhatsApp.CloudAPI,
+    token: System.get_env("WHATSAPP_TOKEN"),
+    phone_number_id: System.get_env("WHATSAPP_PHONE_ID"),
+    # A pre-approved template is required for business-initiated pings; body
+    # placeholders in order: {{1}} customer name, {{2}} original message,
+    # {{3}} proposed reply, {{4}} reply code. Without it, notifications fall back
+    # to plain text (in-session only).
+    template_name: System.get_env("WHATSAPP_TEMPLATE"),
+    template_language: System.get_env("WHATSAPP_TEMPLATE_LANG") || "pl"
+
   config :ordo, Ordo.Repo,
     # ssl: true,
     url: database_url,
@@ -88,6 +100,10 @@ if config_env() == :prod do
     secret_key_base: secret_key_base
 
   config :ordo, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
+
+  config :ordo, :whatsapp_webhook,
+    verify_token: System.get_env("WHATSAPP_VERIFY_TOKEN"),
+    app_secret: System.get_env("WHATSAPP_APP_SECRET")
 
   # ## SSL Support
   #

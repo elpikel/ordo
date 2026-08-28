@@ -377,6 +377,7 @@ defmodule Ordo.Support do
     draft = compose_review_reply(category, review, tenant.signature || "Zespół")
     ticket = update!(ticket, %{draft: draft, status: "draft_ready"})
     broadcast({:ticket_updated, ticket})
+    Ordo.Notifications.enqueue(ticket)
   end
 
   defp classify_review(rating) when rating >= 5, do: {"REVIEW_POSITIVE", "positive"}
@@ -472,6 +473,7 @@ defmodule Ordo.Support do
 
     ticket = update!(ticket, %{draft: draft, status: "draft_ready"})
     broadcast({:ticket_updated, ticket})
+    Ordo.Notifications.enqueue(ticket)
   end
 
   # The full Policy as one-line facts — small enough to always pass; the LLM

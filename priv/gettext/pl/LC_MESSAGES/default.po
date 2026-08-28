@@ -77,7 +77,7 @@ msgstr "Aktywuj konto"
 msgid "Add mailbox"
 msgstr "Dodaj skrzynkę"
 
-#: lib/ordo_web/live/inbox_live.ex:412
+#: lib/ordo_web/live/inbox_live.ex:419
 #, elixir-autogen, elixir-format
 msgid "Approve and send"
 msgstr "Zatwierdź i wyślij"
@@ -113,12 +113,12 @@ msgstr "połączenie z BaseLinkerem nieaktywne"
 msgid "BaseLinker token saved."
 msgstr "Token BaseLinker zapisany."
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:351
+#: lib/ordo_web/controllers/page_html/home.html.heex:368
 #, elixir-autogen, elixir-format
 msgid "Built in Gdańsk, EU"
 msgstr "Stworzone w Gdańsku, UE"
 
-#: lib/ordo_web/live/inbox_live.ex:541
+#: lib/ordo_web/live/inbox_live.ex:548
 #, elixir-autogen, elixir-format
 msgid "COMPLAINT · HUMAN"
 msgstr "REKLAMACJA · CZŁOWIEK"
@@ -144,7 +144,7 @@ msgstr "Anuluj"
 msgid "Cancel editing"
 msgstr "Anuluj edycję"
 
-#: lib/ordo_web/live/inbox_live.ex:513
+#: lib/ordo_web/live/inbox_live.ex:520
 #, elixir-autogen, elixir-format
 msgid "Cancellation"
 msgstr "Anulacja"
@@ -184,12 +184,12 @@ msgstr "Wyczyścić wszystkie tickety?"
 msgid "Click the button below to log in to your Ordo account."
 msgstr "Kliknij przycisk poniżej, aby zalogować się na swoje konto Ordo."
 
-#: lib/ordo_web/live/inbox_live.ex:473
+#: lib/ordo_web/live/inbox_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Close"
 msgstr "Zamknij"
 
-#: lib/ordo_web/live/inbox_live.ex:514
+#: lib/ordo_web/live/inbox_live.ex:521
 #, elixir-autogen, elixir-format
 msgid "Complaint"
 msgstr "Reklamacja"
@@ -260,7 +260,7 @@ msgstr "Potwierdzam..."
 msgid "Copilot"
 msgstr "Copilot"
 
-#: lib/ordo_web/live/inbox_live.ex:338
+#: lib/ordo_web/live/inbox_live.ex:345
 #, elixir-autogen, elixir-format
 msgid "Customer"
 msgstr "Klient"
@@ -332,7 +332,7 @@ msgstr "Adres e-mail został zmieniony."
 msgid "Email generated — open the mailbox."
 msgstr "Wygenerowano e-mail — otwórz skrzynkę."
 
-#: lib/ordo_web/live/inbox_live.ex:239
+#: lib/ordo_web/live/inbox_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Empty. Import a mailbox in Settings (⚙)."
 msgstr "Pusto. Zaimportuj skrzynkę w Ustawieniach (⚙)."
@@ -455,12 +455,12 @@ msgstr "Importuję skrzynkę — otwórz skrzynkę, aby zobaczyć."
 msgid "Invalid email or password"
 msgstr "Nieprawidłowy e-mail lub hasło"
 
-#: lib/ordo_web/live/inbox_live.ex:511
+#: lib/ordo_web/live/inbox_live.ex:518
 #, elixir-autogen, elixir-format
 msgid "Invoice"
 msgstr "Faktura"
 
-#: lib/ordo_web/live/inbox_live.ex:480
+#: lib/ordo_web/live/inbox_live.ex:487
 #, elixir-autogen, elixir-format
 msgid "It doesn't make anything up beyond them."
 msgstr "Nie zmyśla poza nimi."
@@ -539,7 +539,7 @@ msgstr "Wylogowano."
 msgid "Logging in..."
 msgstr "Loguję..."
 
-#: lib/ordo_web/live/inbox_live.ex:380
+#: lib/ordo_web/live/inbox_live.ex:387
 #, elixir-autogen, elixir-format
 msgid "Looking up the order…"
 msgstr "Szukam zamówienia…"
@@ -574,7 +574,7 @@ msgstr "BRAK TOKENU"
 msgid "New password"
 msgstr "Nowe hasło"
 
-#: lib/ordo_web/live/inbox_live.ex:381
+#: lib/ordo_web/live/inbox_live.ex:388
 #, elixir-autogen, elixir-format
 msgid "No order found for this address."
 msgstr "Nie znaleziono zamówienia dla tego adresu."
@@ -595,12 +595,12 @@ msgstr "Jeden mail, trzy ruchy"
 msgid "Or paste this link into your browser:"
 msgstr "Lub wklej ten link do przeglądarki:"
 
-#: lib/ordo_web/live/inbox_live.ex:512
+#: lib/ordo_web/live/inbox_live.ex:519
 #, elixir-autogen, elixir-format
 msgid "Order change"
 msgstr "Zmiana zamówienia"
 
-#: lib/ordo_web/live/inbox_live.ex:479
+#: lib/ordo_web/live/inbox_live.ex:486
 #, elixir-autogen, elixir-format
 msgid "Ordo bases its replies on these facts."
 msgstr "Na tych faktach Ordo opiera odpowiedzi."
@@ -636,12 +636,12 @@ msgstr "Ordo — obsługa klienta AI dla e-commerce"
 msgid "Ordo — AI that resolves your store's support email"
 msgstr "Ordo — AI, która sama załatwia maile do obsługi Twojego sklepu"
 
-#: lib/ordo_web/live/inbox_live.ex:515
+#: lib/ordo_web/live/inbox_live.ex:522
 #, elixir-autogen, elixir-format
 msgid "Other"
 msgstr "Inne"
 
-#: lib/ordo_web/live/inbox_live.ex:508
+#: lib/ordo_web/live/inbox_live.ex:515
 #, elixir-autogen, elixir-format
 msgid "Package status"
 msgstr "Status paczki"
@@ -667,7 +667,7 @@ msgstr "Program pilotażowy"
 msgid "Port"
 msgstr "Port"
 
-#: lib/ordo_web/live/inbox_live.ex:390
+#: lib/ordo_web/live/inbox_live.ex:397
 #, elixir-autogen, elixir-format
 msgid "REPLY"
 msgstr "ODPOWIEDŹ"
@@ -687,17 +687,17 @@ msgstr "Czyta każde „gdzie jest moje zamówienie?”, działa w BaseLinker, o
 msgid "Refunds"
 msgstr "Refundacje"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:334
+#: lib/ordo_web/controllers/page_html/home.html.heex:336
 #, elixir-autogen, elixir-format
 msgid "Request a slot"
 msgstr "Zarezerwuj miejsce"
 
-#: lib/ordo_web/live/inbox_live.ex:509
+#: lib/ordo_web/live/inbox_live.ex:516
 #, elixir-autogen, elixir-format
 msgid "Return"
 msgstr "Zwrot"
 
-#: lib/ordo_web/live/inbox_live.ex:510
+#: lib/ordo_web/live/inbox_live.ex:517
 #, elixir-autogen, elixir-format
 msgid "Return status"
 msgstr "Status zwrotu"
@@ -707,12 +707,12 @@ msgstr "Status zwrotu"
 msgid "Returns & exchanges"
 msgstr "Zwroty i wymiany"
 
-#: lib/ordo_web/live/inbox_live.ex:539
+#: lib/ordo_web/live/inbox_live.ex:546
 #, elixir-autogen, elixir-format
 msgid "SENT · %{count} s"
 msgstr "WYSŁANE · %{count} s"
 
-#: lib/ordo_web/live/inbox_live.ex:464
+#: lib/ordo_web/live/inbox_live.ex:471
 #, elixir-autogen, elixir-format
 msgid "SHOP RULES"
 msgstr "ZASADY SKLEPU"
@@ -748,17 +748,17 @@ msgstr "Scenariusze"
 msgid "See live demo"
 msgstr "Zobacz demo na żywo"
 
-#: lib/ordo_web/live/inbox_live.ex:301
+#: lib/ordo_web/live/inbox_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Select a ticket from the list."
 msgstr "Wybierz ticket z listy."
 
-#: lib/ordo_web/live/inbox_live.ex:198
+#: lib/ordo_web/live/inbox_live.ex:202
 #, elixir-autogen, elixir-format
 msgid "Settings"
 msgstr "Ustawienia"
 
-#: lib/ordo_web/live/inbox_live.ex:194
+#: lib/ordo_web/live/inbox_live.ex:198
 #, elixir-autogen, elixir-format
 msgid "Shop rules"
 msgstr "Zasady sklepu"
@@ -778,7 +778,7 @@ msgstr "Obsługa klienta, która"
 msgid "TICKET"
 msgstr "ZGŁOSZENIE"
 
-#: lib/ordo_web/live/inbox_live.ex:231
+#: lib/ordo_web/live/inbox_live.ex:235
 #, elixir-autogen, elixir-format
 msgid "TICKETS"
 msgstr "TICKETY"
@@ -843,7 +843,7 @@ msgstr "Użytkownik"
 msgid "We can't find the internet"
 msgstr "Brak połączenia z internetem"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:338
+#: lib/ordo_web/controllers/page_html/home.html.heex:354
 #, elixir-autogen, elixir-format
 msgid "We reply within one business day. No newsletter, no spam."
 msgstr "Odpowiadamy w ciągu jednego dnia roboczego. Bez newslettera, bez spamu."
@@ -925,12 +925,12 @@ msgstr "Masz zaproszenie do Ordo"
 msgid "You've been invited to Ordo. Click the link below to activate your account and log in:"
 msgstr "Masz zaproszenie do Ordo. Kliknij poniższy link, aby aktywować konto i się zalogować:"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:322
+#: lib/ordo_web/controllers/page_html/home.html.heex:323
 #, elixir-autogen, elixir-format
 msgid "Your work email"
 msgstr "Twój służbowy adres e-mail"
 
-#: lib/ordo_web/live/inbox_live.ex:181
+#: lib/ordo_web/live/inbox_live.ex:185
 #, elixir-autogen, elixir-format
 msgid "active"
 msgstr "aktywna"
@@ -945,18 +945,18 @@ msgstr "robi się"
 msgid "close"
 msgstr "zamknij"
 
-#: lib/ordo_web/live/inbox_live.ex:358
+#: lib/ordo_web/live/inbox_live.ex:365
 #, elixir-autogen, elixir-format
 msgid "date"
 msgstr "data"
 
-#: lib/ordo_web/live/inbox_live.ex:171
-#: lib/ordo_web/live/inbox_live.ex:234
+#: lib/ordo_web/live/inbox_live.ex:175
+#: lib/ordo_web/live/inbox_live.ex:238
 #, elixir-autogen, elixir-format
 msgid "draft"
 msgstr "draft"
 
-#: lib/ordo_web/live/inbox_live.ex:422
+#: lib/ordo_web/live/inbox_live.ex:429
 #, elixir-autogen, elixir-format
 msgid "edit the text above if needed"
 msgstr "edytuj tekst powyżej, jeśli trzeba"
@@ -976,7 +976,7 @@ msgstr "sama"
 msgid "no human involved"
 msgstr "bez udziału człowieka"
 
-#: lib/ordo_web/live/inbox_live.ex:355
+#: lib/ordo_web/live/inbox_live.ex:362
 #, elixir-autogen, elixir-format
 msgid "no."
 msgstr "nr"
@@ -1017,12 +1017,12 @@ msgstr "wysłano 12 sie"
 msgid "soon"
 msgstr "wkrótce"
 
-#: lib/ordo_web/live/inbox_live.ex:361
+#: lib/ordo_web/live/inbox_live.ex:368
 #, elixir-autogen, elixir-format
 msgid "status"
 msgstr "status"
 
-#: lib/ordo_web/live/inbox_live.ex:419
+#: lib/ordo_web/live/inbox_live.ex:426
 #, elixir-autogen, elixir-format
 msgid "take over"
 msgstr "przejmij"
@@ -1047,22 +1047,22 @@ msgstr "— po jednej naraz, w oparciu o liczby, a nie obietnice. Refundacje mog
 msgid "“Where is my order?”"
 msgstr "„Gdzie jest moje zamówienie?”"
 
-#: lib/ordo_web/live/inbox_live.ex:397
+#: lib/ordo_web/live/inbox_live.ex:404
 #, elixir-autogen, elixir-format
 msgid "● Ordo is working…"
 msgstr "● Ordo pracuje…"
 
-#: lib/ordo_web/live/inbox_live.ex:290
+#: lib/ordo_web/live/inbox_live.ex:297
 #, elixir-autogen, elixir-format
 msgid "● loading…"
 msgstr "● ładowanie…"
 
-#: lib/ordo_web/live/inbox_live.ex:432
+#: lib/ordo_web/live/inbox_live.ex:439
 #, elixir-autogen, elixir-format
 msgid "✓ sent · %{count} s"
 msgstr "✓ wysłane · %{count} s"
 
-#: lib/ordo_web/controllers/blog_html.ex:182
+#: lib/ordo_web/controllers/blog_html.ex:184
 #, elixir-autogen, elixir-format
 msgid "Back to homepage"
 msgstr "Powrót na stronę główną"
@@ -1108,7 +1108,7 @@ msgstr "Zobacz Ordo w akcji"
 msgid "min read"
 msgstr "min czytania"
 
-#: lib/ordo_web/live/inbox_live.ex:411
+#: lib/ordo_web/live/inbox_live.ex:418
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Approve and publish"
 msgstr "Zatwierdź i opublikuj"
@@ -1128,49 +1128,49 @@ msgstr "Importuję opinie Google — otwórz skrzynkę, aby je zobaczyć."
 msgid "Load sample Google Business Profile reviews into the inbox."
 msgstr "Wczytaj przykładowe opinie z Google do skrzynki."
 
-#: lib/ordo_web/live/inbox_live.ex:518
+#: lib/ordo_web/live/inbox_live.ex:525
 #, elixir-autogen, elixir-format
 msgid "Mixed"
 msgstr "Mieszana"
 
-#: lib/ordo_web/live/inbox_live.ex:542
+#: lib/ordo_web/live/inbox_live.ex:549
 #, elixir-autogen, elixir-format
 msgid "NEGATIVE · HUMAN"
 msgstr "NEGATYWNA · CZŁOWIEK"
 
-#: lib/ordo_web/live/inbox_live.ex:517
+#: lib/ordo_web/live/inbox_live.ex:524
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Negative"
 msgstr "Negatywna"
 
-#: lib/ordo_web/live/inbox_live.ex:440
+#: lib/ordo_web/live/inbox_live.ex:447
 #, elixir-autogen, elixir-format
 msgid "Negative reviews are never published automatically — a human always approves them."
 msgstr "Opinie negatywne nigdy nie są publikowane automatycznie — zawsze zatwierdza je człowiek."
 
-#: lib/ordo_web/live/inbox_live.ex:308
+#: lib/ordo_web/live/inbox_live.ex:315
 #, elixir-autogen, elixir-format
 msgid "REVIEW"
 msgstr "OPINIA"
 
-#: lib/ordo_web/live/inbox_live.ex:516
+#: lib/ordo_web/live/inbox_live.ex:523
 #, elixir-autogen, elixir-format
 msgid "Thank-you"
 msgstr "Podziękowanie"
 
-#: lib/ordo_web/live/inbox_live.ex:169
-#: lib/ordo_web/live/inbox_live.ex:504
+#: lib/ordo_web/live/inbox_live.ex:173
+#: lib/ordo_web/live/inbox_live.ex:511
 #, elixir-autogen, elixir-format
 msgid "All channels"
 msgstr "Wszystkie kanały"
 
-#: lib/ordo_web/live/inbox_live.ex:163
+#: lib/ordo_web/live/inbox_live.ex:167
 #: lib/ordo_web/live/tenant_settings_live.ex:268
 #, elixir-autogen, elixir-format
 msgid "CHANNELS"
 msgstr "KANAŁY"
 
-#: lib/ordo_web/live/inbox_live.ex:505
+#: lib/ordo_web/live/inbox_live.ex:512
 #, elixir-autogen, elixir-format
 msgid "Google reviews"
 msgstr "Opinie Google"
@@ -1235,3 +1235,13 @@ msgstr "Profil Firmy w Google połączony."
 #, elixir-autogen, elixir-format
 msgid "No channels yet. Connect one below."
 msgstr "Brak kanałów. Połącz pierwszy poniżej."
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:352
+#, elixir-autogen, elixir-format
+msgid "Something went wrong. Please write us directly: hello@hireordo.com"
+msgstr "Coś poszło nie tak. Napisz do nas bezpośrednio: hello@hireordo.com"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:350
+#, elixir-autogen, elixir-format
+msgid "Thanks — we've got your email and will reply within one business day."
+msgstr "Dziękujemy — mamy Twój adres i odpowiemy w ciągu jednego dnia roboczego."

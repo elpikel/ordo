@@ -23,6 +23,9 @@ defmodule OrdoWeb.Router do
 
     get "/", PageController, :home
 
+    # Landing-page pilot signup: saves the email and notifies the team.
+    post "/pilot", PageController, :pilot
+
     # Public one-click demo login (no password): logs in the seeded demo user.
     get "/demo", UserSessionController, :enter_demo
 

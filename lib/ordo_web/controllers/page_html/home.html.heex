@@ -318,10 +318,17 @@
               "We're onboarding three stores that get 300+ support emails a month. Free during the pilot, direct line to the founder, and your workflows shape what Ordo becomes. If that's you, leave your email."
             )}
           </p>
-          <form id="pilot-form" class="flex flex-col sm:flex-row gap-3">
+          <form
+            id="pilot-form"
+            method="post"
+            action={~p"/pilot"}
+            class="flex flex-col sm:flex-row gap-3"
+          >
+            <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
             <label for="email" class="sr-only">{gettext("Your work email")}</label>
             <input
               id="email"
+              name="pilot_request[email]"
               type="email"
               required
               placeholder="you@yourstore.pl"
@@ -334,8 +341,30 @@
               {gettext("Request a slot")}
             </button>
           </form>
-          <p id="form-note" class="font-mono text-xs text-ink-mute mt-3">
-            {gettext("We reply within one business day. No newsletter, no spam.")}
+          <p
+            id="form-note"
+            data-default={gettext("We reply within one business day. No newsletter, no spam.")}
+            data-sent={
+              gettext("Thanks — we've got your email and will reply within one business day.")
+            }
+            data-error={
+              gettext("Something went wrong. Please write us directly: hello@hireordo.com")
+            }
+            class={[
+              "font-mono text-xs mt-3",
+              @pilot_status == "sent" && "text-label-deep",
+              @pilot_status == "error" && "text-red-600",
+              @pilot_status not in ["sent", "error"] && "text-ink-mute"
+            ]}
+          >
+            <%= case @pilot_status do %>
+              <% "sent" -> %>
+                {gettext("Thanks — we've got your email and will reply within one business day.")}
+              <% "error" -> %>
+                {gettext("Something went wrong. Please write us directly: hello@hireordo.com")}
+              <% _ -> %>
+                {gettext("We reply within one business day. No newsletter, no spam.")}
+            <% end %>
           </p>
         </div>
       </section>
@@ -354,16 +383,43 @@
     </footer>
 
     <script>
-      // Placeholder handler: swap for Formspree/Tally/backend when domain is live.
-      document.getElementById('pilot-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        var email = document.getElementById('email').value;
-        // TODO: replace with real endpoint, e.g. fetch('https://formspree.io/f/XXXX', …)
-        window.location.href = 'mailto:hello@hireordo.com?subject=' +
-          encodeURIComponent('Pilot request — Ordo') +
-          '&body=' + encodeURIComponent('My store email: ' + email);
-        document.getElementById('form-note').textContent = 'Opening your mail client — or write us directly: hello@hireordo.com';
-      });
+      // Submit the pilot form without reloading the page. Falls back to a normal
+      // POST + redirect if JS is disabled (see PageController.pilot/2).
+      (function () {
+        var form = document.getElementById('pilot-form');
+        var note = document.getElementById('form-note');
+        if (!form) return;
+
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var button = form.querySelector('button[type="submit"]');
+          if (button) button.disabled = true;
+
+          fetch(form.action, {
+            method: 'POST',
+            headers: { 'x-requested-with': 'fetch' },
+            body: new FormData(form)
+          })
+            .then(function (res) {
+              if (res.ok) {
+                form.reset();
+                note.textContent = note.dataset.sent;
+                note.classList.remove('text-ink-mute', 'text-red-600');
+                note.classList.add('text-label-deep');
+              } else {
+                throw new Error('request failed');
+              }
+            })
+            .catch(function () {
+              note.textContent = note.dataset.error;
+              note.classList.remove('text-ink-mute', 'text-label-deep');
+              note.classList.add('text-red-600');
+            })
+            .finally(function () {
+              if (button) button.disabled = false;
+            });
+        });
+      })();
     </script>
   </body>
 </html>

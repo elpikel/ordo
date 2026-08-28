@@ -91,13 +91,6 @@ defmodule OrdoWeb.TenantSettingsLive do
     {:noreply, socket |> reload() |> assign(mb: @blank_mb) |> notice(gettext("Channel removed."))}
   end
 
-  def handle_event("connect_gbp", _params, socket) do
-    case Channels.create(%{tenant_id: socket.assigns.tenant.id, type: "gbp", name: "Google"}) do
-      {:ok, _} -> {:noreply, socket |> reload() |> notice(gettext("Google Business Profile connected."))}
-      {:error, cs} -> {:noreply, notice(socket, gettext("Error: %{errors}", errors: errors(cs)))}
-    end
-  end
-
   def handle_event("import_mailbox", _params, socket) do
     Support.import_demo_mailbox!(socket.assigns.tenant)
     {:noreply, notice(socket, gettext("Importing mailbox — open the mailbox to see it."))}
@@ -121,8 +114,6 @@ defmodule OrdoWeb.TenantSettingsLive do
   defp reload(socket), do: assign(socket, channels: Channels.list_for_tenant(socket.assigns.tenant.id))
   defp notice(socket, msg), do: assign(socket, notice: msg)
 
-  defp has_gbp?(channels), do: Enum.any?(channels, &(&1.type == "gbp"))
-
   defp drop_blank_password(params) do
     if String.trim(params["password"] || "") == "", do: Map.delete(params, "password"), else: params
   end
@@ -141,7 +132,11 @@ defmodule OrdoWeb.TenantSettingsLive do
   defp channel_identity(%{type: "gbp"} = c), do: c.name || gettext("Google Business Profile")
   defp channel_identity(c), do: c.email
 
-  defp channel_status(%{type: "gbp"}), do: {gettext("CONNECTED"), "border-okay text-okay"}
+  defp channel_status(%{type: "gbp"} = c) do
+    if c.last_error == Channels.gbp_auth_error(),
+      do: {gettext("RECONNECT"), "border-red-300 text-red-700"},
+      else: {gettext("CONNECTED"), "border-okay text-okay"}
+  end
 
   defp channel_status(c) do
     cond do
@@ -300,6 +295,13 @@ defmodule OrdoWeb.TenantSettingsLive do
                 >
                   {gettext("Edit")}
                 </button>
+                <.link
+                  :if={c.type == "gbp" and c.last_error == Channels.gbp_auth_error()}
+                  href={~p"/oauth/google/authorize"}
+                  class="text-sm text-white bg-ink hover:bg-ink-soft px-3 py-1"
+                >
+                  {gettext("Reconnect")}
+                </.link>
                 <button
                   phx-click="delete_channel"
                   phx-value-id={c.id}
@@ -322,23 +324,22 @@ defmodule OrdoWeb.TenantSettingsLive do
             <p class="text-sm text-ink-mute">{gettext("No channels yet. Connect one below.")}</p>
           </div>
           
-    <!-- Connect Google Business Profile -->
-          <div
-            :if={!has_gbp?(@channels)}
-            class="mt-4 bg-paper-card border border-slate-200 rounded-sm px-4 py-4 flex items-center justify-between gap-4"
-          >
+    <!-- Connect Google Business Profile (a tenant can connect several) -->
+          <div class="mt-4 bg-paper-card border border-slate-200 rounded-sm px-4 py-4 flex items-center justify-between gap-4">
             <div>
               <p class="text-sm font-semibold">{gettext("Google Business Profile")}</p>
               <p class="text-[12px] text-ink-mute mt-0.5">
-                {gettext("Connect your Google profile to answer reviews straight from the inbox.")}
+                {gettext(
+                  "Connect a Google profile to answer its reviews straight from the inbox. Add as many as you manage."
+                )}
               </p>
             </div>
-            <button
-              phx-click="connect_gbp"
+            <.link
+              href={~p"/oauth/google/authorize"}
               class="shrink-0 bg-ink text-white font-mono text-sm px-4 py-2 hover:bg-ink-soft focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
             >
               {gettext("Connect")}
-            </button>
+            </.link>
           </div>
           
     <!-- Add / edit email mailbox -->

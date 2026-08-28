@@ -48,6 +48,38 @@ defmodule Ordo.ChannelsTest do
     end
   end
 
+  describe "upsert_gbp_channel/3" do
+    test "adds a channel per Google account but reconnects (updates) the same account" do
+      tenant = tenant_fixture()
+      attrs = %{name: "Google", password: "r1", config: %{"account" => "accounts/1", "location" => "locations/9"}}
+
+      {:ok, first} = Channels.upsert_gbp_channel(tenant.id, "accounts/1", attrs)
+      # a different account is a second profile...
+      {:ok, _second} =
+        Channels.upsert_gbp_channel(tenant.id, "accounts/2", %{attrs | config: %{"account" => "accounts/2"}})
+
+      assert length(Channels.gbp_channels(tenant.id)) == 2
+
+      # ...reconnecting the same account refreshes it in place (new token), no dup
+      {:ok, again} =
+        Channels.upsert_gbp_channel(tenant.id, "accounts/1", %{attrs | password: "r1-new"})
+
+      assert again.id == first.id
+      assert again.password == "r1-new"
+      assert length(Channels.gbp_channels(tenant.id)) == 2
+    end
+
+    test "a reconnect clears a prior auth failure" do
+      tenant = tenant_fixture()
+      attrs = %{name: "Google", password: "r1", config: %{"account" => "accounts/1"}}
+      {:ok, channel} = Channels.upsert_gbp_channel(tenant.id, "accounts/1", attrs)
+      Channels.update_cursor(channel, %{last_error: Channels.gbp_auth_error()})
+
+      {:ok, reconnected} = Channels.upsert_gbp_channel(tenant.id, "accounts/1", %{attrs | password: "r2"})
+      assert reconnected.last_error == nil
+    end
+  end
+
   describe "seed_demo_inbox!/1" do
     test "seeds email + gbp tickets with a customer message each, idempotently" do
       tenant = Support.ensure_demo_tenant!()

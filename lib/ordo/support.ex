@@ -317,14 +317,18 @@ defmodule Ordo.Support do
     :ok
   end
 
-  @doc "Turn one Google review into a Ticket on the tenant's gbp channel, then draft a reply."
-  def receive_review(tenant, review) do
+  @doc """
+  Turn one Google review into a Ticket on a gbp channel, then draft a reply.
+  Pass the specific `channel` when polling a profile; the demo/manual path omits
+  it and lands on the tenant's first gbp channel.
+  """
+  def receive_review(tenant, review, channel \\ nil) do
     ext_id = "gbp:" <> review.id
 
     if message_exists?(ext_id) do
       {:skip, :duplicate}
     else
-      gbp_channel = Channels.gbp_channel(tenant.id)
+      gbp_channel = channel || Channels.gbp_channel(tenant.id)
 
       {:ok, ticket} =
         %Ticket{}

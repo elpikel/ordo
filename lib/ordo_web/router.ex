@@ -52,6 +52,10 @@ defmodule OrdoWeb.Router do
       live "/inbox/:id", InboxLive
       live "/settings", TenantSettingsLive
     end
+
+    # Google Business Profile connect (OAuth redirect flow — controller, not live).
+    get "/oauth/google/authorize", GoogleOAuthController, :authorize
+    get "/oauth/google/callback", GoogleOAuthController, :callback
   end
 
   # Analytics event proxy to avoid ad blockers (no pipeline: POST /api/event must skip CSRF).

@@ -53,6 +53,12 @@ if config_env() == :prod do
 
   host = System.get_env("PHX_HOST") || "example.com"
 
+  # Google Business Profile OAuth app credentials — optional; the gbp channel
+  # only works once a tenant connects a profile (refresh token on the channel).
+  config :ordo, Ordo.Channels.Gbp.HTTP,
+    client_id: System.get_env("GOOGLE_CLIENT_ID"),
+    client_secret: System.get_env("GOOGLE_CLIENT_SECRET")
+
   config :ordo, Ordo.Mailer,
     adapter: Swoosh.Adapters.Brevo,
     api_key: System.get_env("BREVO_API_KEY") || raise("environment variable BREVO_API_KEY is missing")

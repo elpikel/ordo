@@ -60,7 +60,8 @@ defmodule Ordo.Support.Channel do
       :smtp_host,
       :smtp_port,
       :folder,
-      :active
+      :active,
+      :last_error
     ])
     |> validate_required([:tenant_id, :type])
     |> validate_inclusion(:type, ["email", "gbp"])

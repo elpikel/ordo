@@ -8,7 +8,7 @@
       name="description"
       content={
         gettext(
-          "Ordo reads your support inbox, takes real actions in BaseLinker — order status, returns, refunds — and replies to customers. Built for European e-commerce."
+          "Ordo reads your support inbox, looks the order up in your shop, takes the action — status, returns, refunds — and replies to your customer. Built for European e-commerce."
         )
       }
     />
@@ -23,7 +23,7 @@
       property="og:description"
       content={
         gettext(
-          "Reads every “where is my order?”, acts in BaseLinker, replies to the customer. Copilot first, Autopilot when the numbers say so."
+          "Reads every “where is my order?”, acts in your shop, replies to the customer. Copilot first, Autopilot when the numbers say so."
         )
       }
     />
@@ -115,7 +115,7 @@
             {gettext("For stores on BaseLinker · Shoper · IdoSell")}
           </p>
           <h1 class="font-display font-bold text-4xl sm:text-5xl leading-[1.08] tracking-tight">
-            {gettext("Support email that")}<br />
+            {gettext("Support that")}<br />
             {gettext("answers")} <span class="relative inline-block"><span
                 class="absolute inset-x-0 bottom-1 h-3 bg-label"
                 aria-hidden="true"
@@ -123,7 +123,7 @@
           </h1>
           <p class="mt-6 text-lg text-ink-soft max-w-md leading-relaxed">
             {gettext(
-              "Ordo reads every “where is my order?”, looks the order up in BaseLinker, takes the action — status, return, refund — and replies to your customer. You watch it work before you let it work alone."
+              "Ordo reads every “where is my order?”, looks the order up in your shop, takes the action — status, return, refund — and replies to your customer. You watch it work before you let it work alone."
             )}
           </p>
           <div class="mt-8 flex flex-wrap items-center gap-4">
@@ -148,7 +148,7 @@
 <!-- signature: the self-resolving ticket -->
         <div
           class="relative"
-          aria-label={gettext("Example: Ordo resolving a customer email automatically")}
+          aria-label={gettext("Example: Ordo resolving a customer message automatically")}
         >
           <div class="bg-paper-card border border-slate-300 shadow-[6px_6px_0_0_#16233B14]">
             
@@ -225,7 +225,7 @@
             <p class="font-mono text-label-deep text-sm mb-3">{gettext("02 / ACT")}</p>
             <p class="text-ink-soft leading-relaxed">
               {gettext(
-                "It looks the order up in BaseLinker and does the work: checks tracking, registers the return, triggers the refund. Real actions, not canned answers."
+                "It looks the order up in your shop and does the work: checks tracking, registers the return, triggers the refund. Real actions, not canned answers."
               )}
             </p>
           </div>
@@ -299,6 +299,9 @@
           <span class="border border-slate-300 bg-paper-card px-4 py-2">IdoSell</span>
           <span class="border border-slate-300 bg-paper-card px-4 py-2">InPost</span>
           <span class="border border-slate-300 bg-paper-card px-4 py-2">Gmail / IMAP</span>
+          <span class="border border-slate-300 bg-paper-card px-4 py-2">
+            {gettext("Google reviews")}
+          </span>
           <span class="border border-dashed border-slate-400 text-ink-mute px-4 py-2">
             Allegro — {gettext("soon")}
           </span>

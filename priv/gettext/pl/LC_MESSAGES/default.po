@@ -115,7 +115,7 @@ msgstr "połączenie z BaseLinkerem nieaktywne"
 msgid "BaseLinker token saved."
 msgstr "Token BaseLinker zapisany."
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:381
+#: lib/ordo_web/controllers/page_html/home.html.heex:383
 #, elixir-autogen, elixir-format
 msgid "Built in Gdańsk, EU"
 msgstr "Stworzone w Gdańsku, UE"
@@ -640,7 +640,7 @@ msgstr "Hasło"
 msgid "Password updated successfully!"
 msgstr "Hasło zostało zaktualizowane."
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:315
+#: lib/ordo_web/controllers/page_html/home.html.heex:317
 #, elixir-autogen, elixir-format
 msgid "Pilot program"
 msgstr "Program pilotażowy"
@@ -665,7 +665,7 @@ msgstr "ROZWIĄZANE"
 msgid "Refunds"
 msgstr "Refundacje"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:342
+#: lib/ordo_web/controllers/page_html/home.html.heex:344
 #, elixir-autogen, elixir-format
 msgid "Request a slot"
 msgstr "Zarezerwuj miejsce"
@@ -816,13 +816,13 @@ msgstr "Użytkownik"
 msgid "We can't find the internet"
 msgstr "Brak połączenia z internetem"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:347
-#: lib/ordo_web/controllers/page_html/home.html.heex:367
+#: lib/ordo_web/controllers/page_html/home.html.heex:349
+#: lib/ordo_web/controllers/page_html/home.html.heex:369
 #, elixir-autogen, elixir-format
 msgid "We reply within one business day. No newsletter, no spam."
 msgstr "Odpowiadamy w ciągu jednego dnia roboczego. Bez newslettera, bez spamu."
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:318
+#: lib/ordo_web/controllers/page_html/home.html.heex:320
 #, elixir-autogen, elixir-format
 msgid "We're onboarding three stores that get 300+ support emails a month. Free during the pilot, direct line to the founder, and your workflows shape what Ordo becomes. If that's you, leave your email."
 msgstr "Wdrażamy trzy sklepy, które otrzymują ponad 300 maili obsługi miesięcznie. Bezpłatnie w czasie pilotażu, bezpośredni kontakt z założycielem, a Twoje procesy kształtują to, czym stanie się Ordo. Jeśli to o Tobie, zostaw swój adres e-mail."
@@ -899,7 +899,7 @@ msgstr "Masz zaproszenie do Ordo"
 msgid "You've been invited to Ordo. Click the link below to activate your account and log in:"
 msgstr "Masz zaproszenie do Ordo. Kliknij poniższy link, aby aktywować konto i się zalogować:"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:329
+#: lib/ordo_web/controllers/page_html/home.html.heex:331
 #, elixir-autogen, elixir-format
 msgid "Your work email"
 msgstr "Twój służbowy adres e-mail"
@@ -908,11 +908,6 @@ msgstr "Twój służbowy adres e-mail"
 #, elixir-autogen, elixir-format
 msgid "active"
 msgstr "aktywna"
-
-#: lib/ordo_web/controllers/page_html/home.html.heex:119
-#, elixir-autogen, elixir-format
-msgid "answers"
-msgstr "odpowiada"
 
 #: lib/ordo_web/components/core_components.ex:75
 #, elixir-autogen, elixir-format
@@ -939,11 +934,6 @@ msgstr "edytuj tekst powyżej, jeśli trzeba"
 #, elixir-autogen, elixir-format
 msgid "full email address"
 msgstr "pełny adres e-mail"
-
-#: lib/ordo_web/controllers/page_html/home.html.heex:122
-#, elixir-autogen, elixir-format
-msgid "itself"
-msgstr "sama"
 
 #: lib/ordo_web/controllers/page_html/home.html.heex:194
 #, elixir-autogen, elixir-format
@@ -986,7 +976,7 @@ msgstr "ustawienia"
 msgid "shipped 12 Aug"
 msgstr "wysłano 12 sie"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:304
+#: lib/ordo_web/controllers/page_html/home.html.heex:306
 #, elixir-autogen, elixir-format
 msgid "soon"
 msgstr "wkrótce"
@@ -1144,7 +1134,7 @@ msgstr "Wszystkie kanały"
 msgid "CHANNELS"
 msgstr "KANAŁY"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:302
+#: lib/ordo_web/controllers/page_html/home.html.heex:303
 #: lib/ordo_web/live/inbox_live.ex:512
 #, elixir-autogen, elixir-format
 msgid "Google reviews"
@@ -1206,14 +1196,14 @@ msgstr "Profil Firmy w Google połączony."
 msgid "No channels yet. Connect one below."
 msgstr "Brak kanałów. Połącz pierwszy poniżej."
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:352
-#: lib/ordo_web/controllers/page_html/home.html.heex:365
+#: lib/ordo_web/controllers/page_html/home.html.heex:354
+#: lib/ordo_web/controllers/page_html/home.html.heex:367
 #, elixir-autogen, elixir-format
 msgid "Something went wrong. Please write us directly: hello@hireordo.com"
 msgstr "Coś poszło nie tak. Napisz do nas bezpośrednio: hello@hireordo.com"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:349
-#: lib/ordo_web/controllers/page_html/home.html.heex:363
+#: lib/ordo_web/controllers/page_html/home.html.heex:351
+#: lib/ordo_web/controllers/page_html/home.html.heex:365
 #, elixir-autogen, elixir-format
 msgid "Thanks — we've got your email and will reply within one business day."
 msgstr "Dziękujemy — mamy Twój adres i odpowiemy w ciągu jednego dnia roboczego."
@@ -1425,5 +1415,10 @@ msgstr "Przykład: Ordo automatycznie rozwiązuje wiadomość od klienta"
 
 #: lib/ordo_web/controllers/page_html/home.html.heex:118
 #, elixir-autogen, elixir-format
-msgid "Support that"
-msgstr "Obsługa klienta, która"
+msgid "Your support inbox,"
+msgstr "Twoja obsługa klienta"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:122
+#, elixir-autogen, elixir-format
+msgid "on autopilot"
+msgstr "na autopilocie"

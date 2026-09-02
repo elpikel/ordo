@@ -577,11 +577,6 @@ msgstr "Nie znaleziono zamówienia dla tego adresu."
 msgid "Once you're in, set a password on the settings page so you can log in again later. If you didn't expect this invitation, please ignore this email."
 msgstr "Po zalogowaniu ustaw hasło w ustawieniach konta, aby móc logować się później. Jeśli nie spodziewałeś się tego zaproszenia, zignoruj tę wiadomość."
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:213
-#, elixir-autogen, elixir-format
-msgid "One email, three moves"
-msgstr "Jeden mail, trzy ruchy"
-
 #: lib/ordo/accounts/user_notifier.ex:171
 #, elixir-autogen, elixir-format
 msgid "Or paste this link into your browser:"
@@ -612,12 +607,6 @@ msgstr "Ordo podłącza się do Twojej skrzynki obsługi i rozumie, czego napraw
 #, elixir-autogen, elixir-format
 msgid "Ordo — AI customer support for e-commerce"
 msgstr "Ordo — obsługa klienta AI dla e-commerce"
-
-#: lib/ordo_web/controllers/page_html/home.html.heex:6
-#: lib/ordo_web/controllers/page_html/home.html.heex:20
-#, elixir-autogen, elixir-format
-msgid "Ordo — AI that resolves your store's support email"
-msgstr "Ordo — AI, która sama załatwia maile do obsługi Twojego sklepu"
 
 #: lib/ordo_web/live/inbox_live.ex:522
 #, elixir-autogen, elixir-format
@@ -821,11 +810,6 @@ msgstr "Brak połączenia z internetem"
 #, elixir-autogen, elixir-format
 msgid "We reply within one business day. No newsletter, no spam."
 msgstr "Odpowiadamy w ciągu jednego dnia roboczego. Bez newslettera, bez spamu."
-
-#: lib/ordo_web/controllers/page_html/home.html.heex:320
-#, elixir-autogen, elixir-format
-msgid "We're onboarding three stores that get 300+ support emails a month. Free during the pilot, direct line to the founder, and your workflows shape what Ordo becomes. If that's you, leave your email."
-msgstr "Wdrażamy trzy sklepy, które otrzymują ponad 300 maili obsługi miesięcznie. Bezpłatnie w czasie pilotażu, bezpośredni kontakt z założycielem, a Twoje procesy kształtują to, czym stanie się Ordo. Jeśli to o Tobie, zostaw swój adres e-mail."
 
 #: lib/ordo_web/live/user_live/confirmation.ex:13
 #, elixir-autogen, elixir-format
@@ -1422,3 +1406,19 @@ msgstr "Twoja obsługa klienta"
 #, elixir-autogen, elixir-format
 msgid "on autopilot"
 msgstr "na autopilocie"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:213
+#, elixir-autogen, elixir-format
+msgid "One message, three moves"
+msgstr "Jedna wiadomość, trzy ruchy"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:6
+#: lib/ordo_web/controllers/page_html/home.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Ordo — AI that resolves your store's customer messages"
+msgstr "Ordo — AI, która sama załatwia obsługę klienta Twojego sklepu"
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:320
+#, elixir-autogen, elixir-format
+msgid "We're onboarding three stores that get 300+ support messages a month. Free during the pilot, direct line to the founder, and your workflows shape what Ordo becomes. If that's you, leave your email."
+msgstr "Wdrażamy trzy sklepy, które otrzymują ponad 300 wiadomości obsługi miesięcznie. Bezpłatnie w czasie pilotażu, bezpośredni kontakt z założycielem, a Twoje procesy kształtują to, czym stanie się Ordo. Jeśli to o Tobie, zostaw swój adres e-mail."

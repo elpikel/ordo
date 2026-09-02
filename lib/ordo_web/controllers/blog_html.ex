@@ -374,4 +374,122 @@ defmodule OrdoWeb.BlogHTML do
     </p>
     """
   end
+
+  def article(%{ref: "getting-started", locale: "pl"} = assigns) do
+    ~H"""
+    <p>
+      Ordo to jedna skrzynka, w której lądują wiadomości od klientów — a przy każdej od razu czeka
+      gotowa odpowiedź, oparta na danych Twojego sklepu. Uruchomienie zajmuje kilkanaście minut i nie
+      wymaga zmiany niczego w sklepie. Oto jak zacząć.
+    </p>
+
+    <h2>Krok 1: Podłącz swój sklep</h2>
+    <p>
+      W ustawieniach wklej token API z BaseLinkera (panel BaseLinker → Moje konto → API). Dzięki temu
+      Ordo odczyta zamówienie, status przesyłki i historię — czyli kontekst, na którym opiera każdą
+      odpowiedź. Token jest zaszyfrowany i nigdy nie jest pokazywany ponownie.
+    </p>
+
+    <h2>Krok 2: Dodaj skrzynkę obsługi</h2>
+    <p>
+      Podłącz skrzynkę, na którą piszą klienci (IMAP — adres serwera, login, hasło). Ordo zaczyna
+      czytać nowe wiadomości i zamieniać je w zgłoszenia. Nic nie znika z Twojej skrzynki — Ordo
+      działa równolegle.
+    </p>
+
+    <h2>Krok 3 (opcjonalnie): Podłącz Google</h2>
+    <p>
+      Jeśli zbierasz opinie w Profilu Firmy w Google, połącz go jednym kliknięciem. Opinie trafiają do
+      tej samej skrzynki co wiadomości, a Ordo przygotowuje na nie odpowiedzi — te negatywne zawsze
+      czekają na akceptację człowieka.
+    </p>
+
+    <h2>Krok 4: Copilot pisze, Ty zatwierdzasz</h2>
+    <p>
+      Na start Ordo działa w trybie Copilot: przy każdym zgłoszeniu przygotowuje wersję roboczą
+      odpowiedzi — dopasowaną do zamówienia i zasad Twojego sklepu. Czytasz, w razie potrzeby
+      poprawiasz i zatwierdzasz. Zyskujesz czas, nie tracąc kontroli.
+    </p>
+
+    <h2>Krok 5: Zatwierdzaj skądkolwiek</h2>
+    <p>
+      Nie musisz siedzieć w panelu. Włącz powiadomienia w ustawieniach, a o każdej gotowej odpowiedzi
+      dostaniesz maila z przyciskiem „Zatwierdź i wyślij" albo wiadomość na WhatsAppie, którą
+      zatwierdzisz, odpisując „OK". Oryginalna wiadomość i proponowana odpowiedź są w powiadomieniu —
+      decydujesz w kilka sekund.
+    </p>
+
+    <h2>Krok 6: Włącz Autopilota — po jednej kategorii</h2>
+    <p>
+      Gdy w danej kategorii wersje robocze są trafne (np. statusy paczek), przełącz ją na Autopilota —
+      Ordo odpowiada samodzielnie. Reklamacje możesz na zawsze zostawić do akceptacji człowieka.
+      Zmiany robisz <strong>kategoria po kategorii</strong>, na podstawie liczb, a nie na wiarę.
+    </p>
+
+    <h2>Podsumowanie</h2>
+    <p>
+      Zacznij od podłączenia sklepu i skrzynki, kilka dni popracuj w Copilocie, a potem przełączaj
+      bezpieczne kategorie na Autopilota. Małe kroki, mierzalny efekt — i coraz spokojniejsza skrzynka.
+    </p>
+    """
+  end
+
+  def article(%{ref: "getting-started", locale: "en"} = assigns) do
+    ~H"""
+    <p>
+      Ordo is one inbox where customer messages land — each already paired with a ready-to-send reply
+      grounded in your shop's data. Setup takes about fifteen minutes and changes nothing in your
+      store. Here's how to get started.
+    </p>
+
+    <h2>Step 1: Connect your shop</h2>
+    <p>
+      In settings, paste your BaseLinker API token (BaseLinker panel → My account → API). This lets
+      Ordo read the order, shipment status, and history — the context behind every reply. The token is
+      encrypted and never shown again.
+    </p>
+
+    <h2>Step 2: Add your support mailbox</h2>
+    <p>
+      Connect the mailbox your customers write to (IMAP — server, username, password). Ordo starts
+      reading new messages and turning them into tickets. Nothing disappears from your mailbox — Ordo
+      runs alongside it.
+    </p>
+
+    <h2>Step 3 (optional): Connect Google</h2>
+    <p>
+      If you collect reviews on your Google Business Profile, connect it in one click. Reviews land in
+      the same inbox as your messages, and Ordo drafts replies for them — negative ones always wait
+      for a human to approve.
+    </p>
+
+    <h2>Step 4: Copilot drafts, you approve</h2>
+    <p>
+      Ordo starts in Copilot mode: for every ticket it prepares a draft reply — matched to the order
+      and your shop rules. You read it, tweak if needed, and approve. You gain time without giving up
+      control.
+    </p>
+
+    <h2>Step 5: Approve from anywhere</h2>
+    <p>
+      You don't have to sit in the dashboard. Turn on notifications in settings and every ready reply
+      arrives as an email with an "Approve and send" button, or a WhatsApp message you approve by
+      replying "OK". The original message and the proposed reply are right there — you decide in
+      seconds.
+    </p>
+
+    <h2>Step 6: Switch on Autopilot — one category at a time</h2>
+    <p>
+      When drafts in a category are consistently accurate (say, parcel statuses), switch it to
+      Autopilot and Ordo replies on its own. Complaints can stay human-approved forever. You make the
+      change <strong>category by category</strong>, based on numbers, not faith.
+    </p>
+
+    <h2>Takeaway</h2>
+    <p>
+      Connect your shop and mailbox, spend a few days in Copilot, then move the safe categories to
+      Autopilot. Small steps, measurable results — and a calmer inbox every week.
+    </p>
+    """
+  end
 end

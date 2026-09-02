@@ -60,6 +60,28 @@ defmodule Ordo.Blog do
       date: ~D[2026-08-26],
       tags: ["BaseLinker", "shipping", "customer support"],
       read_minutes: 5
+    },
+    %Post{
+      ref: "getting-started",
+      locale: "pl",
+      slug: "jak-korzystac-z-ordo-przewodnik-krok-po-kroku",
+      title: "Jak korzystać z Ordo: przewodnik krok po kroku",
+      description:
+        "Od podłączenia sklepu po pełną automatyzację — jak uruchomić Ordo w kilkanaście minut i bezpiecznie przejść z trybu Copilot na Autopilota.",
+      date: ~D[2026-09-01],
+      tags: ["Ordo", "pierwsze kroki", "automatyzacja"],
+      read_minutes: 5
+    },
+    %Post{
+      ref: "getting-started",
+      locale: "en",
+      slug: "how-to-use-ordo-getting-started",
+      title: "How to Use Ordo: A Step-by-Step Guide",
+      description:
+        "From connecting your shop to full automation — how to get Ordo running in minutes and safely move from Copilot to Autopilot.",
+      date: ~D[2026-09-01],
+      tags: ["Ordo", "getting started", "automation"],
+      read_minutes: 5
     }
   ]
 

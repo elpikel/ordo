@@ -577,11 +577,6 @@ msgstr ""
 msgid "Once you're in, set a password on the settings page so you can log in again later. If you didn't expect this invitation, please ignore this email."
 msgstr ""
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:213
-#, elixir-autogen, elixir-format
-msgid "One email, three moves"
-msgstr ""
-
 #: lib/ordo/accounts/user_notifier.ex:171
 #, elixir-autogen, elixir-format
 msgid "Or paste this link into your browser:"
@@ -611,12 +606,6 @@ msgstr ""
 #: lib/ordo/notifications/operator_email.ex:71
 #, elixir-autogen, elixir-format
 msgid "Ordo — AI customer support for e-commerce"
-msgstr ""
-
-#: lib/ordo_web/controllers/page_html/home.html.heex:6
-#: lib/ordo_web/controllers/page_html/home.html.heex:20
-#, elixir-autogen, elixir-format
-msgid "Ordo — AI that resolves your store's support email"
 msgstr ""
 
 #: lib/ordo_web/live/inbox_live.ex:522
@@ -820,11 +809,6 @@ msgstr ""
 #: lib/ordo_web/controllers/page_html/home.html.heex:369
 #, elixir-autogen, elixir-format
 msgid "We reply within one business day. No newsletter, no spam."
-msgstr ""
-
-#: lib/ordo_web/controllers/page_html/home.html.heex:320
-#, elixir-autogen, elixir-format
-msgid "We're onboarding three stores that get 300+ support emails a month. Free during the pilot, direct line to the founder, and your workflows shape what Ordo becomes. If that's you, leave your email."
 msgstr ""
 
 #: lib/ordo_web/live/user_live/confirmation.ex:13
@@ -1421,4 +1405,20 @@ msgstr ""
 #: lib/ordo_web/controllers/page_html/home.html.heex:122
 #, elixir-autogen, elixir-format
 msgid "on autopilot"
+msgstr ""
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:213
+#, elixir-autogen, elixir-format, fuzzy
+msgid "One message, three moves"
+msgstr ""
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:6
+#: lib/ordo_web/controllers/page_html/home.html.heex:20
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Ordo — AI that resolves your store's customer messages"
+msgstr ""
+
+#: lib/ordo_web/controllers/page_html/home.html.heex:320
+#, elixir-autogen, elixir-format, fuzzy
+msgid "We're onboarding three stores that get 300+ support messages a month. Free during the pilot, direct line to the founder, and your workflows shape what Ordo becomes. If that's you, leave your email."
 msgstr ""

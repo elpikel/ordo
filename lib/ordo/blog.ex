@@ -82,6 +82,28 @@ defmodule Ordo.Blog do
       date: ~D[2026-09-01],
       tags: ["Ordo", "getting started", "automation"],
       read_minutes: 5
+    },
+    %Post{
+      ref: "ordo-vs-chatbot",
+      locale: "pl",
+      slug: "ordo-czy-chatbot-ai-do-obslugi-klienta-w-e-commerce",
+      title: "Ordo czy chatbot AI? Co wybrać do obsługi klienta w e-commerce",
+      description:
+        "Chatbot z bazy wiedzy czy asystent oparty na zamówieniach? Porównujemy dwa podejścia do automatyzacji obsługi i pokazujemy, gdzie każde się sprawdza.",
+      date: ~D[2026-09-02],
+      tags: ["porównanie", "chatbot", "obsługa klienta"],
+      read_minutes: 5
+    },
+    %Post{
+      ref: "ordo-vs-chatbot",
+      locale: "en",
+      slug: "ordo-vs-a-generic-ai-chatbot",
+      title: "Ordo vs a Generic AI Chatbot: Which Fits E-commerce Support?",
+      description:
+        "A knowledge-base chatbot or an order-grounded assistant? We compare the two approaches to support automation and where each one fits.",
+      date: ~D[2026-09-02],
+      tags: ["comparison", "chatbot", "customer support"],
+      read_minutes: 5
     }
   ]
 

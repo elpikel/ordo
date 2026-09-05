@@ -434,6 +434,113 @@ defmodule OrdoWeb.BlogHTML do
     """
   end
 
+  def article(%{ref: "ordo-vs-chatbot", locale: "pl"} = assigns) do
+    ~H"""
+    <p>
+      Sklep, który myśli o automatyzacji obsługi, zwykle najpierw myśli „chatbot". To rozsądny pierwszy
+      krok — ale warto wiedzieć, czym różni się typowy chatbot AI od asystenta opartego na danych
+      zamówień, takiego jak Ordo. Rozwiązują trochę inne problemy.
+    </p>
+
+    <h2>Chatbot odpowiada z bazy wiedzy. Ordo — z zamówienia.</h2>
+    <p>
+      Typowy chatbot odpowiada na podstawie FAQ i artykułów, którymi go nakarmisz. Poradzi sobie z
+      „jaki macie czas dostawy?", ale przy „gdzie jest moje zamówienie?" utknie, bo nie zna konkretnej
+      paczki. Ordo najpierw znajduje zamówienie (po adresie e-mail lub numerze), odczytuje status
+      przesyłki i dopiero na tej podstawie pisze odpowiedź. To różnica między ogólnikiem a konkretem.
+    </p>
+
+    <h2>Rozmowa kontra działanie</h2>
+    <p>
+      Chatbot prowadzi rozmowę. Ordo wykonuje pracę: sprawdza tracking, rejestruje zwrot, uruchamia
+      zwrot środków — realne akcje w Twoim sklepie, a nie tylko tekst. Klient dostaje rozwiązanie, a nie
+      obietnicę „przekażemy dalej".
+    </p>
+
+    <h2>Wszystko albo nic kontra stopniowe zaufanie</h2>
+    <p>
+      Chatbota zwykle albo włączasz na całość, albo wcale. Ordo działa inaczej: zaczyna w trybie
+      Copilot (pisze wersję roboczą, Ty zatwierdzasz), a pełną automatykę włączasz <strong>kategoria po kategorii</strong>, gdy liczby to potwierdzą. Statusy paczek mogą działać
+      same, a reklamacje zostają pod okiem człowieka. Automatyzujesz tyle, ile jest bezpieczne.
+    </p>
+
+    <h2>Widget na stronie kontra jedna skrzynka</h2>
+    <p>
+      Chatbot mieszka najczęściej w okienku na stronie. Ordo zbiera to, co i tak już przychodzi —
+      wiadomości i opinie w Profilu Firmy w Google — do jednej skrzynki i odsyła odpowiedzi tym samym
+      kanałem. Nie zmuszasz klienta do nowego kanału; wchodzisz tam, gdzie już pisze.
+    </p>
+
+    <h2>Kiedy chatbot ma sens</h2>
+    <p>
+      Uczciwie: chatbot bywa świetny przed zakupem — natychmiastowa odpowiedź na proste pytania na
+      stronie, zanim zamienią się w wiadomość do obsługi. Jeśli tego szukasz, dobry widget zrobi robotę.
+    </p>
+
+    <h2>Podsumowanie</h2>
+    <p>
+      Chatbot i Ordo to nie to samo narzędzie do tego samego zadania. Do FAQ na stronie — chatbot. Do
+      obsługi po zakupie, opartej na realnych zamówieniach i konkretnych akcjach — asystent taki jak
+      Ordo, który zaczyna ostrożnie i zdobywa zaufanie liczbami. Wiele sklepów używa obu.
+    </p>
+    """
+  end
+
+  def article(%{ref: "ordo-vs-chatbot", locale: "en"} = assigns) do
+    ~H"""
+    <p>
+      A shop thinking about support automation usually thinks "chatbot" first. That's a reasonable
+      start — but it's worth knowing how a generic AI chatbot differs from an order-grounded assistant
+      like Ordo. They solve slightly different problems.
+    </p>
+
+    <h2>A chatbot answers from a knowledge base. Ordo answers from the order.</h2>
+    <p>
+      A typical chatbot replies from the FAQ and articles you feed it. It can handle "what's your
+      delivery time?", but "where is my order?" stops it — it doesn't know the specific parcel. Ordo
+      first finds the order (by email address or number), reads the shipment status, and only then
+      writes the reply. That's the difference between a generality and a specific.
+    </p>
+
+    <h2>Conversation vs action</h2>
+    <p>
+      A chatbot holds a conversation. Ordo does the work: checks tracking, registers the return,
+      triggers the refund — real actions in your shop, not just text. The customer gets a resolution,
+      not a "we'll pass it on".
+    </p>
+
+    <h2>All-or-nothing vs earned trust</h2>
+    <p>
+      A chatbot is usually on or off. Ordo works differently: it starts in Copilot mode (drafts a
+      reply, you approve), and you switch full automation on <strong>category by category</strong>
+      once
+      the numbers back it up. Parcel statuses can run on their own; complaints stay human-approved. You
+      automate exactly as much as is safe.
+    </p>
+
+    <h2>A website widget vs one inbox</h2>
+    <p>
+      A chatbot usually lives in a widget on your site. Ordo gathers what already comes in — messages
+      and Google Business Profile reviews — into one inbox, and sends replies back on the same channel.
+      You don't force customers onto a new channel; you meet them where they already write.
+    </p>
+
+    <h2>When a chatbot makes sense</h2>
+    <p>
+      To be fair: a chatbot can be great pre-purchase — instant answers to simple questions on the
+      page, deflecting easy queries before they become support messages. If that's what you need, a
+      good widget does the job.
+    </p>
+
+    <h2>Takeaway</h2>
+    <p>
+      A chatbot and Ordo aren't the same tool for the same job. For on-site FAQ, a chatbot. For
+      post-purchase support grounded in real orders and concrete actions, an assistant like Ordo — one
+      that starts cautiously and earns trust with numbers. Plenty of shops use both.
+    </p>
+    """
+  end
+
   def article(%{ref: "getting-started", locale: "en"} = assigns) do
     ~H"""
     <p>

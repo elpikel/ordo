@@ -104,6 +104,21 @@
 
         <span class="h-5 w-px bg-slate-300" aria-hidden="true"></span>
         <OrdoWeb.Layouts.locale_switcher locale={@locale} />
+        <span class="h-5 w-px bg-slate-300" aria-hidden="true"></span>
+        <a
+          :if={@current_scope && @current_scope.user}
+          href={~p"/inbox"}
+          class="font-mono text-sm font-medium text-ink py-1 hover:text-label-deep focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
+        >
+          {gettext("Go to Ordo")} <span aria-hidden="true">→</span>
+        </a>
+        <a
+          :if={!(@current_scope && @current_scope.user)}
+          href={~p"/users/log-in"}
+          class="font-mono text-sm font-medium text-ink py-1 hover:text-label-deep focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
+        >
+          {gettext("Log in")}
+        </a>
       </nav>
     </header>
     
@@ -128,7 +143,15 @@
           </p>
           <div class="mt-8 flex flex-wrap items-center gap-4">
             <a
-              href="#early-access"
+              :if={@current_scope && @current_scope.user}
+              href={~p"/inbox"}
+              class="bg-ink text-paper font-mono text-sm px-6 py-3 hover:bg-ink-soft transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
+            >
+              {gettext("Go to Ordo")} <span aria-hidden="true">→</span>
+            </a>
+            <a
+              :if={!(@current_scope && @current_scope.user)}
+              href={~p"/users/register"}
               class="bg-ink text-paper font-mono text-sm px-6 py-3 hover:bg-ink-soft transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
             >
               {gettext("Hire Ordo")}
@@ -139,8 +162,11 @@
             >
               {gettext("See live demo")}
             </a>
-            <span class="font-mono text-xs text-ink-mute">
-              {gettext("3 pilot slots · free during pilot")}
+            <span
+              :if={!(@current_scope && @current_scope.user)}
+              class="font-mono text-xs text-ink-mute"
+            >
+              {gettext("Set up in minutes · no credit card")}
             </span>
           </div>
         </div>
@@ -310,64 +336,45 @@
 
       <div class="perf max-w-6xl mx-auto"></div>
       
-<!-- ── Early access ────────────────────────────────────────────────── -->
-      <section id="early-access" class="max-w-6xl mx-auto px-5 sm:px-8 py-20">
+<!-- ── Get started ─────────────────────────────────────────────────── -->
+      <section id="get-started" class="max-w-6xl mx-auto px-5 sm:px-8 py-20">
         <div class="max-w-xl">
           <h2 class="font-display font-bold text-3xl tracking-tight mb-4">
-            {gettext("Pilot program")}
+            {gettext("Ready to clear your inbox?")}
           </h2>
           <p class="text-ink-soft leading-relaxed mb-8">
             {gettext(
-              "We're onboarding three stores that get 300+ support messages a month. Free during the pilot, direct line to the founder, and your workflows shape what Ordo becomes. If that's you, leave your email."
+              "Create your account and connect your shop in minutes. Ordo starts in Copilot — it drafts, you approve — so you're in control from the first message. No credit card, no commitment."
             )}
           </p>
-          <form
-            id="pilot-form"
-            method="post"
-            action={~p"/pilot"}
-            class="flex flex-col sm:flex-row gap-3"
-          >
-            <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
-            <label for="email" class="sr-only">{gettext("Your work email")}</label>
-            <input
-              id="email"
-              name="pilot_request[email]"
-              type="email"
-              required
-              placeholder="you@yourstore.pl"
-              class="flex-1 border border-ink bg-paper-card px-4 py-3 font-mono text-sm placeholder:text-ink-mute focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
-            />
-            <button
-              type="submit"
+          <div class="flex flex-wrap items-center gap-4">
+            <a
+              :if={@current_scope && @current_scope.user}
+              href={~p"/inbox"}
               class="bg-ink text-paper font-mono text-sm px-6 py-3 hover:bg-ink-soft transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
             >
-              {gettext("Request a slot")}
-            </button>
-          </form>
+              {gettext("Go to Ordo")} <span aria-hidden="true">→</span>
+            </a>
+            <a
+              :if={!(@current_scope && @current_scope.user)}
+              href={~p"/users/register"}
+              class="bg-ink text-paper font-mono text-sm px-6 py-3 hover:bg-ink-soft transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
+            >
+              {gettext("Create your account")}
+            </a>
+            <a
+              href={~p"/demo"}
+              class="font-mono text-sm px-6 py-3 border border-ink hover:bg-ink hover:text-paper transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-label"
+            >
+              {gettext("Or see the live demo")}
+            </a>
+          </div>
           <p
-            id="form-note"
-            data-default={gettext("We reply within one business day. No newsletter, no spam.")}
-            data-sent={
-              gettext("Thanks — we've got your email and will reply within one business day.")
-            }
-            data-error={
-              gettext("Something went wrong. Please write us directly: hello@hireordo.com")
-            }
-            class={[
-              "font-mono text-xs mt-3",
-              @pilot_status == "sent" && "text-label-deep",
-              @pilot_status == "error" && "text-red-600",
-              @pilot_status not in ["sent", "error"] && "text-ink-mute"
-            ]}
+            :if={!(@current_scope && @current_scope.user)}
+            class="font-mono text-xs text-ink-mute mt-4"
           >
-            <%= case @pilot_status do %>
-              <% "sent" -> %>
-                {gettext("Thanks — we've got your email and will reply within one business day.")}
-              <% "error" -> %>
-                {gettext("Something went wrong. Please write us directly: hello@hireordo.com")}
-              <% _ -> %>
-                {gettext("We reply within one business day. No newsletter, no spam.")}
-            <% end %>
+            {gettext("Already have an account?")}
+            <a href={~p"/users/log-in"} class="underline hover:text-ink">{gettext("Log in")}</a>
           </p>
         </div>
       </section>
@@ -384,45 +391,5 @@
         </span>
       </div>
     </footer>
-
-    <script>
-      // Submit the pilot form without reloading the page. Falls back to a normal
-      // POST + redirect if JS is disabled (see PageController.pilot/2).
-      (function () {
-        var form = document.getElementById('pilot-form');
-        var note = document.getElementById('form-note');
-        if (!form) return;
-
-        form.addEventListener('submit', function (e) {
-          e.preventDefault();
-          var button = form.querySelector('button[type="submit"]');
-          if (button) button.disabled = true;
-
-          fetch(form.action, {
-            method: 'POST',
-            headers: { 'x-requested-with': 'fetch' },
-            body: new FormData(form)
-          })
-            .then(function (res) {
-              if (res.ok) {
-                form.reset();
-                note.textContent = note.dataset.sent;
-                note.classList.remove('text-ink-mute', 'text-red-600');
-                note.classList.add('text-label-deep');
-              } else {
-                throw new Error('request failed');
-              }
-            })
-            .catch(function () {
-              note.textContent = note.dataset.error;
-              note.classList.remove('text-ink-mute', 'text-label-deep');
-              note.classList.add('text-red-600');
-            })
-            .finally(function () {
-              if (button) button.disabled = false;
-            });
-        });
-      })();
-    </script>
   </body>
 </html>

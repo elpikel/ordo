@@ -365,7 +365,7 @@ defmodule OrdoWeb.InboxLive do
                       <span class="text-ink-mute">{gettext("date")}</span><span>{@ticket.order["date"]}</span>
                     </div>
                     <div class="flex justify-between py-1">
-                      <span class="text-ink-mute">{gettext("status")}</span><span>{@ticket.order["status"]}</span>
+                      <span class="text-ink-mute">{gettext("status")}</span><span>{tracking_status(@ticket.order["status"])}</span>
                     </div>
                     <div :if={@ticket.order["tracking"]} class="flex justify-between py-1">
                       <span class="text-ink-mute">{@ticket.order["courier"]}</span><span>{@ticket.order["tracking"]}</span>
@@ -378,7 +378,7 @@ defmodule OrdoWeb.InboxLive do
                         :for={h <- @ticket.order["courier_history"]}
                         class="flex justify-between py-0.5"
                       >
-                        <span class="text-ink-mute">{h["status"]}</span><span class="text-ink-mute">{h["date"]}</span>
+                        <span class="text-ink-mute">{tracking_status(h["status"])}</span><span class="text-ink-mute">{h["date"]}</span>
                       </div>
                     </div>
                   </div>
@@ -524,6 +524,20 @@ defmodule OrdoWeb.InboxLive do
   defp category_label("REVIEW_NEGATIVE"), do: gettext("Negative")
   defp category_label("REVIEW_MIXED"), do: gettext("Mixed")
   defp category_label(code), do: code
+
+  # Demo BaseLinker orders carry Polish courier/order statuses (fixture data that
+  # stands in for what the API returns). Localize the known ones so the panel
+  # follows the UI language; anything unrecognized falls through verbatim.
+  defp tracking_status("Wysłane"), do: gettext("Shipped")
+  defp tracking_status("Dostarczone"), do: gettext("Delivered")
+  defp tracking_status("W realizacji"), do: gettext("Processing")
+  defp tracking_status("Nowe"), do: gettext("New")
+  defp tracking_status("Spakowane"), do: gettext("Packed")
+  defp tracking_status("Nadano przesyłkę"), do: gettext("Shipment dispatched")
+  defp tracking_status("Przyjęto w sortowni"), do: gettext("Arrived at sorting hub")
+  defp tracking_status("Wydano do doręczenia"), do: gettext("Out for delivery")
+  defp tracking_status("Doręczono"), do: gettext("Delivered")
+  defp tracking_status(other), do: other
 
   defp stars(rating) when is_integer(rating) and rating in 0..5,
     do: String.duplicate("★", rating) <> String.duplicate("☆", 5 - rating)

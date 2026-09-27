@@ -10,6 +10,7 @@ defmodule Ordo.Accounts do
   alias Ordo.Accounts.UserNotifier
   alias Ordo.Accounts.UserToken
   alias Ordo.Repo
+  alias Ordo.Support.Tenant
 
   @doc """
   Gets a user by email.
@@ -82,6 +83,55 @@ defmodule Ordo.Accounts do
   end
 
   @doc """
+  Registers a new store owner from the public landing page: provisions a fresh
+  tenant and an unconfirmed, password-less user tied to it, in a single
+  transaction. The user activates by clicking the magic login link (which
+  confirms the account); they name their store and set a password later in
+  settings.
+
+  Returns `{:ok, user}`, or `{:error, changeset}` (the user changeset — e.g. an
+  invalid or already-registered email), in which case the tenant is rolled back.
+
+  ## Examples
+
+      iex> register_owner(%{"email" => "owner@acme.pl"})
+      {:ok, %User{}}
+
+  """
+  def register_owner(attrs) do
+    email = attrs["email"] || attrs[:email]
+
+    Repo.transact(fn ->
+      with {:ok, tenant} <- create_owner_tenant(email) do
+        %User{}
+        |> User.invitation_changeset(%{email: email, tenant_id: tenant.id})
+        |> Repo.insert()
+      end
+    end)
+  end
+
+  defp create_owner_tenant(email) do
+    base =
+      email
+      |> to_string()
+      |> String.split("@")
+      |> List.first()
+      |> String.downcase()
+      |> String.replace(~r/[^a-z0-9]+/, "-")
+      |> String.trim("-")
+
+    base = if base == "", do: "store", else: base
+    suffix = 6 |> :crypto.strong_rand_bytes() |> Base.encode16(case: :lower)
+
+    %Tenant{}
+    |> Tenant.changeset(%{
+      slug: "#{base}-#{suffix}",
+      name: String.capitalize(String.replace(base, "-", " "))
+    })
+    |> Repo.insert()
+  end
+
+  @doc """
   Creates a pending, unconfirmed user for a tenant (an invitation). The user has
   the given email and tenant, no password, and is not confirmed until they click
   the magic login link delivered by `deliver_invitation/2`.
@@ -92,7 +142,10 @@ defmodule Ordo.Accounts do
       {:ok, %User{}}
 
   """
-  def create_tenant_user(%Ordo.Support.Tenant{} = tenant, email) do
+
+  ## Settings
+
+  def create_tenant_user(%Tenant{} = tenant, email) do
     %User{}
     |> User.invitation_changeset(%{email: email, tenant_id: tenant.id})
     |> Repo.insert()
@@ -109,8 +162,6 @@ defmodule Ordo.Accounts do
       {:ok, %{to: ..., body: ...}}
 
   """
-
-  ## Settings
 
   def deliver_invitation(%User{} = user, magic_link_url_fun) when is_function(magic_link_url_fun, 1) do
     {encoded_token, user_token} = UserToken.build_email_token(user, "login")
@@ -260,8 +311,9 @@ defmodule Ordo.Accounts do
   def login_user_by_magic_link(token) do
     {:ok, query} = UserToken.verify_magic_link_token_query(token)
 
+    ## Token helper
+    # Prevent session fixation attacks by disallowing magic links for unconfirmed users with password
     case Repo.one(query) do
-      # Prevent session fixation attacks by disallowing magic links for unconfirmed users with password
       {%User{confirmed_at: nil, hashed_password: hash}, _token} when not is_nil(hash) ->
         raise """
         magic link log in is not allowed for unconfirmed users with a password set!
@@ -294,8 +346,6 @@ defmodule Ordo.Accounts do
       {:ok, %{to: ..., body: ...}}
 
   """
-
-  ## Token helper
 
   def deliver_user_update_email_instructions(%User{} = user, current_email, update_email_url_fun)
       when is_function(update_email_url_fun, 1) do

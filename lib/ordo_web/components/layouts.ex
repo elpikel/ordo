@@ -95,14 +95,14 @@ defmodule OrdoWeb.Layouts do
         class="hidden absolute top-full right-0 mt-1 w-52 bg-paper-card border border-slate-200 shadow-lg rounded-sm py-1 z-40"
       >
         <.link navigate={~p"/users/settings"} class="block px-4 py-2 text-sm hover:bg-paper">
-          Ustawienia konta
+          {gettext("Account settings")}
         </.link>
         <.link
           href={~p"/users/log-out"}
           method="delete"
           class="block px-4 py-2 text-sm text-red-700 hover:bg-paper"
         >
-          Wyloguj
+          {gettext("Log out")}
         </.link>
       </div>
     </div>

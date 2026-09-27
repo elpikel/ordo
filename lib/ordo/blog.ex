@@ -104,6 +104,28 @@ defmodule Ordo.Blog do
       date: ~D[2026-09-02],
       tags: ["comparison", "chatbot", "customer support"],
       read_minutes: 5
+    },
+    %Post{
+      ref: "response-time",
+      locale: "pl",
+      slug: "czas-pierwszej-odpowiedzi-dlaczego-decyduje-i-jak-go-skrocic",
+      title: "Czas pierwszej odpowiedzi: dlaczego decyduje i jak go skrócić",
+      description:
+        "Czas pierwszej reakcji wpływa na zadowolenie i powroty klientów. Pokazujemy, dlaczego liczy się najbardziej i jak skrócić go z minut do sekund dzięki odpowiedziom opartym na zamówieniu.",
+      date: ~D[2026-09-27],
+      tags: ["czas odpowiedzi", "obsługa klienta", "CSAT"],
+      read_minutes: 5
+    },
+    %Post{
+      ref: "response-time",
+      locale: "en",
+      slug: "first-reply-time-why-it-matters-and-how-to-cut-it",
+      title: "First-Reply Time: Why It Decides the Sale and How to Cut It",
+      description:
+        "First-reply time drives satisfaction and repeat purchases. Here's why it matters most and how to cut it from minutes to seconds with order-grounded replies.",
+      date: ~D[2026-09-27],
+      tags: ["response time", "customer support", "CSAT"],
+      read_minutes: 5
     }
   ]
 

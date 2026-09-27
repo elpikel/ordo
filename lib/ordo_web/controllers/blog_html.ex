@@ -599,4 +599,142 @@ defmodule OrdoWeb.BlogHTML do
     </p>
     """
   end
+
+  def article(%{ref: "response-time", locale: "pl"} = assigns) do
+    ~H"""
+    <p>
+      W obsłudze e-commerce nie liczy się tylko to, <em>co</em>
+      odpowiesz — równie mocno waży to, <em>jak szybko</em>. Czas pierwszej odpowiedzi to jedna z niewielu metryk, którą klient odczuwa
+      od razu i która realnie przekłada się na zadowolenie, opinie i powroty. A jednocześnie to metryka,
+      którą najłatwiej poprawić.
+    </p>
+
+    <h2>Dlaczego pierwsza reakcja waży najwięcej</h2>
+    <p>
+      Klient, który pisze „gdzie jest moja paczka?", nie jest zły — jest zaniepokojony. Każda godzina
+      ciszy zamienia niepokój w irytację, a irytację w negatywną opinię albo zapytanie o zwrot środków.
+      Szybka, konkretna pierwsza odpowiedź rozbraja większość tych napięć, zanim w ogóle urosną.
+      Badania obsługi klienta od lat pokazują to samo: na ocenę rozmowy szybkość reakcji wpływa
+      często bardziej niż to, czy sprawa została od razu rozwiązana.
+    </p>
+
+    <h2>Gdzie ucieka czas</h2>
+    <p>
+      Sama odpowiedź to zwykle kilka zdań — czas nie ucieka na pisaniu. Ucieka na zbieraniu kontekstu:
+      trzeba znaleźć zamówienie, sprawdzić status przesyłki, przypomnieć sobie zasady sklepu i dopiero
+      wtedy sformułować wiadomość. Przy jednym mailu to dwie minuty. Przy pięćdziesięciu dziennie —
+      to pół dnia pracy i skrzynka, która nigdy nie jest pusta.
+    </p>
+
+    <h2>Szybko nie znaczy byle jak</h2>
+    <p>
+      Najprostszy sposób na krótki czas odpowiedzi to automat wysyłający „dziękujemy, zajmiemy się tym".
+      Metryka wygląda świetnie, ale klient dostaje puste potwierdzenie, a Ty i tak musisz odpisać drugi
+      raz — realnie sprawa trwa dłużej. Skrócenie czasu ma sens tylko wtedy, gdy pierwsza odpowiedź jest <strong>od razu treściwa</strong>: oparta na konkretnym zamówieniu, nie na szablonie.
+    </p>
+
+    <h2>Jak skrócić z minut do sekund</h2>
+    <p>
+      Rozwiązanie nie polega na tym, by pisać szybciej, tylko by kontekst był gotowy, zanim usiądziesz do
+      odpowiedzi. Ordo w momencie, gdy wiadomość dociera, dopasowuje zamówienie, odczytuje status z
+      BaseLinkera i przygotowuje gotową wersję roboczą. Ty jej tylko potrzebujesz zatwierdzić — z panelu,
+      z maila albo jednym „OK" na WhatsAppie. Pierwsza odpowiedź wychodzi w kilka sekund, a nie po tym,
+      jak znajdziesz chwilę, żeby ją napisać.
+    </p>
+
+    <h2>Co właściwie mierzyć</h2>
+    <ul>
+      <li>
+        <strong>Mediana, nie średnia</strong>
+        — kilka zgłoszeń wiszących godzinami zawyża średnią i ukrywa prawdę.
+      </li>
+      <li>
+        <strong>90. percentyl</strong> — pokazuje, jak długo czekają Twoi najgorzej obsłużeni klienci.
+      </li>
+      <li>
+        <strong>% odpowiedzi w ciągu X minut</strong>
+        — prosty cel dla zespołu, łatwy do śledzenia z tygodnia na tydzień.
+      </li>
+    </ul>
+    <p>
+      Pilnuj ogona, nie tylko środka. To pojedyncze wiadomości, które utknęły na pół dnia, generują
+      najwięcej negatywnych opinii — nawet jeśli średnia wygląda przyzwoicie.
+    </p>
+
+    <h2>Podsumowanie</h2>
+    <p>
+      Czas pierwszej odpowiedzi to najłatwiejsza do poprawienia dźwignia w obsłudze: wysoki wpływ na
+      klienta, niskie ryzyko. Nie skracaj go pustymi potwierdzeniami — skróć go, mając kontekst gotowy z
+      góry. Wtedy „szybko" i „trafnie" przestają się wykluczać.
+    </p>
+    """
+  end
+
+  def article(%{ref: "response-time", locale: "en"} = assigns) do
+    ~H"""
+    <p>
+      In e-commerce support, it isn't only <em>what</em>
+      you reply that matters — it's <em>how fast</em>.
+      First-reply time is one of the few metrics a customer feels immediately, and it maps directly to
+      satisfaction, reviews, and repeat purchases. It's also one of the easiest metrics to improve.
+    </p>
+
+    <h2>Why the first reply carries the most weight</h2>
+    <p>
+      A customer asking "where is my order?" isn't angry — they're anxious. Every hour of silence turns
+      anxiety into irritation, and irritation into a bad review or a refund request. A fast, specific
+      first reply defuses most of that tension before it ever grows. Support research has said the same
+      thing for years: speed of response often shapes how a conversation is rated more than whether it
+      was solved on the first touch.
+    </p>
+
+    <h2>Where the time actually goes</h2>
+    <p>
+      The reply itself is usually a few sentences — writing isn't the bottleneck. Gathering context is.
+      You have to find the order, check the shipment status, recall your shop's rules, and only then
+      phrase the message. For one email that's two minutes. For fifty a day, it's half a workday and an
+      inbox that's never empty.
+    </p>
+
+    <h2>Fast doesn't mean sloppy</h2>
+    <p>
+      The cheapest way to lower response time is an auto-reply that says "thanks, we'll look into it".
+      The metric looks great, but the customer gets an empty acknowledgement and you still have to write
+      a second time — so the real resolution takes longer. Cutting time only helps when the first reply
+      is <strong>substantive right away</strong>: grounded in the actual order, not a template.
+    </p>
+
+    <h2>How to go from minutes to seconds</h2>
+    <p>
+      The fix isn't typing faster — it's having the context ready before you sit down to answer. The
+      moment a message arrives, Ordo matches the order, reads the status from BaseLinker, and prepares a
+      ready-to-send draft. All you do is approve it — from the dashboard, from an email, or with a single
+      "OK" on WhatsApp. The first reply goes out in seconds, not whenever you find a moment to write it.
+    </p>
+
+    <h2>What to actually measure</h2>
+    <ul>
+      <li>
+        <strong>Median, not average</strong>
+        — a few tickets stuck for hours inflate the average and hide the truth.
+      </li>
+      <li><strong>90th percentile</strong> — shows how long your worst-served customers wait.</li>
+      <li>
+        <strong>% answered within X minutes</strong>
+        — a simple team target, easy to track week over week.
+      </li>
+    </ul>
+    <p>
+      Watch the tail, not just the middle. It's the individual messages that sit for half a day that
+      generate the most negative reviews — even when the average looks respectable.
+    </p>
+
+    <h2>Takeaway</h2>
+    <p>
+      First-reply time is the easiest high-impact lever in support: big effect on the customer, low
+      risk. Don't cut it with empty acknowledgements — cut it by having the context ready up front. Then
+      "fast" and "accurate" stop pulling against each other.
+    </p>
+    """
+  end
 end

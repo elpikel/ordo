@@ -100,9 +100,10 @@ defmodule Ordo.Accounts do
   """
   def register_owner(attrs) do
     email = attrs["email"] || attrs[:email]
+    name = attrs["name"] || attrs[:name]
 
     Repo.transact(fn ->
-      with {:ok, tenant} <- create_owner_tenant(email) do
+      with {:ok, tenant} <- create_owner_tenant(name) do
         %User{}
         |> User.invitation_changeset(%{email: email, tenant_id: tenant.id})
         |> Repo.insert()
@@ -110,24 +111,16 @@ defmodule Ordo.Accounts do
     end)
   end
 
-  defp create_owner_tenant(email) do
-    base =
-      email
-      |> to_string()
-      |> String.split("@")
-      |> List.first()
-      |> String.downcase()
-      |> String.replace(~r/[^a-z0-9]+/, "-")
-      |> String.trim("-")
-
-    base = if base == "", do: "store", else: base
+  # The store name is supplied by the registration form and used verbatim as the
+  # tenant name (not derived from the email). The slug is derived from it via
+  # Slug.slugify (which transliterates diacritics — "Łódź" -> "lodz") plus a
+  # random suffix so it's always unique, and isn't shown to the user.
+  defp create_owner_tenant(name) do
+    base = Slug.slugify(to_string(name)) || "store"
     suffix = 6 |> :crypto.strong_rand_bytes() |> Base.encode16(case: :lower)
 
     %Tenant{}
-    |> Tenant.changeset(%{
-      slug: "#{base}-#{suffix}",
-      name: String.capitalize(String.replace(base, "-", " "))
-    })
+    |> Tenant.changeset(%{slug: "#{base}-#{suffix}", name: to_string(name)})
     |> Repo.insert()
   end
 

@@ -55,6 +55,7 @@ defmodule Ordo.MixProject do
       {:heroicons,
        github: "tailwindlabs/heroicons", tag: "v2.2.0", sparse: "optimized", app: false, compile: false, depth: 1},
       {:swoosh, "~> 1.16"},
+      {:slugify, "~> 1.3"},
       {:cloak_ecto, "~> 1.3"},
       {:oban, "~> 2.18"},
       {:mail, "~> 0.4"},

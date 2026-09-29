@@ -24,18 +24,6 @@ defmodule Ordo.Support do
 
   @topic "inbox"
 
-  @doc """
-  Resolve a tenant from a URL param — its slug or numeric id. The demo tenant is
-  seeded on demand; any other must already exist (raises → 404).
-  """
-  def fetch_tenant!(param) do
-    cond do
-      param == Demo.slug() -> ensure_demo_tenant!()
-      Regex.match?(~r/^\d+$/, param) -> Tenant |> Repo.get!(param) |> with_policy()
-      true -> Tenant |> Repo.get_by!(slug: param) |> with_policy()
-    end
-  end
-
   def update_tenant(%Tenant{} = tenant, attrs) do
     tenant |> Tenant.changeset(attrs) |> Repo.update()
   end
@@ -43,7 +31,7 @@ defmodule Ordo.Support do
   @doc "Get the demo tenant, creating it and seeding its Policy on first call."
   def ensure_demo_tenant! do
     tenant =
-      case Repo.get_by(Tenant, slug: Demo.slug()) do
+      case Repo.get_by(Tenant, demo: true) do
         nil ->
           {:ok, t} = %Tenant{} |> Tenant.changeset(Demo.tenant_attrs()) |> Repo.insert()
           seed_policy!(t)

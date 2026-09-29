@@ -3,7 +3,6 @@ defmodule OrdoWeb.UserLive.Registration do
   use OrdoWeb, :live_view
 
   alias Ordo.Accounts
-  alias Ordo.Accounts.User
 
   @impl true
   def render(assigns) do
@@ -15,7 +14,7 @@ defmodule OrdoWeb.UserLive.Registration do
             <p>{gettext("Create your account")}</p>
             <:subtitle>
               {gettext(
-                "Enter your email and we'll send you a link to get started — no password needed."
+                "Tell us your store name and email — we'll send you a link to get started, no password needed."
               )}
             </:subtitle>
           </.header>
@@ -29,13 +28,20 @@ defmodule OrdoWeb.UserLive.Registration do
           phx-change="validate"
         >
           <.input
+            field={f[:name]}
+            type="text"
+            label={gettext("Store name")}
+            autocomplete="organization"
+            required
+            phx-mounted={JS.focus()}
+          />
+          <.input
             field={f[:email]}
             type="email"
             label={gettext("Email")}
             autocomplete="username"
             spellcheck="false"
             required
-            phx-mounted={JS.focus()}
           />
           <.button variant="primary" class="w-full">
             {gettext("Create account")} <span aria-hidden="true">→</span>
@@ -55,14 +61,12 @@ defmodule OrdoWeb.UserLive.Registration do
 
   @impl true
   def mount(_params, _session, socket) do
-    changeset = Accounts.change_user_email(%User{})
-    {:ok, assign_form(socket, changeset)}
+    {:ok, assign(socket, :form, to_form(%{}, as: "user"))}
   end
 
   @impl true
   def handle_event("validate", %{"user" => params}, socket) do
-    changeset = Accounts.change_user_email(%User{}, params, validate_unique: false)
-    {:noreply, assign_form(socket, Map.put(changeset, :action, :validate))}
+    {:noreply, assign(socket, :form, to_form(params, as: "user"))}
   end
 
   def handle_event("save", %{"user" => params}, socket) do
@@ -79,11 +83,16 @@ defmodule OrdoWeb.UserLive.Registration do
          |> push_navigate(to: ~p"/users/log-in")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign_form(socket, Map.put(changeset, :action, :insert))}
+        {:noreply, assign(socket, :form, error_form(params, changeset))}
     end
   end
 
-  defp assign_form(socket, %Ecto.Changeset{} = changeset) do
-    assign(socket, :form, to_form(changeset, as: "user"))
+  # Registration spans two schemas (a tenant, then a user), so an error can come
+  # back as either changeset. Re-render the submitted params and surface the
+  # relevant field errors — a missing store name (:name) or a taken email
+  # (:email) — inline on the matching input.
+  defp error_form(params, changeset) do
+    errors = Enum.filter(changeset.errors, fn {field, _} -> field in [:name, :email] end)
+    to_form(params, as: "user", errors: errors)
   end
 end

@@ -19,6 +19,6 @@ defmodule Mix.Tasks.Ordo.SetupDemo do
 
     Mix.shell().info("Demo tenant ready: slug=#{tenant.slug} name=#{tenant.name} (#{length(tenant.policy_facts)} rules).")
 
-    Mix.shell().info("Open it at /#{tenant.slug}/inbox")
+    Mix.shell().info("Enter the demo at /demo")
   end
 end

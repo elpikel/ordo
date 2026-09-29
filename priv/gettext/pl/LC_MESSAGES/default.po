@@ -11,22 +11,22 @@ msgstr ""
 "Language: pl\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10||n%100>=20) ? 1 : 2);\n"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:240
+#: lib/ordo_web/controllers/page_html/home.html.heex:243
 #, elixir-autogen, elixir-format
 msgid "01 / READ"
 msgstr "01 / CZYTA"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:248
+#: lib/ordo_web/controllers/page_html/home.html.heex:251
 #, elixir-autogen, elixir-format
 msgid "02 / ACT"
 msgstr "02 / DZIAŁA"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:256
+#: lib/ordo_web/controllers/page_html/home.html.heex:259
 #, elixir-autogen, elixir-format
 msgid "03 / RESOLVE"
 msgstr "03 / ROZWIĄZUJE"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:275
+#: lib/ordo_web/controllers/page_html/home.html.heex:278
 #, elixir-autogen, elixir-format
 msgid ": Ordo drafts, you approve. When its drafts stop needing edits, you switch that category to"
 msgstr ": Ordo pisze wersję roboczą, Ty ją zatwierdzasz. Gdy jego wersje przestają wymagać poprawek, przełączasz tę kategorię na"
@@ -46,8 +46,8 @@ msgstr "Nowy token zapisywany jest tylko przy podaniu nowej wartości."
 msgid "ACTIVE"
 msgstr "AKTYWNA"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:288
-#: lib/ordo_web/controllers/page_html/home.html.heex:294
+#: lib/ordo_web/controllers/page_html/home.html.heex:291
+#: lib/ordo_web/controllers/page_html/home.html.heex:297
 #, elixir-autogen, elixir-format
 msgid "AUTOPILOT"
 msgstr "AUTOPILOT"
@@ -85,7 +85,7 @@ msgstr "Zatwierdź i wyślij"
 msgid "Attempting to reconnect"
 msgstr "Próba ponownego połączenia"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:278
+#: lib/ordo_web/controllers/page_html/home.html.heex:281
 #, elixir-autogen, elixir-format
 msgid "Autopilot"
 msgstr "Autopilot"
@@ -110,7 +110,7 @@ msgstr "połączenie z BaseLinkerem nieaktywne"
 msgid "BaseLinker token saved."
 msgstr "Token BaseLinker zapisany."
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:387
+#: lib/ordo_web/controllers/page_html/home.html.heex:390
 #, elixir-autogen, elixir-format
 msgid "Built in Gdańsk, EU"
 msgstr "Stworzone w Gdańsku, UE"
@@ -126,7 +126,7 @@ msgstr "REKLAMACJA · CZŁOWIEK"
 msgid "CONNECTED"
 msgstr "POŁĄCZONO"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:300
+#: lib/ordo_web/controllers/page_html/home.html.heex:303
 #, elixir-autogen, elixir-format
 msgid "COPILOT"
 msgstr "COPILOT"
@@ -191,7 +191,7 @@ msgstr "Zamknij"
 msgid "Complaint"
 msgstr "Reklamacja"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:304
+#: lib/ordo_web/controllers/page_html/home.html.heex:307
 #, elixir-autogen, elixir-format
 msgid "Complaints"
 msgstr "Reklamacje"
@@ -252,7 +252,7 @@ msgstr "Potwierdzenie konta"
 msgid "Confirming..."
 msgstr "Potwierdzam..."
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:275
+#: lib/ordo_web/controllers/page_html/home.html.heex:278
 #, elixir-autogen, elixir-format
 msgid "Copilot"
 msgstr "Copilot"
@@ -304,7 +304,7 @@ msgstr "Edytuj skrzynkę: %{email}"
 
 #: lib/ordo_web/live/user_live/login.ex:49
 #: lib/ordo_web/live/user_live/login.ex:78
-#: lib/ordo_web/live/user_live/registration.ex:34
+#: lib/ordo_web/live/user_live/registration.ex:41
 #: lib/ordo_web/live/user_live/settings.ex:36
 #, elixir-autogen, elixir-format
 msgid "Email"
@@ -351,7 +351,7 @@ msgstr "Podaj adres e-mail — wyślemy Ci link do logowania."
 msgid "Error: %{errors}"
 msgstr "Błąd: %{errors}"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:275
+#: lib/ordo_web/controllers/page_html/home.html.heex:278
 #, elixir-autogen, elixir-format
 msgid "Every ticket category starts in"
 msgstr "Każda kategoria zgłoszeń zaczyna w trybie"
@@ -361,7 +361,7 @@ msgstr "Każda kategoria zgłoszeń zaczyna w trybie"
 msgid "For stores on BaseLinker · Shoper · IdoSell"
 msgstr "Dla sklepów na BaseLinker · Shoper · IdoSell"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:306
+#: lib/ordo_web/controllers/page_html/home.html.heex:309
 #, elixir-autogen, elixir-format
 msgid "HUMAN ONLY"
 msgstr "TYLKO CZŁOWIEK"
@@ -372,12 +372,12 @@ msgstr "TYLKO CZŁOWIEK"
 msgid "Hi %{email},"
 msgstr "Cześć %{email},"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:208
+#: lib/ordo_web/controllers/page_html/home.html.heex:211
 #, elixir-autogen, elixir-format
 msgid "Hi Anna! Your parcel left us on 12 Aug and is out for delivery today. Track it here: inpost.pl/620441882. It should reach your locker by 6 pm."
 msgstr "Cześć Anna! Twoja paczka wyszła od nas 12 sierpnia i dziś jest w doręczeniu. Śledź ją tutaj: inpost.pl/620441882. Powinna dotrzeć do paczkomatu do godziny 18:00."
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:191
+#: lib/ordo_web/controllers/page_html/home.html.heex:194
 #, elixir-autogen, elixir-format
 msgid "Hi, I ordered a week ago and still nothing. Where is my package?"
 msgstr "Cześć, zamówiłam tydzień temu i wciąż nic. Gdzie jest moja paczka?"
@@ -458,7 +458,7 @@ msgstr "Faktura"
 msgid "It doesn't make anything up beyond them."
 msgstr "Nie zmyśla poza nimi."
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:272
+#: lib/ordo_web/controllers/page_html/home.html.heex:275
 #, elixir-autogen, elixir-format
 msgid "It doesn't promote itself."
 msgstr "Ono nie awansuje się samo."
@@ -480,10 +480,10 @@ msgstr "Wczytaj przykładowy zestaw ticketów do skrzynki."
 
 #: lib/ordo/accounts/user_notifier.ex:75
 #: lib/ordo_web/controllers/page_html/home.html.heex:120
-#: lib/ordo_web/controllers/page_html/home.html.heex:374
+#: lib/ordo_web/controllers/page_html/home.html.heex:377
 #: lib/ordo_web/live/user_live/confirmation.ex:52
 #: lib/ordo_web/live/user_live/login.ex:14
-#: lib/ordo_web/live/user_live/registration.ex:48
+#: lib/ordo_web/live/user_live/registration.ex:54
 #, elixir-autogen, elixir-format
 msgid "Log in"
 msgstr "Zaloguj się"
@@ -596,7 +596,7 @@ msgstr "Na tych faktach Ordo opiera odpowiedzi."
 msgid "Ordo handles your shop's support email — reads it, pulls the order from BaseLinker, and drafts the reply. Click below to activate your account and open your inbox."
 msgstr "Ordo obsługuje pocztę e-mail Twojego sklepu — czyta wiadomości, pobiera zamówienie z BaseLinkera i przygotowuje odpowiedź. Kliknij poniżej, aby aktywować konto i otworzyć skrzynkę."
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:242
+#: lib/ordo_web/controllers/page_html/home.html.heex:245
 #, elixir-autogen, elixir-format
 msgid "Ordo plugs into your support inbox and understands what the customer actually needs — in Polish, English, or 20+ other languages."
 msgstr "Ordo podłącza się do Twojej skrzynki obsługi i rozumie, czego naprawdę potrzebuje klient — po polsku, angielsku i w ponad 20 innych językach."
@@ -638,12 +638,12 @@ msgstr "Port"
 msgid "REPLY"
 msgstr "ODPOWIEDŹ"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:226
+#: lib/ordo_web/controllers/page_html/home.html.heex:229
 #, elixir-autogen, elixir-format
 msgid "RESOLVED"
 msgstr "ROZWIĄZANE"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:298
+#: lib/ordo_web/controllers/page_html/home.html.heex:301
 #, elixir-autogen, elixir-format
 msgid "Refunds"
 msgstr "Refundacje"
@@ -658,7 +658,7 @@ msgstr "Zwrot"
 msgid "Return status"
 msgstr "Status zwrotu"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:292
+#: lib/ordo_web/controllers/page_html/home.html.heex:295
 #, elixir-autogen, elixir-format
 msgid "Returns & exchanges"
 msgstr "Zwroty i wymiany"
@@ -724,7 +724,7 @@ msgstr "Zasady sklepu"
 msgid "Something went wrong!"
 msgstr "Coś poszło nie tak!"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:180
+#: lib/ordo_web/controllers/page_html/home.html.heex:183
 #, elixir-autogen, elixir-format
 msgid "TICKET"
 msgstr "ZGŁOSZENIE"
@@ -739,7 +739,7 @@ msgstr "TICKETY"
 msgid "The API token connects Ordo with your store's orders, shipments and documents. You can generate it in the BaseLinker panel: My account → API."
 msgstr "Token API łączy Ordo z zamówieniami, przesyłkami i dokumentami sklepu. Wygenerujesz go w panelu BaseLinkera: Moje konto → API."
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:258
+#: lib/ordo_web/controllers/page_html/home.html.heex:261
 #, elixir-autogen, elixir-format
 msgid "The customer gets a complete answer in under a minute, the ticket closes itself, and your inbox stays quiet."
 msgstr "Klient dostaje pełną odpowiedź w niecałą minutę, zgłoszenie zamyka się samo, a Twoja skrzynka pozostaje spokojna."
@@ -809,7 +809,7 @@ msgstr "Witaj ponownie!"
 msgid "Welcome to the Ordo demo."
 msgstr "Witaj w wersji demo Ordo."
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:317
+#: lib/ordo_web/controllers/page_html/home.html.heex:320
 #, elixir-autogen, elixir-format
 msgid "Works with"
 msgstr "Współpracuje z"
@@ -850,7 +850,7 @@ msgstr "Zaloguj się ponownie, aby otworzyć tę stronę."
 msgid "You need to reauthenticate to perform sensitive actions on your account."
 msgstr "Zaloguj się ponownie, aby wykonać operacje na koncie."
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:272
+#: lib/ordo_web/controllers/page_html/home.html.heex:275
 #, elixir-autogen, elixir-format
 msgid "You promote it."
 msgstr "Ty go awansujesz."
@@ -897,7 +897,7 @@ msgstr "edytuj tekst powyżej, jeśli trzeba"
 msgid "full email address"
 msgstr "pełny adres e-mail"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:217
+#: lib/ordo_web/controllers/page_html/home.html.heex:220
 #, elixir-autogen, elixir-format
 msgid "no human involved"
 msgstr "bez udziału człowieka"
@@ -912,12 +912,12 @@ msgstr "nr"
 msgid "or"
 msgstr "lub"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:182
+#: lib/ordo_web/controllers/page_html/home.html.heex:185
 #, elixir-autogen, elixir-format
 msgid "order"
 msgstr "zamówienie"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:201
+#: lib/ordo_web/controllers/page_html/home.html.heex:204
 #, elixir-autogen, elixir-format
 msgid "out for delivery"
 msgstr "w doręczeniu"
@@ -933,12 +933,12 @@ msgstr "wklej token API…"
 msgid "settings"
 msgstr "ustawienia"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:200
+#: lib/ordo_web/controllers/page_html/home.html.heex:203
 #, elixir-autogen, elixir-format
 msgid "shipped 12 Aug"
 msgstr "wysłano 12 sie"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:329
+#: lib/ordo_web/controllers/page_html/home.html.heex:332
 #, elixir-autogen, elixir-format
 msgid "soon"
 msgstr "wkrótce"
@@ -963,12 +963,12 @@ msgstr "podgląd skrzynki"
 msgid "token"
 msgstr "token"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:279
+#: lib/ordo_web/controllers/page_html/home.html.heex:282
 #, elixir-autogen, elixir-format
 msgid "— one at a time, based on numbers, not promises. Refunds can stay human-approved forever if that's how you sleep better."
 msgstr "— po jednej naraz, w oparciu o liczby, a nie obietnice. Refundacje mogą na zawsze wymagać akceptacji człowieka, jeśli tak śpisz spokojniej."
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:286
+#: lib/ordo_web/controllers/page_html/home.html.heex:289
 #, elixir-autogen, elixir-format
 msgid "“Where is my order?”"
 msgstr "„Gdzie jest moje zamówienie?”"
@@ -1096,7 +1096,7 @@ msgstr "Wszystkie kanały"
 msgid "CHANNELS"
 msgstr "KANAŁY"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:326
+#: lib/ordo_web/controllers/page_html/home.html.heex:329
 #: lib/ordo_web/live/inbox_live.ex:512
 #, elixir-autogen, elixir-format
 msgid "Google reviews"
@@ -1338,7 +1338,7 @@ msgstr "klient"
 msgid "🔔 New message from %{name}:\n\n\"%{original}\"\n\nOrdo's proposed reply:\n\n%{draft}\n\nReply OK %{code} to send it, or edit in the inbox: %{inbox_url}\n"
 msgstr "🔔 Nowa wiadomość od %{name}:\n\n\"%{original}\"\n\nProponowana odpowiedź Ordo:\n\n%{draft}\n\nOdpisz OK %{code}, aby wysłać, lub edytuj w skrzynce: %{inbox_url}\n"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:250
+#: lib/ordo_web/controllers/page_html/home.html.heex:253
 #, elixir-autogen, elixir-format
 msgid "It looks the order up in your shop and does the work: checks tracking, registers the return, triggers the refund. Real actions, not canned answers."
 msgstr "Sprawdza zamówienie w Twoim sklepie i wykonuje pracę: sprawdza śledzenie, rejestruje zwrot, uruchamia refundację. Realne działania, a nie gotowe formułki."
@@ -1358,7 +1358,7 @@ msgstr "Ordo czyta Twoją skrzynkę obsługi klienta, sprawdza zamówienie w Two
 msgid "Reads every “where is my order?”, acts in your shop, replies to the customer. Copilot first, Autopilot when the numbers say so."
 msgstr "Czyta każde „gdzie jest moje zamówienie?”, działa w Twoim sklepie, odpowiada klientowi. Najpierw Copilot, a Autopilot wtedy, gdy potwierdzą to liczby."
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:174
+#: lib/ordo_web/controllers/page_html/home.html.heex:177
 #, elixir-autogen, elixir-format
 msgid "Example: Ordo resolving a customer message automatically"
 msgstr "Przykład: Ordo automatycznie rozwiązuje wiadomość od klienta"
@@ -1373,7 +1373,7 @@ msgstr "Twoja obsługa klienta"
 msgid "on autopilot"
 msgstr "na autopilocie"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:236
+#: lib/ordo_web/controllers/page_html/home.html.heex:239
 #, elixir-autogen, elixir-format
 msgid "One message, three moves"
 msgstr "Jedna wiadomość, trzy ruchy"
@@ -1384,7 +1384,7 @@ msgstr "Jedna wiadomość, trzy ruchy"
 msgid "Ordo — AI that resolves your store's customer messages"
 msgstr "Ordo — AI, która sama załatwia obsługę klienta Twojego sklepu"
 
-#: lib/ordo_web/live/user_live/registration.ex:77
+#: lib/ordo_web/live/user_live/registration.ex:81
 #, elixir-autogen, elixir-format
 msgid "Account created! Check your email for a link to log in and finish setup."
 msgstr "Konto utworzone! Sprawdź skrzynkę — wysłaliśmy link do logowania i dokończenia konfiguracji."
@@ -1394,8 +1394,8 @@ msgstr "Konto utworzone! Sprawdź skrzynkę — wysłaliśmy link do logowania i
 msgid "Account settings"
 msgstr "Ustawienia konta"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:373
-#: lib/ordo_web/live/user_live/registration.ex:46
+#: lib/ordo_web/controllers/page_html/home.html.heex:376
+#: lib/ordo_web/live/user_live/registration.ex:52
 #, elixir-autogen, elixir-format
 msgid "Already have an account?"
 msgstr "Masz już konto?"
@@ -1405,18 +1405,18 @@ msgstr "Masz już konto?"
 msgid "Arrived at sorting hub"
 msgstr "Przyjęto w sortowni"
 
-#: lib/ordo_web/live/user_live/registration.ex:41
+#: lib/ordo_web/live/user_live/registration.ex:47
 #, elixir-autogen, elixir-format
 msgid "Create account"
 msgstr "Załóż konto"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:360
-#: lib/ordo_web/live/user_live/registration.ex:15
+#: lib/ordo_web/controllers/page_html/home.html.heex:363
+#: lib/ordo_web/live/user_live/registration.ex:14
 #, elixir-autogen, elixir-format
 msgid "Create your account"
 msgstr "Załóż konto"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:343
+#: lib/ordo_web/controllers/page_html/home.html.heex:346
 #, elixir-autogen, elixir-format
 msgid "Create your account and connect your shop in minutes. Ordo starts in Copilot — it drafts, you approve — so you're in control from the first message. No credit card, no commitment."
 msgstr "Załóż konto i podłącz sklep w kilka minut. Ordo zaczyna w trybie Copilot — proponuje odpowiedzi, Ty je zatwierdzasz — więc masz kontrolę od pierwszej wiadomości. Bez karty, bez zobowiązań."
@@ -1426,11 +1426,6 @@ msgstr "Załóż konto i podłącz sklep w kilka minut. Ordo zaczyna w trybie Co
 #, elixir-autogen, elixir-format
 msgid "Delivered"
 msgstr "Doręczono"
-
-#: lib/ordo_web/live/user_live/registration.ex:17
-#, elixir-autogen, elixir-format
-msgid "Enter your email and we'll send you a link to get started — no password needed."
-msgstr "Podaj adres e-mail, a wyślemy Ci link, aby zacząć — bez hasła."
 
 #: lib/ordo_web/components/layouts.ex:105
 #, elixir-autogen, elixir-format
@@ -1442,7 +1437,7 @@ msgstr "Wyloguj"
 msgid "New"
 msgstr "Nowe"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:366
+#: lib/ordo_web/controllers/page_html/home.html.heex:369
 #, elixir-autogen, elixir-format
 msgid "Or see the live demo"
 msgstr "Albo zobacz demo na żywo"
@@ -1462,12 +1457,12 @@ msgstr "Spakowane"
 msgid "Processing"
 msgstr "W realizacji"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:340
+#: lib/ordo_web/controllers/page_html/home.html.heex:343
 #, elixir-autogen, elixir-format
 msgid "Ready to clear your inbox?"
 msgstr "Gotowy opróżnić swoją skrzynkę?"
 
-#: lib/ordo_web/controllers/page_html/home.html.heex:166
+#: lib/ordo_web/controllers/page_html/home.html.heex:169
 #, elixir-autogen, elixir-format
 msgid "Set up in minutes · no credit card"
 msgstr "Konfiguracja w kilka minut · bez karty"
@@ -1484,7 +1479,17 @@ msgstr "Wysłane"
 
 #: lib/ordo_web/controllers/page_html/home.html.heex:113
 #: lib/ordo_web/controllers/page_html/home.html.heex:150
-#: lib/ordo_web/controllers/page_html/home.html.heex:353
+#: lib/ordo_web/controllers/page_html/home.html.heex:356
 #, elixir-autogen, elixir-format
 msgid "Go to Ordo"
 msgstr "Przejdź do Ordo"
+
+#: lib/ordo_web/live/user_live/registration.ex:33
+#, elixir-autogen, elixir-format
+msgid "Store name"
+msgstr "Nazwa sklepu"
+
+#: lib/ordo_web/live/user_live/registration.ex:16
+#, elixir-autogen, elixir-format
+msgid "Tell us your store name and email — we'll send you a link to get started, no password needed."
+msgstr "Podaj nazwę sklepu i adres e-mail — wyślemy Ci link, aby zacząć, bez hasła."
